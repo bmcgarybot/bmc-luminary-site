@@ -93,6 +93,38 @@ class PressureBlocks(HTMLParser):
 
 
 def source_focus(document,service_key=None):
+    if service_key=='junk_hauling':
+        from qualification_scope import JUNK_SECTORS
+        parser=PressureBlocks();parser.feed(document);parser.flush()
+        categories=set();terms=[];excerpts=[]
+        for heading,text in parser.blocks:
+            context=heading+' '+text
+            if not re.search(r'\b(?:junk (?:removal|hauling)|(?:estate|property|office|commercial|business) cleanouts?)\b',context):continue
+            if re.search(r"\b(?:no longer|exclude[ds]?|excluding|do not|does not|don['’]t|doesn['’]t|not|never|except|unavailable|discontinued|withdrawn|residential only|only residential|for sale|equipment sales|training only)\b",context):continue
+            if re.search(r'\bno (?:commercial|business|office|retail|property|warehouse)\b|\bresidential\b[^.!?;]{0,30}\bonly\b',context):continue
+            for pattern,key,term in JUNK_SECTORS:
+                match=re.search(r'\b(?:'+pattern+r')\b',text)
+                if match and key not in categories:
+                    categories.add(key);terms.append(term);excerpts.append(match.group())
+        # Estate/residential cleanouts or generic business junk alone do not
+        # establish any particular commercial buyer sector.
+        if not categories:raise ValueError('unsupported_customer_focus')
+        return dict(ideal_customer=', '.join(terms),exclusions='',category_keys=sorted(categories),observed_sector_phrases=excerpts)
+    if service_key=='tree_service':
+        from qualification_scope import TREE_SECTORS
+        parser=PressureBlocks();parser.feed(document);parser.flush()
+        categories=set();terms=[];excerpts=[]
+        for heading,text in parser.blocks:
+            context=heading+' '+text
+            if not re.search(r'\b(?:tree (?:services?|care|removal|trimming|maintenance)|arborist services?)\b',context):continue
+            if re.search(r"\b(?:no longer|exclude[ds]?|excluding|do not|does not|don['’]t|doesn['’]t|not (?:currently |presently )?(?:available|offered|providing|offering|for|serving)|unavailable|discontinued|withdrawn|residential only|only residential)\b",context):continue
+            if re.search(r'\b(?:not|never|except)\b|\bresidential\b[^.!?;]{0,30}\bonly\b',context):continue
+            for pattern,key,term in TREE_SECTORS:
+                match=re.search(r'\b(?:'+pattern+r')\b',text)
+                if match and key not in categories:
+                    categories.add(key);terms.append(term);excerpts.append(match.group())
+        if not categories:raise ValueError('unsupported_customer_focus')
+        return dict(ideal_customer=', '.join(terms),exclusions='',category_keys=sorted(categories),observed_sector_phrases=excerpts)
     if service_key=='pressure_washing':
         parser=PressureBlocks();parser.feed(document);parser.flush()
         from qualification_scope import PROPERTY_EXTERIOR_PATTERN
@@ -163,10 +195,12 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
     if not raw: raise ValueError('recipient_unavailable')
     row=dict(raw)
     if (str(row['candidate_id']) in frozen or row.get('side')!='vendor'
-        or row.get('category_key') not in ('commercial_cleaning','pressure_washing')
+        or row.get('category_key') not in ('commercial_cleaning','pressure_washing','tree_service','junk_hauling')
         or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',row.get('public_email') or '')
         or not official_research.auto_evidence_valid(row,secret)):
         raise ValueError('recipient_gate_failed')
+    if row['category_key']=='tree_service' and pack_count!=25:raise ValueError('unsupported_tree_pack_count')
+    if row['category_key']=='junk_hauling' and pack_count!=25:raise ValueError('unsupported_junk_pack_count')
     history=await conn.fetchval(HISTORY_SQL,row['public_email'],list(frozen))
     if history is not False: raise ValueError('recipient_history_or_suppression')
     receipt=await asyncio.wait_for(

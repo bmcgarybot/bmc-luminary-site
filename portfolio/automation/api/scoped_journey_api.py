@@ -183,7 +183,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                 raise ValueError('invalid_batch')
         except (ValueError,KeyError,TypeError):raise HTTPException(422,'exact_new_target_batch_required')
         from scoped_batch import register_target
-        waves={'commercial_cleaning':'growth-cleaning-1','pressure_washing':'growth-pressure-1'}
+        waves={'commercial_cleaning':'growth-cleaning-1','pressure_washing':'growth-pressure-1','tree_service':'growth-tree-1','junk_hauling':'growth-junk-1'}
         results=[]
         for target_id in ids:
             try:

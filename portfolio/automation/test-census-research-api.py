@@ -189,4 +189,48 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   with patch.object(c,'fetch_page_receipt') as fetch:
    with self.assertRaises(HTTPException):await endpoint(Request(self.payload),'ci-census-request-001','admin')
   fetch.assert_not_called();self.assertEqual(self.calls,[])
+ async def test_optional_existing_false_flag_v2_requires_real_visible_proof_not_flag_override(self):
+  self.setup();self.row['official_site']=False
+  document='<title>Juniper Wash LLC</title><main><p>Juniper Wash LLC provides commercial pressure washing.</p><p>We serve Prescott, Arizona.</p></main><p>928-555-0111</p><a href="mailto:info@juniper.example">Email</a>'
+  raw=document.encode();r=FetchedPageReceipt(URL,URL,raw,hashlib.sha256(raw).hexdigest(),datetime.now(timezone.utc).isoformat(),200,'text/html',())
+  original=copy.deepcopy(self.row);search_calls=[]
+  async def search(*args):search_calls.append(args);return []
+  with patch.object(c,'fetch_page_receipt',return_value=r) as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+  self.assertEqual(result['status'],'source_proposal_only');self.assertEqual(result['discovery_identity_basis'],'fresh_existing_source_verified')
+  self.assertEqual(result['parsed_facts']['verifier'],'vps_vendor_published_area_v2')
+  self.assertTrue(c.auto_evidence_valid({**self.row,**result['parsed_record'],'category_key':'pressure_washing'},'synthetic-secret'))
+  self.assertEqual(self.row,original);self.assertFalse(self.row['official_site']);self.assertEqual(search_calls,[]);fetch.assert_called_once_with(URL)
+  with patch.object(c,'fetch_page_receipt') as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret')
+  fetch.assert_not_called();self.assertEqual(result['status'],'source_review_held')
+ async def test_existing_false_flag_v1_valid_and_wrong_identity_phone_hold(self):
+  for entity,valid in [(E,True),({**E,'name':'Other Business'},False),({**E,'telephone':'9285559999'},False)]:
+   self.setup();self.row['official_site']=False
+   async def search(*args):return []
+   with patch.object(c,'fetch_page_receipt',return_value=receipt(entity)) as fetch:
+    result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+   self.assertEqual(result['status']=='source_proposal_only',valid);self.assertEqual(fetch.call_count,1)
+   if valid:self.assertEqual(result['discovery_identity_basis'],'fresh_existing_source_verified')
+ async def test_existing_fetch_failure_discovery_fallback_at_most_two_sources(self):
+  self.setup();self.row['official_site']=False;fallback='https://juniper.example/contact'
+  async def search(*args):return [{'url':URL,'title':'Juniper Wash LLC'}, {'url':fallback,'title':'Juniper Wash LLC official website'}, {'url':'https://third.example/','title':'Juniper Wash LLC'}]
+  with patch.object(c,'fetch_page_receipt',side_effect=[ValueError('http_403'),receipt(url=fallback)]) as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+  self.assertEqual(result['status'],'source_proposal_only');self.assertEqual(result['discovery_identity_basis'],'exact_business_name_in_search_text')
+  self.assertEqual([call.args[0] for call in fetch.call_args_list],[URL,fallback])
+  with patch.object(c,'fetch_page_receipt',side_effect=ValueError('http_403')) as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+  self.assertEqual(fetch.call_count,2);self.assertEqual(result['status'],'source_review_held')
+ async def test_existing_policy_never_fetches_blocked_url_or_cross_domain_redirect(self):
+  self.setup();self.row['official_site']=False;self.row['source_url']='https://yelp.com/biz/juniper';self.row['source_key']=c.raw_source_key(self.row)
+  async def search(*args):return []
+  with patch.object(c,'fetch_page_receipt') as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+  fetch.assert_not_called();self.assertEqual(result['status'],'source_review_held')
+  self.setup();self.row['official_site']=False
+  from dataclasses import replace
+  with patch.object(c,'fetch_page_receipt',return_value=replace(receipt(),redirect_chain=('https://third.example/contact',))) as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret',try_existing_source=True)
+  self.assertEqual(result['gate_reason'],'receipt_domain_binding_unproven');self.assertNotIn('parsed_record',result)
 if __name__=='__main__':unittest.main()

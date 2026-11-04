@@ -65,6 +65,7 @@ jobs:
           python -m playwright install --with-deps chromium
           python3 portfolio/automation/test-growth-mobile.py
           python3 portfolio/automation/test-scoped-growth-mobile.py
+          python3 portfolio/automation/test-scoped-services-mobile.py
 
       - name: Validate read-only operator console
         run: |
@@ -119,6 +120,8 @@ jobs:
           python3 portfolio/automation/test-census-research-api.py
           python3 portfolio/automation/test-census-research-relay.py
           python3 portfolio/automation/test-qualification-scope.py
+          python3 portfolio/automation/test-tree-growth-engine.py
+          python3 portfolio/automation/test-junk-growth-engine.py
           python3 portfolio/automation/test-scoped-growth.py
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py

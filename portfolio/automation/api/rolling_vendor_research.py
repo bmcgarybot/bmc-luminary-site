@@ -7,7 +7,7 @@ customer/frozen records, resets research attempts, or changes provider status.
 import asyncio,copy,json,re,uuid
 from datetime import datetime,timedelta,timezone
 from official_research import (FetchedPageReceipt,VENDOR_TERMS,auto_evidence_valid,
-    canonical,fetch_page_receipt,host,parse_record)
+    canonical,fetch_page_receipt,host,parse_record,contact_links)
 from census_research_api import (SELECT_SQL,validate_body,review_row,raw_source_key,
     research_get_url,legal_name)
 from owner_research_export import seal_export
@@ -38,7 +38,31 @@ HISTORY_SQL="""select
  or exists(select 1 from orders where lower(customer_email)=any($3::text[]))
  or exists(select 1 from growth_purchase_offers where lower(email)=any($3::text[]))"""
 
-class Held(ValueError):pass
+HISTORY_BRANCHES=('suppression','growth_target','owner_preview','outreach','sample_request',
+                  'sample_prospect','order_prospect','prospect_exposure','email_verification','customer_order','purchase_offer')
+# Reuse the exact gate expressions; diagnostics never replace the original gate.
+_HISTORY_EXPRESSIONS=re.split(r'\n or (?=exists)',HISTORY_SQL.removeprefix('select\n '))
+assert len(_HISTORY_EXPRESSIONS)==len(HISTORY_BRANCHES)
+HISTORY_DIAGNOSTIC_SQL='select '+',\n'.join(expr+' as '+name for name,expr in zip(HISTORY_BRANCHES,_HISTORY_EXPRESSIONS))
+
+class Held(ValueError):
+    def __init__(self,reason,diagnostics=None):
+        super().__init__(reason);self.diagnostics=diagnostics or {}
+
+
+def source_diagnostics(proposal):
+    result={}
+    for key in ('status','reason','gate_reason','fetch_failure_reason'):
+        value=proposal.get(key)
+        if isinstance(value,str) and re.fullmatch('[a-z0-9_]{1,100}',value):result[key]=value
+    # Existing bounded source observations remain private inside the owner capsule.
+    for key in ('visible_excerpt','unverified_schema_observations','source_receipt','fetch_receipt'):
+        if key in proposal:
+            try:
+                encoded=json.dumps(proposal[key],ensure_ascii=False)
+                if len(encoded.encode())<=16000:result[key]=json.loads(encoded)
+            except (ValueError,TypeError):pass
+    return result
 
 
 def evidence(row):
@@ -66,7 +90,13 @@ async def no_history(conn,row,new_email=''):
     if row.get('promoted_entity_id'):ids.append(str(row['promoted_entity_id']))
     emails=sorted({str(x).lower() for x in (row.get('public_email'),new_email) if x})
     if await conn.fetchval(HISTORY_SQL,str(row['candidate_id']),ids,emails,row['business_name'],row['market'],['email:'+x for x in emails]) is not False:
-        raise Held('existing_customer_target_or_history')
+        diagnostics={'history_diagnostics_unavailable':True}
+        try:
+            values=await conn.fetchrow(HISTORY_DIAGNOSTIC_SQL,str(row['candidate_id']),ids,emails,row['business_name'],row['market'],['email:'+x for x in emails])
+            if values and all(isinstance(values.get(key),bool) for key in HISTORY_BRANCHES):
+                diagnostics={'history_checks':{key:values[key] for key in HISTORY_BRANCHES}}
+        except Exception:pass
+        raise Held('existing_customer_target_or_history',diagnostics)
 
 
 def seal_result(payload,request_id):
@@ -121,11 +151,13 @@ async def save_transition(pool,original,parsed,service,secret,protected,request_
             data.update(fresh)
             data['native_source_transition']={'kind':kind,'request_id':request_id,'source_key':source_key,
                 'source_url':parsed['source_url'],'content_sha256':parsed['content_sha256'],
-                'verified_at':parsed['checked_at'],'verifier':parsed['verifier']}
+                'verified_at':parsed['checked_at'],'verifier':parsed['verifier'],
+                'verification_basis':parsed.get('verification_basis','fresh_current_source_verified')}
             projected['evidence']=data
             if not auto_evidence_valid(projected,secret):raise Held('native_projection_invalid')
             payload=result('native_source_verified',candidate_id=str(cid),native_record_written=True,
-                source_key=source_key,verification=parsed['evidence']['vps_verification'])
+                source_key=source_key,verification=parsed['evidence']['vps_verification'],
+                verification_basis=parsed.get('verification_basis','fresh_current_source_verified'))
             # Validate encryption/key/bounds before performing any inventory write.
             seal_result(dict(request_id=request_id,results=[payload]),request_id)
             saved=await conn.fetchrow("""update market_inventory_candidates set business_name=$2,category_key=$3,
@@ -149,15 +181,14 @@ async def promote_one(pool,row,service,search,secret,protected,request_id):
         source_key=raw_source_key(original)
         async with pool.acquire() as conn:await no_history(conn,original)
         research_input=dict(original,public_email='',source_key=source_key)
-        proposal=await review_row(research_input,service,search,secret)
+        proposal=await review_row(research_input,service,search,secret,try_existing_source=True)
         if proposal.get('status')!='source_proposal_only':
-            # Existing review reasons are server-generated, but emit only this
-            # fixed gate rather than arbitrary parser/search exception content.
-            raise Held('fresh_official_source_unproven')
+            raise Held('fresh_official_source_unproven',{'source_review':source_diagnostics(proposal)})
         parsed=proposal.get('parsed_record')
+        if isinstance(parsed,dict):parsed=dict(parsed,verification_basis=proposal.get('discovery_identity_basis','fresh_current_source_verified'))
         return await save_transition(pool,original,parsed,service,secret,protected,request_id,
                                      'census_source_verification',source_key)
-    except Held as exc:return result('native_source_held',candidate_id=str(original.get('candidate_id')),gate_reason=str(exc),native_record_written=False)
+    except Held as exc:return result('native_source_held',candidate_id=str(original.get('candidate_id')),gate_reason=str(exc),native_record_written=False,diagnostics=exc.diagnostics)
     except Exception:return result('native_source_held',candidate_id=str(original.get('candidate_id')),gate_reason='research_transition_unavailable',native_record_written=False)
 
 
@@ -172,21 +203,49 @@ async def refresh_one(pool,candidate_id,secret,protected,request_id):
             await no_history(conn,original)
         url=original['source_url']
         if not research_get_url(url):raise Held('unsupported_primary_url')
-        try:receipt=await asyncio.wait_for(asyncio.to_thread(fetch_page_receipt,url),45)
-        except Exception:raise Held('official_fetch_unavailable')
         import hashlib
-        if (not isinstance(receipt,FetchedPageReceipt) or receipt.requested_url!=url or receipt.http_status!=200
-            or not isinstance(receipt.raw_bytes,bytes) or not 0<len(receipt.raw_bytes)<=1_000_000
-            or receipt.content_type.split(';')[0].strip().lower() not in ('text/html','application/xhtml+xml')
-            or any(not research_get_url(u) or host(u)!=host(url) for u in (receipt.final_url,*receipt.redirect_chain))
-            or hashlib.sha256(receipt.raw_bytes).hexdigest()!=receipt.content_sha256):raise Held('fresh_transport_receipt_invalid')
-        when=datetime.fromisoformat(receipt.fetched_at)
-        if when.tzinfo is None or not timedelta(0)<=datetime.now(timezone.utc)-when<=timedelta(minutes=5):raise Held('fresh_transport_receipt_invalid')
-        try:parsed=parse_record(original,receipt.final_url,receipt.document,receipt.content_sha256,secret)
-        except (ValueError,TypeError,KeyError):raise Held('fresh_official_source_unproven')
-        if host(parsed['source_url'])!=host(original['source_url']):raise Held('official_source_host_changed')
-        return await save_transition(pool,original,parsed,original['category_key'],secret,protected,request_id,'native_source_refresh')
-    except Held as exc:return result('native_source_held',candidate_id=str(candidate_id),gate_reason=str(exc),native_record_written=False)
+        deadline=asyncio.get_running_loop().time()+120
+        queue=[url];seen=set();stages=[]
+        while queue and len(seen)<3:
+            current_url=queue.pop(0)
+            if current_url in seen:continue
+            seen.add(current_url)
+            remaining=deadline-asyncio.get_running_loop().time()
+            if remaining<=0:
+                stages.append({'stage':'fetch','reason':'total_fetch_timeout'});break
+            try:receipt=await asyncio.wait_for(asyncio.to_thread(fetch_page_receipt,current_url),min(45,remaining))
+            except Exception:
+                stages.append({'stage':'fetch','reason':'official_fetch_unavailable'});continue
+            if (not isinstance(receipt,FetchedPageReceipt) or receipt.requested_url!=current_url or receipt.http_status!=200
+                or not isinstance(receipt.raw_bytes,bytes) or not 0<len(receipt.raw_bytes)<=1_000_000
+                or receipt.content_type.split(';')[0].strip().lower() not in ('text/html','application/xhtml+xml')
+                or any(not research_get_url(u) or host(u)!=host(url) for u in (receipt.final_url,*receipt.redirect_chain))
+                or hashlib.sha256(receipt.raw_bytes).hexdigest()!=receipt.content_sha256):
+                stages.append({'stage':'receipt','reason':'fresh_transport_receipt_invalid'});continue
+            try:
+                when=datetime.fromisoformat(receipt.fetched_at)
+                valid_time=when.tzinfo is not None and timedelta(0)<=datetime.now(timezone.utc)-when<=timedelta(minutes=5)
+            except (ValueError,TypeError):valid_time=False
+            if not valid_time:
+                stages.append({'stage':'receipt','reason':'fresh_transport_receipt_invalid'});continue
+            # Only the validated primary page contributes observed fallback links.
+            if current_url==url:
+                queue.extend(link for link in contact_links(receipt.final_url,receipt.document)
+                             if research_get_url(link) and host(link)==host(url) and link not in seen)
+                queue=queue[:2]
+            try:parsed=parse_record(original,receipt.final_url,receipt.document,receipt.content_sha256,secret)
+            except (ValueError,TypeError,KeyError):
+                stages.append({'stage':'parse','reason':'fresh_official_source_unproven'});continue
+            if host(parsed['source_url'])!=host(original['source_url']):
+                stages.append({'stage':'identity','reason':'official_source_host_changed'});continue
+            try:validate_projection(original,parsed,original['category_key'],secret)
+            except Held as exc:
+                stages.append({'stage':'projection','reason':str(exc)});continue
+            # Save still repeats current source snapshot, history, and native gates.
+            return await save_transition(pool,original,parsed,original['category_key'],secret,protected,request_id,'native_source_refresh')
+        reason=stages[-1]['reason'] if stages else 'fresh_official_source_unproven'
+        raise Held(reason,{'refresh_stages':stages,'get_count':len(seen),'observed_contact_links':len(seen)-1})
+    except Held as exc:return result('native_source_held',candidate_id=str(candidate_id),gate_reason=str(exc),native_record_written=False,diagnostics=exc.diagnostics)
     except Exception:return result('native_source_held',candidate_id=str(candidate_id),gate_reason='research_transition_unavailable',native_record_written=False)
 
 

@@ -59,6 +59,12 @@ async def main():
         async with pool.acquire() as conn:
             await rolling.no_history(conn,original,email)
             await contact._no_history(conn,original,email)
+            args=(str(original['candidate_id']),[str(original['candidate_id']),'inventory:'+str(original['candidate_id'])],
+                  [email],original['business_name'],original['market'],['email:'+email])
+            clean=dict(await conn.fetchrow(rolling.HISTORY_DIAGNOSTIC_SQL,*args))
+            assert set(clean)==set(rolling.HISTORY_BRANCHES)
+            assert all(type(value) is bool and value is False for value in clean.values()),clean
+            assert await conn.fetchval(rolling.HISTORY_SQL,*args) is False
         with patch.object(rolling,'seal_result',return_value={'synthetic_ciphertext':True}):
             result=await rolling.save_transition(pool,original,parsed,'commercial_cleaning',secret,frozenset(),'ci-native-'+tag,'census_source_verification')
         assert result['native_record_written'] and result['candidate_id']==str(original['candidate_id'])
@@ -82,10 +88,23 @@ async def main():
         # Current suppression blocks both modules and leaves the candidate untouched.
         async with pool.acquire() as conn:
             await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'synthetic CI','ci-native')",email2)
+            args=(str(original2['candidate_id']),[str(original2['candidate_id']),'inventory:'+str(original2['candidate_id'])],
+                  [email2],original2['business_name'],original2['market'],['email:'+email2])
+            held_checks=dict(await conn.fetchrow(rolling.HISTORY_DIAGNOSTIC_SQL,*args))
+            assert set(held_checks)==set(rolling.HISTORY_BRANCHES)
+            assert all(type(value) is bool for value in held_checks.values()),held_checks
+            assert [key for key,value in held_checks.items() if value]==['suppression'],held_checks
+            assert await conn.fetchval(rolling.HISTORY_SQL,*args) is True
+            history_before=await snapshot(conn)
             for fn in (rolling.no_history,contact._no_history):
                 try:await fn(conn,original2,email2)
-                except ValueError:pass
+                except ValueError as exc:
+                    if fn is rolling.no_history:
+                        assert str(exc)=='existing_customer_target_or_history'
+                        assert exc.diagnostics=={'history_checks':held_checks},exc.diagnostics
                 else:raise AssertionError('suppressed history accepted')
+            assert await snapshot(conn)==history_before,'History diagnostic query mutated customer/history rows'
+            assert await conn.fetchval('select count(*) from outreach_suppressions where email=$1',email2)==1
         assert await raw(original2['candidate_id'])==before2
         # Actual enrichment SQL writes only separate attestation/email on the same UUID.
         native,_,p,mail=await fixture(3,True);old_evidence=json.loads(native['evidence']) if isinstance(native['evidence'],str) else native['evidence']
