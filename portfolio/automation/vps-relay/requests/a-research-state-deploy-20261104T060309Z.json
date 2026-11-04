@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "a-research-state-deploy-20261104T060309Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "required_ci_sha": "460c2d829d0b9d0be81dfb5d1753ae329e54313e",
+  "created_at": "2026-11-04T06:03:09.413014+00:00",
+  "expires_at": "2026-11-04T07:03:09.413014+00:00",
+  "args": {}
+}
