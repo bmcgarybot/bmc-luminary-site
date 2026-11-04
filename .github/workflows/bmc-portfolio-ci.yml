@@ -52,6 +52,7 @@ jobs:
           python3 portfolio/automation/test-growth-pdf.py
           python3 portfolio/automation/test-owner-pack-review.py
           python3 portfolio/automation/test-growth-offers.py
+          python3 portfolio/automation/test-growth-strategy.py
           python3 portfolio/automation/test-official-research.py
 
       - name: Verify Growth mobile sample rendering
