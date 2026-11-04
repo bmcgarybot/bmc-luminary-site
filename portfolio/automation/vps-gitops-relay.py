@@ -74,7 +74,9 @@ MUTATING_INTERNAL_ACTIONS = {
 }
 EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
-ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
+RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
+# These bounded research-only transitions enforce no recipient/history changes server-side.
+ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS
 
 API_ACTIONS = {
     "official_research_step": "/api/process-official-research",
@@ -720,13 +722,22 @@ def execute(req: dict) -> dict:
             raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
         cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
         configured=sorted(x for x in app_env().get("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x)
-        if (not {"wave","target_ids"}<=set(args)<={"wave","target_ids","daily_limit"} or args.get("wave")!=cohort["wave"]
+        if (not {"wave","target_ids"}<=set(args)<={"wave","target_ids","daily_limit","auto_approve_requested_25"} or args.get("wave")!=cohort["wave"]
             or not isinstance(args.get("target_ids"),list) or sorted(args["target_ids"])!=configured
             or configured!=sorted(cohort["target_ids"]) or app_env().get("GROWTH_OUTREACH_WAVE")!=cohort["wave"]):
             raise RelayError("Launch requires the exact configured Phoenix cohort; broad or historic waves are refused")
         daily_limit=args.get('daily_limit',10)
         if type(daily_limit) is not int or not 1<=daily_limit<=100:
             raise RelayError('Explicit daily limit must be between 1 and 100')
+        if 'auto_approve_requested_25' in args and type(args['auto_approve_requested_25']) is not bool:
+            raise RelayError('Requested fixed25 approval policy must be an explicit boolean')
+        # Omission preserves the independently configured policy; marketing ON
+        # alone never grants authority to approve a customer purchase offer.
+        policy_changes={}
+        rollback_changes={'GROWTH_OUTREACH_ENABLED':'false'}
+        if 'auto_approve_requested_25' in args:
+            policy_changes['GROWTH_AUTO_APPROVE_REQUESTED_25']='true' if args['auto_approve_requested_25'] else 'false'
+            rollback_changes['GROWTH_AUTO_APPROVE_REQUESTED_25']=app_env().get('GROWTH_AUTO_APPROVE_REQUESTED_25','false')
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
@@ -742,10 +753,11 @@ def execute(req: dict) -> dict:
           "GROWTH_OUTREACH_WAVE":cohort["wave"],
           "GROWTH_SAMPLE_MIN_RESERVE":"125",
           "GROWTH_AUTO_FULFILL_ENABLED":"true",
+          **policy_changes,
         })
         restart=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
         if restart.returncode!=0:
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             raise RelayError("Growth launch container restart failed; switch restored OFF")
         healthy=False
         for _ in range(30):
@@ -754,12 +766,12 @@ def execute(req: dict) -> dict:
                 healthy=True; break
             time.sleep(1)
         if not healthy:
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
             raise RelayError("Growth launch API health failed; switch restored OFF")
         health_status=admin_post("/api/process-growth-health",timeout=120)
         if not health_status.get("health_ok",False):
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
             raise RelayError(f"Growth health gate failed after enable; switch restored OFF: {health_status.get('problems')}")
         first_send=admin_post("/api/process-growth-outreach",timeout=180)
@@ -885,6 +897,33 @@ def execute(req: dict) -> dict:
         if args:raise RelayError('Reply review export takes no arguments')
         path='/api/admin/reply-review-export?'+urllib.parse.urlencode({'request_id':req['request_id']})
         stdout=json.dumps(admin_post(path,timeout=120));stderr='';exit_code=0
+
+    elif action in RESEARCH_MUTATION_ACTIONS:
+        candidate_re=r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}'
+        if action == 'research_promote_census':
+            keys=args.get('source_keys');service=args.get('requested_service')
+            if (set(args)!={'source_keys','requested_service'} or not isinstance(keys,list)
+                or not 1<=len(keys)<=2 or any(not isinstance(k,str) or not re.fullmatch('[0-9a-f]{64}',k) for k in keys)
+                or len(set(keys))!=len(keys) or not isinstance(service,str) or not re.fullmatch('[a-z][a-z0-9_]{2,63}',service)):
+                raise RelayError('Bounded existing source keys and service are required')
+            endpoint='/api/admin/research-promote-census'
+        elif action == 'enrich_native_contact':
+            from urllib.parse import unquote
+            contact=args.get('contact_path')
+            if (set(args)!={'candidate_id','contact_path','email_sha256'}
+                or not isinstance(args.get('candidate_id'),str) or not re.fullmatch(candidate_re,args['candidate_id'])
+                or not isinstance(contact,str) or not 1<=len(contact)<=1024 or not contact.startswith('/')
+                or contact.startswith('//') or not contact.isascii() or any(c in contact for c in ('?', '#', '\\'))
+                or '..' in unquote(contact) or not isinstance(args.get('email_sha256'),str)
+                or not re.fullmatch('[0-9a-f]{64}',args['email_sha256'])):
+                raise RelayError('One native candidate, relative contact path and mailbox hash are required')
+            endpoint='/api/admin/enrich-native-contact-by-hash'
+        else:
+            if set(args)!={'candidate_id'} or not isinstance(args.get('candidate_id'),str) or not re.fullmatch(candidate_re,args['candidate_id']):
+                raise RelayError('One native candidate UUID is required')
+            endpoint='/api/admin/refresh-uncontacted-vendor'
+        path=endpoint+'?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=180,body=args));stderr='';exit_code=0
 
     elif action == "authorize_scoped_batch":
         ids=args.get('target_ids')

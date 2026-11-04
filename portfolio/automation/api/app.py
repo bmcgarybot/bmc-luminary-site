@@ -58,6 +58,7 @@ BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
+GROWTH_AUTO_APPROVE_REQUESTED_25=os.getenv("GROWTH_AUTO_APPROVE_REQUESTED_25","false").strip().lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
 GROWTH_OUTREACH_TARGET_IDS=tuple(x.strip() for x in os.getenv("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x.strip())
@@ -6106,7 +6107,7 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     closed_at=excluded.closed_at,
                     closure_reason=excluded.closure_reason,
                     updated_at=now()
-                  where coalesce(market_inventory_candidates.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1')
+                  where coalesce(market_inventory_candidates.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1','vps_vendor_published_area_v2')
                   returning candidate_id""",
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
@@ -8157,6 +8158,11 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
     sent=0
     async with app.state.pool.acquire() as conn:
       dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
+      requested_approval={'enabled':False,'approved':0,'needs_review':0}
+      if globals().get('GROWTH_AUTO_APPROVE_REQUESTED_25',False) is True:
+          from auto_scoped_offer import auto_approve_requested_scoped_offers
+          requested_approval=await auto_approve_requested_scoped_offers(
+              conn,ADMIN_KEY,dispatch_scopes,growth_offer_payload_current,enabled=True)
       offers=await conn.fetch("""select f.offer_id from growth_purchase_offers f join products p on p.product_key=f.product_key
         join growth_sample_requests s on s.sample_id=f.sample_id
         join growth_outreach_targets g on g.target_id=s.source_target_id
@@ -8194,7 +8200,7 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
             await conn.execute("update growth_purchase_offers set status='exception',updated_at=now() where offer_id=$1",offer['offer_id'])
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
               values('growth_offer_invitation_review','high',$1,'Review the offer and durable mail attempt before resuming')""",str(exc))
-    return {"ok":True,"sent":sent,"held":False}
+    return {"ok":True,"sent":sent,"held":False,"requested_25_approval":requested_approval}
 
 # Research-only worker; never creates outreach, orders, or accepted providers.
 install_official_research(app,require_admin,search_research_web,DEFAULT_SOURCE_NATIVE_MARKETS,ADMIN_KEY,enabled=RESEARCH_SEARCH_ENABLED)
@@ -8239,3 +8245,10 @@ from reply_review import install as install_reply_review
 record_owner_reply_review=install_reply_review(app,require_admin,ADMIN_KEY,
     dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER,
          WATCHDOG_EMAIL=os.getenv('WATCHDOG_EMAIL','')),send_mail_once)
+
+# Bounded never-contacted native research; no target staging or customer sends.
+from contact_enrichment_api import install as install_contact_enrichment_api
+install_contact_enrichment_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS)
+
+from rolling_vendor_research import install as install_rolling_vendor_research
+install_rolling_vendor_research(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS, search_research_web)

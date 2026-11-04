@@ -1,5 +1,5 @@
 """Actual public quote endpoint: real HMAC, synthetic saved sample and draft callback."""
-import sys,unittest,uuid
+import sys,unittest,uuid,json
 from datetime import datetime,timedelta,timezone
 from pathlib import Path
 from unittest.mock import AsyncMock
@@ -11,7 +11,7 @@ from fastapi import FastAPI,HTTPException
 class Tests(unittest.IsolatedAsyncioTestCase):
     def setup(self):
         self.sid=uuid.uuid4();self.sample=dict(sample_id=self.sid,email='recipient@example.test',created_at=datetime.now(timezone.utc))
-        self.reads=[];self.transactions=[];self.drafts={};self.effects=[]
+        self.reads=[];self.transactions=[];self.drafts={};self.effects=[];self.consent={}
         outer=self
         class Conn:
             async def __aenter__(self):return self
@@ -21,7 +21,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                 assert sql=='select * from growth_sample_requests where sample_id=$1'  # Do not invert the shared allocator/sample lock order.
                 outer.reads.append((sql,args))
                 return outer.sample if outer.sample and args==(outer.sid,) else None
-            async def execute(self,*args):raise AssertionError('Endpoint attempted a write')
+            async def execute(self,sql,*args):
+                outer.assertIn('insert into events',sql);outer.assertEqual(args[1],'customer_requested_scoped25')
+                marker=json.loads(args[2]);outer.assertNotIn('request_token',marker)
+                outer.consent.setdefault(args[0],marker)
         class Pool:
             def acquire(self):return Conn()
         async def draft(conn,payload):
@@ -31,7 +34,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                 self.drafts[key]=dict(offer_id=str(uuid.uuid4()),status='draft')
             return self.drafts[key]
         self.prepare=AsyncMock(side_effect=draft)
-        self.profile=AsyncMock(return_value=dict(state='approved',pack_count=25,amount_cents=14900))
+        self.profile=AsyncMock(return_value=dict(state='approved',pack_count=25,amount_cents=14900,signature='synthetic-reviewed-profile'))
         app=FastAPI();app.state.pool=Pool();self.endpoint=quotes.install(app,'secret',self.prepare,self.profile)
         self.body=dict(sample_id=str(self.sid),confirm=True,request_token=quotes.request_token('secret',str(self.sid),self.sample['email']))
     async def call(self,**changes):
@@ -44,6 +47,11 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result['status'],'offer_pending_review');self.assertEqual(result['offer_count'],25)
         self.assertEqual(result['amount_cents'],14900);self.assertEqual(result['checkout_url'],'');self.assertFalse(result['payment_created'])
         self.assertEqual(len(self.drafts),1);self.assertEqual(next(iter(self.drafts.values()))['status'],'draft')
+        self.assertEqual(len(self.consent),1);self.assertTrue(next(iter(self.consent.values()))['confirmed'])
+        from auto_scoped_offer import request_signature
+        marker=dict(next(iter(self.consent.values())));signed=marker.pop('signature')
+        self.assertEqual(signed,request_signature(marker,'secret'));self.assertEqual(marker['profile_signature'],'synthetic-reviewed-profile')
+        self.assertEqual(marker['email'],self.sample['email']);self.assertNotIn(self.body['request_token'],json.dumps(marker))
         self.assertEqual(self.transactions,[{}]);self.assertEqual(self.effects,[])
         self.profile.assert_awaited_once();self.prepare.assert_awaited_once()
     async def test_token_cannot_move_to_another_recipient_or_sample(self):
@@ -55,7 +63,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             elif kind=='not_string':self.body['request_token']=['unsafe']
             else:self.sample['email']='different@example.test'
             with self.assertRaises(HTTPException) as caught:await self.call()
-            self.assertEqual(caught.exception.status_code,403);self.prepare.assert_not_awaited();self.profile.assert_not_awaited()
+            self.assertEqual(caught.exception.status_code,403);self.prepare.assert_not_awaited();self.profile.assert_not_awaited();self.assertEqual(self.consent,{})
     async def test_confirmation_and_valid_sample_uuid_before_database(self):
         for change in (dict(confirm=False),dict(confirm='true'),dict(confirm=1),dict(sample_id='bad-uuid')):
             self.setup()
@@ -79,7 +87,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
     async def test_idempotent_draft_callback_no_extra_order_approval_or_send(self):
         self.setup();first=await self.call();second=await self.call()
         self.assertEqual(first['offer_id'],second['offer_id']);self.assertEqual(len(self.drafts),1)
-        self.assertEqual(self.prepare.await_count,2);self.assertEqual(self.effects,[])
+        self.assertEqual(self.prepare.await_count,2);self.assertEqual(self.effects,[]);self.assertEqual(len(self.consent),1)
         self.assertEqual(next(iter(self.drafts.values()))['status'],'draft')
         self.assertEqual(first['checkout_url'],'');self.assertEqual(second['checkout_url'],'')
     async def test_existing_paid_or_reviewed_offer_is_not_reported_as_a_new_pending_purchase(self):
@@ -91,7 +99,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result['status'],'offer_already_reviewed' if state=='approved' else 'already_purchased')
             self.assertEqual(result['offer_id'],existing['offer_id'])
             self.assertFalse(result['payment_created']);self.assertEqual(result['checkout_url'],'')
-            self.assertEqual(self.drafts,{})
+            self.assertEqual(self.drafts,{});self.assertEqual(self.consent,{})
     async def test_invalid_json_shape_and_scope_drift_are_controlled_errors(self):
         self.setup()
         class WrongShape:

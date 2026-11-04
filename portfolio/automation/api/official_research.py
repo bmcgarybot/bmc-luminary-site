@@ -8,6 +8,7 @@ from urllib.parse import urlsplit, urlunsplit, urljoin
 from research_policy import ownership_evidence
 
 VERSION='vps_primary_site_v1'
+NATIVE_VERSIONS=(VERSION,'vps_vendor_published_area_v2')
 BUYER_TYPES={
  'auto_dealers':('AutoDealer',),'auto_fleet':('MovingCompany','AutomotiveBusiness'),
  'churches':('Church','PlaceOfWorship'),'dental':('Dentist',),'grocery':('GroceryStore',),
@@ -202,7 +203,7 @@ def az_physical_address_postal_valid(value):
     return bool(match and az_postal_code_valid(match.group(1)))
 
 
-def parse_record(candidate,url,document,digest,secret):
+def _parse_physical_record(candidate,url,document,digest,secret):
     if not secret or not allowed_url(url):raise ValueError('untrusted_source')
     page=Page();page.feed(document)
     matches=[]
@@ -262,7 +263,21 @@ def parse_record(candidate,url,document,digest,secret):
     signed=dict(facts,signature=seal(facts,secret))
     return dict(facts,source_domain=host(url),evidence={'researched_by':VERSION,'vps_verification':signed})
 
-def auto_evidence_valid(row,secret):
+def parse_record(candidate,url,document,digest,secret):
+    """Legacy physical verifier first; mobile recipient vendor fallback only."""
+    legacy=None;error=None
+    try:legacy=_parse_physical_record(candidate,url,document,digest,secret)
+    except ValueError as exc:error=exc
+    if candidate.get('side')=='vendor' and (legacy is None or not legacy.get('public_email')):
+        try:
+            from vendor_published_area import parse_vendor_published_area
+            return parse_vendor_published_area(candidate,url,document,digest,secret)
+        except ValueError:pass
+    if legacy is not None:return legacy
+    raise error
+
+
+def _primary_auto_evidence_valid(row,secret):
     try:
         evidence=row.get('evidence') or {};evidence=json.loads(evidence) if isinstance(evidence,str) else evidence
         signed=dict(evidence.get('vps_verification') or {});signature=signed.pop('signature','')
@@ -277,6 +292,66 @@ def auto_evidence_valid(row,secret):
         if row.get('side') and row['side']!=signed.get('side'):return False
         return bool(az_physical_address_postal_valid(signed.get('physical_address')) and allowed_url(signed['source_url']))
     except (ValueError,TypeError,KeyError):return False
+
+
+CONTACT_VERSION='vps_primary_contact_v1'
+CONTACT_TTL=timedelta(days=7)
+
+def contact_seal(facts,secret):
+    return hmac.new(secret.encode(),('bmc-official-contact-evidence-v1|'+canonical(facts)).encode(),hashlib.sha256).hexdigest()
+
+
+def _contact_receipt_valid(meta,domain,issued):
+    if not isinstance(meta,dict) or set(meta)!={'requested_url','final_url','content_sha256','fetched_at','http_status'}:return False
+    if meta['http_status']!=200 or not re.fullmatch('[0-9a-f]{64}',meta['content_sha256']):return False
+    if any(not allowed_url(meta[k]) or host(meta[k])!=domain for k in ('requested_url','final_url')):return False
+    fetched=datetime.fromisoformat(meta['fetched_at'])
+    return fetched.tzinfo is not None and timedelta(0)<=issued-fetched<=timedelta(minutes=15)
+
+
+def auto_evidence_valid(row,secret):
+    """Original native proof remains intact; optional contact proof has its own MAC.
+
+    Contact authorization covers evidence only. Enrollment/persistence callers must
+    separately enforce transactionally that the candidate has never been targeted,
+    sampled, ordered or contacted. No outreach permission is granted here.
+    """
+    try:
+        evidence=row.get('evidence') or {}
+        if isinstance(evidence,str):evidence=json.loads(evidence)
+        if (evidence.get('vps_verification') or {}).get('verifier')=='vps_vendor_published_area_v2':
+            from vendor_published_area import auto_vendor_area_valid
+            return auto_vendor_area_valid(row,secret)
+        token=evidence.get('contact_verification')
+        if token is None:return _primary_auto_evidence_valid(row,secret)
+        if not isinstance(token,dict):return False
+        token=dict(token);signature=token.pop('signature','')
+        if not secret or not isinstance(signature,str) or not hmac.compare_digest(signature,contact_seal(token,secret)):return False
+        required={'verifier','candidate_id','source_url','primary_proof_signature','primary_proof_sha256',
+            'business_name','market','category_key','side','physical_address','public_phone','public_email',
+            'primary_receipt','contact_receipt','email_provenance','checked_at','expires_at'}
+        if set(token)!=required or token['verifier']!=CONTACT_VERSION:return False
+        from uuid import UUID
+        if str(UUID(str(row['candidate_id'])))!=token['candidate_id']:return False
+        issued=datetime.fromisoformat(token['checked_at']);expires=datetime.fromisoformat(token['expires_at'])
+        if issued.tzinfo is None or expires.tzinfo is None:return False
+        if not issued<=datetime.now(timezone.utc)<=expires or expires-issued!=CONTACT_TTL:return False
+        primary=evidence.get('vps_verification') or {}
+        if token['primary_proof_signature']!=primary.get('signature'):return False
+        if token['primary_proof_sha256']!=hashlib.sha256(canonical(primary).encode()).hexdigest():return False
+        for key in ('source_url','business_name','market','category_key','side','physical_address','public_phone'):
+            if token[key]!=primary.get(key):return False
+        if token['side']!='vendor' or token['category_key'] not in VENDOR_TERMS:return False
+        if not re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',token['public_email']):return False
+        if row.get('public_email')!=token['public_email']:return False
+        if (not isinstance(token['email_provenance'],list) or not token['email_provenance']
+            or set(token['email_provenance'])-{'explicit_mailto','cloudflare_data_cfemail'}):return False
+        if not all(_contact_receipt_valid(token[k],host(primary['source_url']),issued) for k in ('primary_receipt','contact_receipt')):return False
+        # Preserve the signed original email (often empty) when validating native
+        # row equality. Every other legacy MAC/source/postal/age check still runs.
+        original_row=dict(row,public_email=primary.get('public_email') or '')
+        return _primary_auto_evidence_valid(original_row,secret)
+    except (ValueError,TypeError,KeyError,AttributeError,OverflowError):return False
 
 
 def contact_links(url,document):
@@ -324,8 +399,8 @@ def install(app,require_admin,search,markets,secret,enabled=True):
             # IDs originate only in bounded persisted native research, never a request.
             native_sources=await conn.fetch("""select candidate_id,source_url,source_domain from market_inventory_candidates
               where market=any($1::text[]) and status='discovered' and closed_at is null
-                and evidence->>'researched_by'=$2
-              order by last_verified_at nulls first,candidate_id limit 1000""",list(markets),VERSION)
+                and evidence->>'researched_by'=any($2::text[])
+              order by last_verified_at nulls first,candidate_id limit 1000""",list(markets),list(NATIVE_VERSIONS))
             blocked_ids=[]
             for source in native_sources:
                 actual=host(source['source_url'])
@@ -338,22 +413,34 @@ def install(app,require_admin,search,markets,secret,enabled=True):
               select c.*,a.touched,
                 (c.candidate_id=any($2::uuid[]) and coalesce(j.source_policy_version,'')<>$3
                  and coalesce(j.status,'') not in ('running','needs_review')) source_policy_urgent,
+                (c.evidence->>'researched_by'='vps_vendor_published_area_v2'
+                 and (c.last_verified_at is null or c.last_verified_at<now()-interval '6 days')
+                 and coalesce(j.status,'') not in ('running','needs_review')
+                 and (j.last_attempt_at is null or j.last_attempt_at<now()-interval '6 days')) native_refresh_urgent,
                 row_number() over(partition by c.market,c.side order by
                 case when c.candidate_id=any($2::uuid[]) then 0 else 1 end,
+                case when c.evidence->>'researched_by'='vps_vendor_published_area_v2'
+                  and (c.last_verified_at is null or c.last_verified_at<now()-interval '6 days') then 0 else 1 end,
                 case when c.evidence->'vps_verification'->'ownership_evidence'->>'classification'='owner_operated' then 0 else 1 end,c.official_site desc,
                 case when c.category_key in ('commercial_cleaning','pressure_washing','junk_hauling','tree_service','handyman_repairs') then 0 else 1 end,c.updated_at desc,c.candidate_id) pos
               from market_inventory_candidates c left join official_research_jobs j using(candidate_id) left join activity a on a.market=c.market
               where c.market=any($1::text[]) and c.status='discovered' and c.closed_at is null
                 and coalesce(c.evidence->>'researched_by','')<>'assistant_manual_census'
-                and (coalesce(c.evidence->>'researched_by','')<>'vps_primary_site_v1'
-                     or c.last_verified_at is null or c.last_verified_at<now()-interval '30 days'
+                and (coalesce(c.evidence->>'researched_by','') not in ('vps_primary_site_v1','vps_vendor_published_area_v2')
+                     or c.last_verified_at is null
+                     or (c.evidence->>'researched_by'='vps_primary_site_v1' and c.last_verified_at<now()-interval '30 days')
+                     or (c.evidence->>'researched_by'='vps_vendor_published_area_v2' and c.last_verified_at<now()-interval '6 days')
                      or c.candidate_id=any($2::uuid[]))
                 and (not(c.evidence ? 'qualification_hold') or c.evidence->'qualification_hold' in ('false'::jsonb,'null'::jsonb))
                 and (j.candidate_id is null or j.next_attempt_at<now()
                      or (c.candidate_id=any($2::uuid[]) and coalesce(j.source_policy_version,'')<>$3
-                         and coalesce(j.status,'') not in ('running','needs_review'))))
+                         and coalesce(j.status,'') not in ('running','needs_review'))
+                     or (c.evidence->>'researched_by'='vps_vendor_published_area_v2'
+                         and (c.last_verified_at is null or c.last_verified_at<now()-interval '6 days')
+                         and coalesce(j.status,'') not in ('running','needs_review')
+                         and (j.last_attempt_at is null or j.last_attempt_at<now()-interval '6 days'))))
               select * from ranked where (market='Phoenix' and pos<=2) or (market<>'Phoenix' and pos=1)
-              order by source_policy_urgent desc,case when market='Phoenix' then 0 else 1 end,touched nulls first,market,side limit 6""",list(markets),blocked_ids,source_policy_version)
+              order by source_policy_urgent desc,native_refresh_urgent desc,case when market='Phoenix' then 0 else 1 end,touched nulls first,market,side limit 6""",list(markets),blocked_ids,source_policy_version)
             for r in rows:
                 row=dict(r)
                 claim=await conn.fetchval("""insert into official_research_jobs(candidate_id,market,status,attempts,last_attempt_at,next_attempt_at,source_policy_version)
@@ -362,7 +449,12 @@ def install(app,require_admin,search,markets,secret,enabled=True):
                   where official_research_jobs.next_attempt_at<now()
                     or ($4::boolean and coalesce(official_research_jobs.source_policy_version,'')<>$3
                         and official_research_jobs.status not in ('running','needs_review'))
-                  returning candidate_id""",r['candidate_id'],r['market'],source_policy_version,bool(r['source_policy_urgent']))
+                    or ($5::boolean and official_research_jobs.status not in ('running','needs_review')
+                        and (official_research_jobs.last_attempt_at is null or official_research_jobs.last_attempt_at<now()-interval '6 days')
+                        and exists(select 1 from market_inventory_candidates refreshed
+                          where refreshed.candidate_id=$1 and refreshed.evidence->>'researched_by'='vps_vendor_published_area_v2'
+                          and (refreshed.last_verified_at is null or refreshed.last_verified_at<now()-interval '6 days')))
+                  returning candidate_id""",r['candidate_id'],r['market'],source_policy_version,bool(r['source_policy_urgent']),bool(r.get('native_refresh_urgent',False)))
                 if claim:claimed.append(row)
         semaphore=asyncio.Semaphore(2)
         async def inspect(row):
@@ -389,7 +481,10 @@ def install(app,require_admin,search,markets,secret,enabled=True):
                   where coalesce(market_inventory_candidates.evidence->>'researched_by','')<>'assistant_manual_census' returning candidate_id""",
                   row['side'],row['market'],row['category_key'],row['category_label'],result['business_name'],result['source_url'],result['source_domain'],result['snippet'],result['public_email'],result['public_phone'],json.dumps(result['evidence']))
                 status='verified' if native else 'existing_reviewed_record';verified+=1
-                await conn.execute("update official_research_jobs set status=$2,error_code=null,verified_candidate_id=$3,next_attempt_at=now()+interval '30 days' where candidate_id=$1",row['candidate_id'],status,native)
+                if result.get('verifier')=='vps_vendor_published_area_v2':
+                    await conn.execute("update official_research_jobs set status=$2,error_code=null,verified_candidate_id=$3,next_attempt_at=now()+interval '6 days' where candidate_id=$1",row['candidate_id'],status,native)
+                else:
+                    await conn.execute("update official_research_jobs set status=$2,error_code=null,verified_candidate_id=$3,next_attempt_at=now()+interval '30 days' where candidate_id=$1",row['candidate_id'],status,native)
             else:
                 held+=1
                 await conn.execute("update official_research_jobs set status='needs_review',error_code=$2,next_attempt_at=now()+interval '24 hours' where candidate_id=$1",row['candidate_id'],error[:120])
@@ -401,12 +496,12 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         require_admin(x_bmc_admin_key)
         async with app.state.pool.acquire() as conn:
             jobs=await conn.fetch('select market,status,count(*) records from official_research_jobs group by market,status order by market,status')
-            inventory_rows=await conn.fetch("select * from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null",VERSION)
+            inventory_rows=await conn.fetch("select * from market_inventory_candidates where evidence->>'researched_by'=any($1::text[]) and status='discovered' and closed_at is null",list(NATIVE_VERSIONS))
             rechecks=await conn.fetch("""select c.market,j.source_policy_version,j.status,count(*) records,
               max(j.last_attempt_at) last_attempt_at from official_research_jobs j
               join market_inventory_candidates c using(candidate_id)
-              where c.evidence->>'researched_by'=$1 and j.source_policy_version<>''
-              group by c.market,j.source_policy_version,j.status order by c.market,j.source_policy_version,j.status""",VERSION)
+              where c.evidence->>'researched_by'=any($1::text[]) and j.source_policy_version<>''
+              group by c.market,j.source_policy_version,j.status order by c.market,j.source_policy_version,j.status""",list(NATIVE_VERSIONS))
             from collections import Counter
             valid_counts=Counter((r['market'],r['side'],r['category_key']) for r in inventory_rows if auto_evidence_valid(dict(r),secret))
             inventory=[dict(market=k[0],side=k[1],category_key=k[2],records=n) for k,n in sorted(valid_counts.items())]

@@ -95,12 +95,22 @@ class PressureBlocks(HTMLParser):
 def source_focus(document,service_key=None):
     if service_key=='pressure_washing':
         parser=PressureBlocks();parser.feed(document);parser.flush()
+        from qualification_scope import PROPERTY_EXTERIOR_PATTERN
         categories=set();terms=[];excerpts=[]
         for heading,text in parser.blocks:
             context=heading+' '+text
-            if not re.search(r'\bcommercial\s+(?:soft|pressure)\s+washing\b',context):continue
             # Explicitly withdrawn service or excluded customer scope is held.
             if re.search(r"\b(?:no longer|exclude[ds]?|excluding|do not|does not|don['’]t|doesn['’]t|not (?:currently |presently )?(?:available|offered|providing|offering|for|serving)|unavailable|discontinued|withdrawn)\b|\bno commercial\b",context):continue
+            # Independent explicit paragraph evidence; never inherit page-wide headings.
+            property_match=re.search(PROPERTY_EXTERIOR_PATTERN,text)
+            fleet_match=re.search(r'\bfleet operators\b',text) or re.search(r'\bfleet washing services?\b',text)
+            fleet_explicit=bool(fleet_match and re.search(r'\bpressure washing\b',text) and
+                re.search(r'\b(?:fleet operators|fleet of [^.!?;]{0,70}\b(?:trucks|vans|vehicles))\b',text))
+            for match,key,term in ((property_match,'property_management','property management'),
+                                   (fleet_match if fleet_explicit else None,'auto_fleet','fleet')):
+                if match and key not in categories:
+                    categories.add(key);terms.append(term);excerpts.append(match.group())
+            if not re.search(r'\bcommercial\s+(?:soft|pressure)\s+washing\b',context):continue
             for pattern,key,term in (
                 (r'\bstorefronts?\b','retail','retail'),
                 (r'\boffices\b','insurance_professional','office'),
@@ -149,7 +159,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
     raw=await conn.fetchrow("""select candidate_id,side,market,category_key,category_label,
         business_name,source_url,public_email,public_phone,snippet,evidence
         from market_inventory_candidates where candidate_id=$1 and status='discovered'
-        and closed_at is null and evidence->>'researched_by'='vps_primary_site_v1'""",candidate)
+        and closed_at is null and evidence->>'researched_by' in ('vps_primary_site_v1','vps_vendor_published_area_v2')""",candidate)
     if not raw: raise ValueError('recipient_unavailable')
     row=dict(raw)
     if (str(row['candidate_id']) in frozen or row.get('side')!='vendor'
@@ -167,6 +177,29 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         or len(document.encode('utf-8'))>1_000_000):
         raise ValueError('source_changed')
     parsed=official_research.parse_record(row,final,document,digest,secret)
+    if not parsed['public_email']:
+        # A separately signed contact override never changes/reseals the primary
+        # email field. Re-fetch its exact same-host source and re-issue only the
+        # separate contact token against this fresh phone-only primary proof.
+        old_evidence=row.get('evidence') or {}
+        if isinstance(old_evidence,str):old_evidence=json.loads(old_evidence)
+        contact_token=old_evidence.get('contact_verification')
+        if not isinstance(contact_token,dict):raise ValueError('recipient_contact_or_identity_changed')
+        old_primary=old_evidence['vps_verification']
+        if any(official_research.compact(parsed.get(key))!=official_research.compact(old_primary.get(key))
+               for key in ('physical_address','public_phone','market','category_key','side')):
+            raise ValueError('recipient_contact_or_identity_changed')
+        contact_url=contact_token['contact_receipt']['final_url']
+        if not official_research.allowed_url(contact_url) or official_research.host(contact_url)!=official_research.host(final):
+            raise ValueError('recipient_contact_or_identity_changed')
+        contact_receipt=receipt if contact_url==receipt.final_url else await asyncio.wait_for(
+            asyncio.to_thread(official_research.fetch_page_receipt,contact_url),timeout=25)
+        from contact_enrichment import verify_contact_enrichment, create_contact_verification
+        trusted=lambda value:value is receipt or value is contact_receipt
+        fresh_base=dict(row,**parsed)
+        proposal=verify_contact_enrichment(fresh_base,receipt,contact_receipt,row['public_email'],secret,receipt_is_trusted=trusted)
+        token=create_contact_verification(fresh_base,proposal,secret,receipt_is_trusted=trusted)
+        parsed=dict(parsed,public_email=row['public_email'],evidence=dict(parsed['evidence'],contact_verification=token))
     if (parsed['public_email'].lower()!=row['public_email'].lower()
         or not same_held_recipient_identity(row['business_name'],parsed['business_name'])):
         raise ValueError('recipient_contact_or_identity_changed')
