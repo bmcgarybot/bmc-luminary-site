@@ -1,0 +1,21 @@
+{
+  "action": "growth_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T22:12:17.717295+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "85701057386e1bd9c5783614e799248b3126fde8",
+  "git_commit_before": "85701057386e1bd9c5783614e799248b3126fde8",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "74ab979f3d1a7c69d49cf029cf0476ffc6739a38",
+  "request_id": "rw11-20261104T221016Z-06-growth_status",
+  "request_sha256": "a73433e24e8707bca128e912a8b34def614ac5ec5d8ec7a8b1c980453f745a9c",
+  "started_at": "2026-11-04T22:12:17.703354+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"owner_launch_hold_active\": false,\n  \"outreach_switches\": {\n    \"OUTREACH_ENABLED\": false,\n    \"BUYER_OUTREACH_ENABLED\": false,\n    \"GROWTH_OUTREACH_ENABLED\": true\n  },\n  \"growth_enabled\": true,\n  \"wave\": \"growth-cleaning-1\",\n  \"recipient_scope_count\": 9,\n  \"scoped_cohort\": {\n    \"configured_count\": 9,\n    \"target_statuses\": [\n      {\n        \"status\": \"contacted\",\n        \"records\": 8\n      },\n      {\n        \"status\": \"sample_requested\",\n        \"records\": 1\n      }\n    ],\n    \"outreach_statuses\": [\n      {\n        \"wave\": \"growth-cleaning-1\",\n        \"status\": \"sample_requested\",\n        \"owner_review_required\": false,\n        \"opt_out\": false,\n        \"records\": 1\n      },\n      {\n        \"wave\": \"growth-cleaning-1\",\n        \"status\": \"sent\",\n        \"owner_review_required\": false,\n        \"opt_out\": false,\n        \"records\": 8\n      }\n    ]\n  },\n  \"daily_limit\": 25,\n  \"sample_reserve\": 125,\n  \"historical_contacts_awaiting_review\": 7,\n  \"config\": {\n    \"smtp\": true,\n    \"imap\": true,\n    \"postal\": true,\n    \"payment_link\": true\n  },\n  \"config_ready\": true,\n  \"staged_active\": 14,\n  \"sent\": 19,\n  \"replies\": 0,\n  \"samples_requested\": 2,\n  \"samples_delivered\": 2,\n  \"converted_samples\": 0,\n  \"paid_orders\": 0,\n  \"revenue_cents\": 0,\n  \"open_growth_exceptions\": 0\n}",
+  "version": 1
+}
