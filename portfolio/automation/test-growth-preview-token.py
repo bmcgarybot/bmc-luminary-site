@@ -7,6 +7,8 @@ import hmac
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
+import sys
+sys.path.insert(0,str(Path(__file__).parent/"api"))
 
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 class HTTPError(Exception):

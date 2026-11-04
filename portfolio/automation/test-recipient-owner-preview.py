@@ -5,6 +5,8 @@ import uuid
 import base64
 from pathlib import Path
 import unittest
+import sys
+sys.path.insert(0,str(Path(__file__).parent/"api"))
 
 class HTTPError(Exception):
     def __init__(self,status,detail):self.status_code=status

@@ -105,6 +105,7 @@ jobs:
           python3 portfolio/automation/test-research-policy.py
           python3 portfolio/automation/test-census-research-api.py
           python3 portfolio/automation/test-census-research-relay.py
+          python3 portfolio/automation/test-qualification-scope.py
           python3 portfolio/automation/test-scoped-growth.py
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py

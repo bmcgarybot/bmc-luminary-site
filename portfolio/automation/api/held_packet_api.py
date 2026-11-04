@@ -132,6 +132,19 @@ HISTORY_SQL="""select exists(select 1 from outreach_suppressions where lower(ema
  and g.target_id::text=any($2::text[]))"""
 
 
+def same_held_recipient_identity(original,current):
+    """Exact legal-name tokens, never subset matching or supplier-word removal."""
+    def tokens(value):
+        words=re.findall(r'[a-z0-9]+',str(value).casefold().replace('&',' and '))
+        while words:
+            if words[-1] in {'llc','inc','incorporated','corp','corporation'}:words.pop()
+            elif len(words)>=3 and words[-3:]==['l','l','c']:del words[-3:]
+            else:break
+        return words
+    left,right=tokens(original),tokens(current)
+    return bool(left and left==right)
+
+
 async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callbacks,pack_count=100):
     raw=await conn.fetchrow("""select candidate_id,side,market,category_key,category_label,
         business_name,source_url,public_email,public_phone,snippet,evidence
@@ -146,26 +159,37 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         raise ValueError('recipient_gate_failed')
     history=await conn.fetchval(HISTORY_SQL,row['public_email'],list(frozen))
     if history is not False: raise ValueError('recipient_history_or_suppression')
-    final,document,digest=await asyncio.wait_for(
-        asyncio.to_thread(official_research.fetch_page,row['source_url']),timeout=25)
+    receipt=await asyncio.wait_for(
+        asyncio.to_thread(official_research.fetch_page_receipt,row['source_url']),timeout=25)
+    final,document,digest=receipt.final_url,receipt.document,receipt.content_sha256
+    if receipt.requested_url!=row['source_url'] or receipt.http_status!=200:raise ValueError('source_changed')
     if (final!=row['source_url'] or official_research.host(final)!=official_research.host(row['source_url'])
         or len(document.encode('utf-8'))>1_000_000):
         raise ValueError('source_changed')
     parsed=official_research.parse_record(row,final,document,digest,secret)
     if (parsed['public_email'].lower()!=row['public_email'].lower()
-        or not official_research.identity_matches(row['business_name'],parsed['business_name'],row['market'])):
+        or not same_held_recipient_identity(row['business_name'],parsed['business_name'])):
         raise ValueError('recipient_contact_or_identity_changed')
     fresh=dict(row,**parsed)
     if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
     scope=dict(source_focus(document,fresh['category_key']),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
                source_signature=parsed['evidence']['vps_verification']['signature'])
+    from qualification_scope import from_fresh
+    qualification_scope=from_fresh(fresh,scope,receipt,secret)
+    diagnostics=[]
     allowed=set(scope['category_keys'])
     async def qualify(*args,**kwargs):
+        if qualification_scope is not None:kwargs=dict(kwargs,_qualification_scope=qualification_scope,_qualification_diagnostics=diagnostics)
         values=await callbacks['qualify'](*args,**kwargs)
         return [value for value in values if value.get('category_key') in allowed]
     async def verified(*args): return True
-    packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,pack_count=pack_count,
-        **dict(callbacks,qualify=qualify))
+    try:
+        packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,pack_count=pack_count,
+            **dict(callbacks,qualify=qualify))
+    except ValueError as exc:
+        exc.qualification_diagnostics=diagnostics
+        raise
+    packet['qualification_diagnostics']=diagnostics
     if not hold_required(): raise ValueError('owner_hold_changed')
     return dict(packet,recipient=fresh)
 
@@ -214,7 +238,8 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                 elif reason not in known and not re.fullmatch(r'http_[0-9]{3}',reason):reason='preparation_gate_failed'
                 return seal_export(dict(status='held_packet_requires_review',offer_ready=False,
                     outreach_held=True,candidate_id=str(candidate),pack_count=pack_count,gate_reason=reason,
-                    customer_order_created=False,customer_delivery_recorded=False),request_id)
+                    customer_order_created=False,customer_delivery_recorded=False,
+                    qualification_diagnostics=getattr(exc,'qualification_diagnostics',[])),request_id)
             # No contacts, HTML, SQL or compiled rows in error responses.
             raise HTTPException(409,'held_packet_requires_review')
     return prepare
