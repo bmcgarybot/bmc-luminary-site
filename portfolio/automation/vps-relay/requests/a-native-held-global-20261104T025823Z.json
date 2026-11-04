@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-native-held-global-20261104T025823Z",
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T02:58:23.828Z",
+  "expires_at": "2026-11-04T03:58:23.828Z",
+  "args": {
+    "candidate_id": "d69b13cb-ec90-4b5e-832f-f78c8e8efa31",
+    "pack_count": 100
+  }
+}
