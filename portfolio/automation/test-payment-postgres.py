@@ -174,6 +174,20 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await self.scalar('select status from growth_purchase_offers'),'paid')
         self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),14900)
         self.assertEqual(await self.scalar('select status from orders'),'ready_for_fulfillment')
+    async def test_sample_engagement_is_not_an_inbound_email_reply(self):
+        from ops_metrics import business_metrics
+        async with self.pool.acquire() as conn:
+            await conn.execute("""insert into outreach(entity_type,entity_id,campaign,wave,status,replied_at,reply_type)
+              values('growth_customer','sample-only','growth_sales','growth-cleaning-1','sample_requested',now(),'sample_requested')""")
+            metrics=await business_metrics(conn)
+            self.assertEqual(metrics['outreach']['replies'],0)
+            self.assertEqual(metrics['outreach']['sample_engagements'],1)
+            await conn.execute("""insert into events(entity_type,entity_id,event_type,payload)
+              values('growth_customer','sample-only','outreach_reply','{"classification":"positive"}'::jsonb)""")
+            metrics=await business_metrics(conn)
+            self.assertEqual(metrics['outreach']['replies'],1)
+            self.assertEqual(metrics['outreach']['sample_engagements'],1)
+
     async def test_offer_invitations_exclude_outside_cohort_and_changed_recipient(self):
         obj,oid=await self.seed_bound_offer()
         async with self.pool.acquire() as conn:

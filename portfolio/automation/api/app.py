@@ -3918,8 +3918,10 @@ async def growth_runtime_status(conn):
       and campaign='growth_sales' and sent_at is not null""")
     review_required=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
       and campaign='growth_sales' and owner_review_required=true""")
-    replies=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
-      and campaign='growth_sales' and replied_at is not null""")
+    # Sample requests set engagement timestamps too; email replies come only
+    # from the actual inbound-reply journal, not the sample funnel state.
+    replies=await conn.fetchval("""select count(distinct entity_id) from events
+      where entity_type='growth_customer' and event_type='outreach_reply'""")
     samples=await conn.fetchval("select count(*) from growth_sample_requests")
     delivered=await conn.fetchval("select count(*) from growth_sample_requests where status in ('delivered','converted','fulfilled')")
     converted=await conn.fetchval("select count(*) from growth_sample_requests where converted_at is not null")
