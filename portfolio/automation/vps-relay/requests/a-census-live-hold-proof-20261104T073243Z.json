@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-census-live-hold-proof-20261104T073243Z",
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T07:32:43.695107+00:00",
+  "expires_at": "2026-11-04T08:32:43.695107+00:00",
+  "args": {}
+}
