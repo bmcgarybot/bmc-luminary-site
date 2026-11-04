@@ -1334,3 +1334,34 @@ create table if not exists local_channel_observations (
   last_seen_at timestamptz not null default now(),
   unique(source_key,market,source_url)
 );
+
+-- Bounded public-channel execution state. Historical raw/demand counters remain intact.
+alter table local_demand_scan_state add column if not exists query_variant integer not null default 0;
+alter table local_demand_scan_state add column if not exists attempted_policy_version text not null default '';
+alter table local_demand_scan_state add column if not exists successful_policy_version text not null default '';
+alter table local_demand_scan_state add column if not exists last_success_at timestamptz;
+alter table local_demand_scan_state add column if not exists next_eligible_at timestamptz not null default 'epoch';
+alter table local_demand_scan_state add column if not exists failure_streak integer not null default 0;
+alter table local_demand_scan_state add column if not exists total_failures integer not null default 0;
+alter table local_demand_scan_state add column if not exists last_progress_at timestamptz;
+alter table local_demand_scan_state add column if not exists no_progress_batches integer not null default 0;
+alter table local_demand_scan_state add column if not exists state_adapter_version text not null default '';
+-- Only an explicitly completed, policy-labelled legacy search establishes success.
+-- Failed/unknown historical attempts stay unknown; do not manufacture progress.
+update local_demand_scan_state set
+ attempted_policy_version=case when coalesce(research_policy_version,'')<>'' and scans>0 and last_run_at is not null and last_error is null then research_policy_version else '' end,
+ successful_policy_version=case when coalesce(research_policy_version,'')<>'' and scans>0 and last_run_at is not null and last_error is null then research_policy_version else '' end,
+ last_success_at=case when coalesce(research_policy_version,'')<>'' and scans>0 and last_run_at is not null and last_error is null then last_run_at else null end,
+ state_adapter_version='channel-state-v1'
+ where state_adapter_version='';
+-- Newly configured lanes start clean without needing another bootstrap.
+alter table local_demand_scan_state alter column state_adapter_version set default 'channel-state-v1';
+create table if not exists channel_worker_metadata (
+ worker_key text primary key,
+ source_cursor integer not null default 0 check(source_cursor>=0),
+ source_phases jsonb not null default '{}'::jsonb,
+ last_attempt_at timestamptz,
+ last_completed_at timestamptz,
+ last_outcome jsonb not null default '{}'::jsonb
+);
+insert into channel_worker_metadata(worker_key) values('local_channels') on conflict do nothing;

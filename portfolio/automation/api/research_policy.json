@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-03-small-contractors-v1",
+  "version": "2026-11-03-small-contractors-v2",
   "scope": "All configured territories, including previously scanned territories",
   "priority": "Smaller and owner-operated contractors, where supported by evidence",
   "ownership_rule": "Local ownership, a small website or an LLC name do not establish owner operation or employee count",

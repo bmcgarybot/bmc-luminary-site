@@ -1,5 +1,6 @@
 """Bounded primary-site research. Publishes evidence, never outreach or provider acceptance."""
 import asyncio, hashlib, hmac, html, http.client, ipaddress, json, re, socket, ssl
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, urlunsplit, urljoin
@@ -72,7 +73,7 @@ VENDOR_TERMS.update({
  'facility_maintenance':('facility maintenance','facilities maintenance','building maintenance'),
  'home_staging':('home staging','property staging'),
  'realtor_listing_prep':('listing preparation','listing prep','real estate staging')})
-BLOCKED={'yahoo.com','powerwashmaps.com','homeadvisor.com','fandango.com','rehab.com','landscapeatlas.com','industrialspaces.net','corkd.com','whereorg.com','homversa.com','yelp.com','facebook.com','linkedin.com','loc8nearme.com','angi.com','thumbtack.com','bbb.org','yellowpages.com','mapquest.com','tripadvisor.com','booking.com','hotels.com','expedia.com','google.com','bing.com','nextdoor.com'}
+BLOCKED={'hotelscombined.com','solvhealth.com','sobernation.com','yahoo.com','powerwashmaps.com','homeadvisor.com','fandango.com','rehab.com','landscapeatlas.com','industrialspaces.net','corkd.com','whereorg.com','homversa.com','yelp.com','facebook.com','linkedin.com','loc8nearme.com','angi.com','thumbtack.com','bbb.org','yellowpages.com','mapquest.com','tripadvisor.com','booking.com','hotels.com','expedia.com','google.com','bing.com','nextdoor.com'}
 
 def compact(s):return re.sub('[^a-z0-9]','',str(s).lower())
 def place(s):return re.sub(r'[-\s]+',' ',str(s or '').strip()).casefold()
@@ -97,7 +98,37 @@ class PinnedHTTPS(http.client.HTTPSConnection):
         sock=socket.create_connection((self.address,443),self.timeout)
         self.sock=self._context.wrap_socket(sock,server_hostname=self.host)
 
-def fetch_page(url):
+@dataclass(frozen=True, slots=True)
+class FetchedPageReceipt:
+    """Transport facts only, not business ownership or vendor qualification.
+
+    Created after a successful bounded pinned HTTPS response. Bytes and redirect
+    chain are immutable; fetched_at is transport completion, never parser time.
+    A caller-created receipt is not authenticated provenance by itself.
+    """
+    requested_url: str
+    final_url: str
+    raw_bytes: bytes
+    content_sha256: str
+    fetched_at: str
+    http_status: int
+    content_type: str
+    redirect_chain: tuple[str, ...]
+
+    @property
+    def document(self):
+        return self.raw_bytes.decode('utf-8', 'replace')
+
+
+def fetch_page_receipt(url):
+    """Fetch once (up to four HTTPS hops); return immutable successful facts.
+
+    Uses existing ten-second transport timeouts, public DNS pinning, URL policy
+    and one-megabyte bound at every hop. Failure never returns a partial receipt.
+    This does not establish an independent candidate-to-official-domain binding.
+    """
+    requested_url=url
+    redirects=[]
     for _ in range(4):
         if not allowed_url(url):raise ValueError('unsupported_source_url')
         p=urlsplit(url);addresses=public_addresses(p.hostname)
@@ -105,14 +136,26 @@ def fetch_page(url):
         try:
             conn.request('GET',urlunsplit(('', '',p.path or '/',p.query,'')),headers={'User-Agent':'BMC-Service-Network-Research/1.0 (+https://bmcservicenetwork.com)','Accept':'text/html,application/xhtml+xml','Accept-Encoding':'identity'})
             response=conn.getresponse()
-            if response.status in (301,302,303,307,308):url=urljoin(url,response.getheader('Location',''));continue
+            if response.status in (301,302,303,307,308):
+                location=response.getheader('Location','')
+                if not location:raise ValueError('redirect_without_location')
+                url=urljoin(url,location);redirects.append(url);continue
             if response.status!=200:raise ValueError('http_'+str(response.status))
-            if not any(x in response.getheader('Content-Type','').lower() for x in ('text/html','application/xhtml+xml')):raise ValueError('not_html')
+            content_type=response.getheader('Content-Type','')
+            if content_type.split(';',1)[0].strip().lower() not in ('text/html','application/xhtml+xml'):raise ValueError('not_html')
             raw=response.read(1_000_001)
             if len(raw)>1_000_000:raise ValueError('page_too_large')
-            return url,raw.decode('utf-8','replace'),hashlib.sha256(raw).hexdigest()
+            return FetchedPageReceipt(requested_url=requested_url,final_url=url,raw_bytes=raw,
+                content_sha256=hashlib.sha256(raw).hexdigest(),fetched_at=datetime.now(timezone.utc).isoformat(),
+                http_status=200,content_type=content_type,redirect_chain=tuple(redirects))
         finally:conn.close()
     raise ValueError('redirect_limit')
+
+
+def fetch_page(url):
+    """Backward-compatible three-tuple interface; never performs a second fetch."""
+    receipt=fetch_page_receipt(url)
+    return receipt.final_url,receipt.document,receipt.content_sha256
 
 class Page(HTMLParser):
     def __init__(self):super().__init__();self.ld=[];self.active=False;self.buffer=[];self.title=False;self.title_text=[];self.links=[]

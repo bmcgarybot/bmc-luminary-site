@@ -80,14 +80,25 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(ns['classify_local_signal_service']('We offer pressure washing'))
     async def test_actual_worker_separates_ads_requests_closures_and_people_with_bounded_search(self):
         ns=self.namespace();calls=[];active=0;max_active=0
-        lanes=[dict(source_key=s['key'],source_name=s['name'],source_domain=s['domain'],market='Prescott',group_key='cleaning_property',group_label='Cleaning',next_page=1,scans=1,results_seen=0,signals_found=0,no_progress_scans=0) for s in POLICY['channels']]
+        from datetime import datetime,timedelta,timezone
+        now=datetime.now(timezone.utc)
+        lanes=[dict(source_key=s['key'],source_name=s['name'],source_domain=s['domain'],market='Prescott',group_key='cleaning_property',group_label='Cleaning',
+            state_adapter_version='channel-state-v1',created_at=now-timedelta(hours=1),next_page=1,query_variant=0,
+            attempted_policy_version='',successful_policy_version='',last_run_at=None,last_success_at=None,
+            next_eligible_at=now-timedelta(minutes=1),failure_streak=0,total_failures=0,last_progress_at=None,no_progress_batches=0,last_error=None,
+            scans=1,results_seen=0,signals_found=0,no_progress_scans=0) for s in POLICY['channels']]
         class Conn:
             async def __aenter__(self):return self
             async def __aexit__(self,*args):pass
+            def transaction(self):return self
             async def fetch(self,*args):return lanes
-            async def fetchrow(self,*args):return None
+            async def fetchrow(self,query,*args):
+                if 'channel_worker_metadata' in query:return dict(source_cursor=0,source_phases={})
+                return None
             async def fetchval(self,query,*args):
-                calls.append((query,args));return 'new-signal' if query.lstrip().startswith('insert') else 0
+                calls.append((query,args))
+                if 'pg_try_advisory_lock' in query or 'pg_advisory_unlock' in query:return True
+                return 'new-signal' if query.lstrip().startswith('insert') else 0
             async def execute(self,query,*args):calls.append((query,args));return 'OK'
         class Pool:
             def acquire(self):return Conn()
@@ -114,7 +125,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         for args in demand:self.assertNotIn('source_page_verified',json.loads(args[-1]))
         for query,args in calls:
             self.assertNotIn('insert into orders',query.lower());self.assertNotIn('update outreach ',query.lower())
-        updates=[args for query,args in calls if 'research_policy_version=$7' in query]
-        self.assertEqual(len(updates),4);self.assertTrue(all(x[-1]==POLICY['version'] for x in updates))
+        updates=[args for query,args in calls if 'research_policy_version=case' in query]
+        self.assertEqual(len(updates),4);self.assertTrue(all(x[15]==POLICY['version'] and x[19] is True for x in updates))
 
 if __name__=='__main__':unittest.main()
