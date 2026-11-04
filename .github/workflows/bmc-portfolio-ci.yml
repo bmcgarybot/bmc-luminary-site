@@ -74,6 +74,7 @@ jobs:
           python3 portfolio/automation/test-operator-dashboard.py
           python3 portfolio/automation/test-warm-leads.py
           python3 portfolio/automation/test-growth-territory.py
+          python3 portfolio/automation/test-nonexclusive-cohort.py
           python3 portfolio/automation/test-campaign-owner-hold.py
           python3 portfolio/automation/test-growth-qualification-gates.py
           python3 portfolio/automation/test-checkout-idempotency.py

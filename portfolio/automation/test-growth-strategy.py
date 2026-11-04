@@ -34,4 +34,13 @@ class Tests(unittest.TestCase):
   links=[a.get_object()['/A']['/URI'] for p in pdf.pages for a in p.get('/Annots',[]) if '/A' in a.get_object()]
   for i in range(3):self.assertIn(f'https://competitor{i}.example/',links)
   self.assertIn('mailto:contact@bmcservicenetwork.com',links)
+ def test_competitor_titles_stay_with_their_source_cards(self):
+  for repeat in (2,5,10,15):
+   d=self.draft()
+   for competitor in d['strategy']['competitors']:competitor['observed_offer']='Published commercial office cleaning. '*repeat
+   pdf=PdfReader(io.BytesIO(strategy_pdf(d,'fixture-title-flow',preview=True)))
+   for page in pdf.pages:
+    text=page.extract_text();urls=[a.get_object()['/A']['/URI'] for a in page.get('/Annots',[]) if '/A' in a.get_object()]
+    for competitor in d['strategy']['competitors']:
+     if competitor['name'] in text:self.assertIn(competitor['source_url'],urls)
 if __name__=='__main__':unittest.main()

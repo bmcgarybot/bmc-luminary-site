@@ -6,6 +6,7 @@ from ops_metrics import business_metrics
 from pathlib import Path
 GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
 GROWTH_REVIEW_PROSPECTS=__import__("json").loads(Path(__file__).with_name("growth_review_prospects.json").read_text())
+GROWTH_NONEXCLUSIVE_COHORT_IDS=tuple(__import__("json").loads(Path(__file__).with_name("growth_phoenix_cohort.json").read_text())["target_ids"])
 import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -2900,6 +2901,13 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
         for k in {clean(r["prospect_key"]),clean(r["contact_key"])}:
             if k:
                 by_key.setdefault(k,[]).append(r)
+    cohort_emails=set()
+    cohort_ids=tuple(globals().get("GROWTH_NONEXCLUSIVE_COHORT_IDS",()))
+    if recipient_key and recipient_business_key and len(cohort_ids)==9 and {clean(r.get("market")) for r in rows}=={"Phoenix"}:
+        cohort=await conn.fetch("""select lower(public_email) as email from growth_outreach_targets
+          where target_id=any($1::text[]) and market='Phoenix' and service_key='commercial_cleaning'""",list(cohort_ids))
+        addresses={clean(x["email"]).lower() for x in cohort}
+        if len(addresses)==9 and clean(recipient_key).lower() in addresses:cohort_emails=addresses
     now=datetime.now(timezone.utc)
     result=[]
     recipient_key=clean(recipient_key).lower()
@@ -2922,9 +2930,15 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
         last90={clean(e["recipient_key"]).lower() for e in entries if (now-e["created_at"]).days<90}
         free90={clean(e["recipient_key"]).lower() for e in entries
           if e["delivery_kind"]=="free" and (now-e["created_at"]).days<90}
-        latest=max((e["created_at"] for e in entries),default=None)
+        # The reviewed nine buy nonexclusive research. Other members of that
+        # exact cohort do not consume one another's reuse/cooldown budget.
+        # Own-customer duplicates, suppressions and the free-sample limit remain.
+        budget=[e for e in entries if clean(e["recipient_key"]).lower() not in cohort_emails]
+        budget_lifetime=len({clean(e["recipient_key"]).lower() for e in budget})
+        budget90={clean(e["recipient_key"]).lower() for e in budget if (now-e["created_at"]).days<90}
+        latest=max((e["created_at"] for e in budget),default=None)
         cooldown=GROWTH_FREE_COOLDOWN_DAYS if delivery_kind=="free" else GROWTH_PAID_COOLDOWN_DAYS
-        if lifetime>=GROWTH_ALL_DISTINCT_LIFETIME or len(last90)>=GROWTH_ALL_DISTINCT_90D:
+        if budget_lifetime>=GROWTH_ALL_DISTINCT_LIFETIME or len(budget90)>=GROWTH_ALL_DISTINCT_90D:
             continue
         if delivery_kind=="free" and len(free90)>=GROWTH_FREE_DISTINCT_90D:
             continue
@@ -3438,8 +3452,9 @@ async def handle_growth_snapshot(conn,p):
         await conn.execute("""update outreach set status='sample_requested',replied_at=coalesce(replied_at,now()),reply_type='sample_requested'
           where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales'""",target_id)
 
+    reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v2'",target_id) if target_id else None
     rows=await growth_qualified_territory_candidates(conn,service_key,territory,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
-      limit=GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
+      limit=1000 if reviewed else GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
       recipient_business_key=growth_recipient_business_key(business))
     if len(rows)<5:
         await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
@@ -3453,7 +3468,6 @@ async def handle_growth_snapshot(conn,p):
           "qualified_pool":len(rows),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
-    reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v2'",target_id) if target_id else None
     if reviewed:
         by_id={str(x["candidate_id"]):x for x in rows}
         if not all(str(x) in by_id for x in reviewed["candidate_ids"]):
