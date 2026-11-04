@@ -36,7 +36,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             async def fetch(self,sql,*args):
                 outer.calls.append((sql,args))
                 if sql==c.MEMBERS_SQL:return [{'entity_id':x} for x in outer.batch]
-                if sql==c.RELATED_SQL:return copy.deepcopy(outer.rows)
+                if sql in (c.RELATED_SQL,c.RELATED_SQL.replace(' for update of o','')):return copy.deepcopy(outer.rows)
                 if 'encode(digest' in sql:
                     key=hashlib.sha256(outer.target['target_id'].encode()).hexdigest()
                     return [{'target_id':outer.target['target_id']}] if key in args[0] else []
@@ -129,6 +129,14 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         result=await c.approved_reentry(self.conn,self.recipient(),SECRET)
         self.assertTrue(result['preparation_only'])
         self.assertEqual(self.rows,before)
+
+    async def test_read_only_preview_never_uses_locks_or_consumes(self):
+        self.setup();await self.authorize();self.calls=[]
+        result=await c.approved_reentry(self.conn,self.recipient(),SECRET,read_only=True)
+        self.assertTrue(result['preparation_only'])
+        self.assertFalse(any('for update' in call[0].lower() or 'pg_advisory' in call[0].lower() or call[0].startswith(('update ','insert ')) for call in self.calls))
+        with self.assertRaises(c.ReentryHeld):
+            await c.approved_reentry(self.conn,self.recipient(),SECRET,consume=uuid.uuid4(),read_only=True)
 
     async def test_tampering_expiry_and_base_oldproof_change(self):
         for mode in ('tamper','expired','oldproof'):

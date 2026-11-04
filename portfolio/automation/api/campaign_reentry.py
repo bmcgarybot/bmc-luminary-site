@@ -84,7 +84,7 @@ async def members(conn):
     if len(ids)!=7:raise ReentryHeld('exact_initial_seven_membership_unproven')
     return ids
 
-async def locked_target(conn,recipient):
+async def locked_target(conn,recipient,*,read_only=False):
     email=str(recipient.get('public_email') or recipient.get('email') or '').strip().lower()
     target_id=recipient.get('target_id')
     if not email:
@@ -100,19 +100,20 @@ async def locked_target(conn,recipient):
         if len(candidates)!=1 or not recipient_matches(dict(candidates[0]),recipient):raise ReentryHeld('exact_historical_recipient_unproven')
         target_id=str(candidates[0]['target_id']);email=str(candidates[0]['public_email'] or '').strip().lower()
         if not email:raise ReentryHeld('exact_historical_recipient_unproven')
-    await conn.fetchval('select pg_advisory_xact_lock(hashtextextended($1,0))','historical_reentry_email:'+email)
+    if not read_only:
+        await conn.fetchval('select pg_advisory_xact_lock(hashtextextended($1,0))','historical_reentry_email:'+email)
     rows=await conn.fetch("""select * from growth_outreach_targets where lower(public_email)=lower($1)
-      and ($2::text is null or target_id=$2) order by target_id limit 2 for update""",email,str(target_id) if target_id else None)
+      and ($2::text is null or target_id=$2) order by target_id limit 2"""+('' if read_only else ' for update'),email,str(target_id) if target_id else None)
     if len(rows)!=1:raise ReentryHeld('exact_historical_recipient_unproven')
     target=dict(rows[0])
     if not recipient_matches(target,recipient):raise ReentryHeld('reentry_recipient_changed')
     if target.get('status') in ('suppressed','bad_fit','replied','sample_requested','converted'):raise ReentryHeld('recipient_engagement_or_hold')
     return target
 
-async def live_state(conn,target,batch,allowed_new=None):
+async def live_state(conn,target,batch,allowed_new=None,*,read_only=False):
     tid=str(target['target_id']);email=target['public_email'].strip().lower()
     if tid not in batch:raise ReentryHeld('not_initial_historical_batch')
-    rows=[dict(r) for r in await conn.fetch(RELATED_SQL,tid,email)]
+    rows=[dict(r) for r in await conn.fetch(RELATED_SQL.replace(' for update of o','') if read_only else RELATED_SQL,tid,email)]
     old=[];new=[]
     for row in rows:
         oid=str(row['outreach_id'])
@@ -155,14 +156,15 @@ def token_valid(target,secret):
     if not issued<=now<expires or expires-issued!=TTL:raise ReentryHeld('reentry_expired_or_future')
     return token
 
-async def approved_reentry(conn,recipient,secret,consume=False):
+async def approved_reentry(conn,recipient,secret,consume=False,*,read_only=False):
     """Live preparation check. consume may be a NEW outreach UUID, never True."""
     if consume is not False:
+        if read_only:raise ReentryHeld('read_only_reentry_cannot_consume')
         if isinstance(consume,bool):raise ReentryHeld('new_outreach_uuid_required')
         return await consume_reentry(conn,recipient,secret,consume)
-    target=await locked_target(conn,recipient);token=token_valid(target,secret)
+    target=await locked_target(conn,recipient,read_only=read_only);token=token_valid(target,secret)
     if token['consumed_outreach_id'] is not None:raise ReentryHeld('reentry_already_consumed')
-    state=await live_state(conn,target,await members(conn))
+    state=await live_state(conn,target,await members(conn),read_only=read_only)
     if any(token[k]!=state[k] for k in state):raise ReentryHeld('historical_proof_changed')
     return {'target':target,'token':token,'expected_email':token['email'],'require_fresh_email_match':True,'preparation_only':True,'outreach_sent':0}
 
