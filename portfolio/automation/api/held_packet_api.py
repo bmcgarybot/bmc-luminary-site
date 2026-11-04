@@ -34,7 +34,82 @@ SECTORS=(
 )
 
 
-def source_focus(document):
+class PressureBlocks(HTMLParser):
+    """A visible service heading's next sibling paragraph or self-contained li supplies scope.
+
+    Heading context never crosses a container boundary or preceding paragraph/list.
+    This intentionally holds more complex service layouts for manual review.
+    """
+    CONTAINERS={'div','section','article','main','footer','header','aside','nav','li'}
+    VOID={'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
+    def __init__(self):
+        super().__init__();self.stack=[];self.context=None;self.blocks=[];self.exclusion_pending=False
+    def owner(self):
+        return next((node for node in reversed(self.stack) if node['tag'] in self.CONTAINERS),None)
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs);style=re.sub(r'\s+','',attrs.get('style') or '').lower()
+        hidden=(bool(self.stack and self.stack[-1]['hidden']) or tag in ('script','style','noscript','template')
+            or 'hidden' in attrs or 'inert' in attrs or str(attrs.get('aria-hidden','')).lower()=='true'
+            or bool(re.search(r'(?:^|;)(?:display:none|visibility:(?:hidden|collapse)|content-visibility:hidden|opacity:0)(?:!important)?(?:;|$)',style)))
+        if tag in self.CONTAINERS or re.fullmatch(r'h[1-6]',tag) or tag in ('ul','ol','table'):
+            self.context=None
+        excluded=bool(self.stack and self.stack[-1].get('excluded')) or self.exclusion_pending
+        node={'tag':tag,'hidden':hidden,'parts':[],'owner':self.owner(),'excluded':excluded}
+        if tag in ('ul','ol'):self.exclusion_pending=False
+        if re.fullmatch(r'h[1-6]',tag):self.exclusion_pending=False
+        if tag=='p':
+            context=self.context;self.context=None  # Even a negative/hidden first paragraph consumes it.
+            node['context']=context[0] if context and context[1] is node['owner'] else ''
+        if tag not in self.VOID:self.stack.append(node)
+        elif tag=='br':self.handle_data(' ')
+    def handle_endtag(self,tag):
+        index=next((i for i in range(len(self.stack)-1,-1,-1) if self.stack[i]['tag']==tag),None)
+        if index is None:return
+        node=self.stack[index]
+        text=' '.join(' '.join(node['parts']).split()).lower()
+        if re.fullmatch(r'h[1-6]',tag):
+            self.context=(text,node['owner']) if not node['hidden'] and not node['excluded'] else None
+        elif tag=='p' and not node['hidden'] and not node['excluded']:
+            if re.search(r"\b(?:exclude[ds]?|excluding|do not serve|does not serve|don['’]t serve|not serving|not offered|not available|no longer)\b",text):
+                self.exclusion_pending=True
+            if not any(n['tag'] in ('footer','nav','aside','header') for n in self.stack[:index]):
+                self.blocks.append((node.get('context',''),text))
+        elif tag=='li':
+            # Self-contained service-list text only; no inherited heading proof.
+            if not node['hidden'] and not node['excluded'] and not any(n['tag'] in ('footer','nav','aside','header') for n in self.stack[:index]):
+                self.blocks.append(('',text))
+            self.context=None
+        elif tag in self.CONTAINERS or tag in ('ul','ol','table'):
+            self.context=None
+            if tag not in ('ul','ol'):self.exclusion_pending=False
+        del self.stack[index:]
+    def handle_data(self,data):
+        if self.stack and not self.stack[-1]['hidden']:
+            target=next((node for node in reversed(self.stack) if node['tag'] in ('p','li') or re.fullmatch(r'h[1-6]',node['tag'])),None)
+            if target is not None:target['parts'].append(data)
+    def flush(self):
+        # Incomplete/unclosed paragraphs are unsupported rather than guessed.
+        pass
+
+
+def source_focus(document,service_key=None):
+    if service_key=='pressure_washing':
+        parser=PressureBlocks();parser.feed(document);parser.flush()
+        categories=set();terms=[];excerpts=[]
+        for heading,text in parser.blocks:
+            context=heading+' '+text
+            if not re.search(r'\bcommercial\s+(?:soft|pressure)\s+washing\b',context):continue
+            # Explicitly withdrawn service or excluded customer scope is held.
+            if re.search(r"\b(?:no longer|exclude[ds]?|excluding|do not|does not|don['’]t|doesn['’]t|not (?:currently |presently )?(?:available|offered|providing|offering|for|serving)|unavailable|discontinued|withdrawn)\b|\bno commercial\b",context):continue
+            for pattern,key,term in (
+                (r'\bstorefronts?\b','retail','retail'),
+                (r'\boffices\b','insurance_professional','office'),
+                (r'\bmulti[- ]tenant properties\b','property_management','property management')):
+                match=re.search(pattern,text)
+                if match and key not in categories:
+                    categories.add(key);terms.append(term);excerpts.append(match.group())
+        if not categories:raise ValueError('unsupported_customer_focus')
+        return dict(ideal_customer=', '.join(terms),exclusions='',category_keys=sorted(categories),observed_sector_phrases=excerpts)
     parser=VisibleText(); parser.feed(document)
     text=' '.join(' '.join(parser.parts).split()).lower()
     categories=set(); terms=[]; excerpts=[]
@@ -82,7 +157,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         raise ValueError('recipient_contact_or_identity_changed')
     fresh=dict(row,**parsed)
     if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
-    scope=dict(source_focus(document),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
+    scope=dict(source_focus(document,fresh['category_key']),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
                source_signature=parsed['evidence']['vps_verification']['signature'])
     allowed=set(scope['category_keys'])
     async def qualify(*args,**kwargs):

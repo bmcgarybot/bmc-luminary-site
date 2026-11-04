@@ -189,6 +189,19 @@ def identity_matches(candidate,actual,market):
 def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=True)
 def seal(evidence,secret):return hmac.new(secret.encode(),('bmc-official-evidence|'+canonical(evidence)).encode(),hashlib.sha256).hexdigest()
 
+def az_postal_code_valid(value):
+    """AZ ZIP-prefix sanity only; does not verify city/street or USPS assignment."""
+    return isinstance(value,str) and re.fullmatch(r'(?:85|86)\d{3}(?:-\d{4})?',value) is not None
+
+
+def az_physical_address_postal_valid(value):
+    # parse_record always emits ', AZ <ZIP>'; recheck persisted signed evidence
+    # so a previously valid HMAC never overrides tightened geography policy.
+    if not isinstance(value,str):return False
+    match=re.search(r',\s*AZ\s+([^,\s]+)\s*$',value,re.I)
+    return bool(match and az_postal_code_valid(match.group(1)))
+
+
 def parse_record(candidate,url,document,digest,secret):
     if not secret or not allowed_url(url):raise ValueError('untrusted_source')
     page=Page();page.feed(document)
@@ -200,7 +213,7 @@ def parse_record(candidate,url,document,digest,secret):
         if place(address.get('addressLocality'))!=place(candidate['market']):continue
         if place(address.get('addressRegion')) not in ('az','arizona'):continue
         street=str(address.get('streetAddress') or '').strip();zip_code=str(address.get('postalCode') or '')
-        if not re.search(r'\d+\s+\S+',street) or re.search(r'\bp\.?\s*o\.?\s*box\b',street,re.I) or not re.fullmatch(r'\d{5}(?:-\d{4})?',zip_code):continue
+        if not re.search(r'\d+\s+\S+',street) or re.search(r'\bp\.?\s*o\.?\s*box\b',street,re.I) or not az_postal_code_valid(zip_code):continue
         if not identity_matches(candidate['business_name'],name,candidate['market']):continue
         own_url=obj.get('url') or obj.get('@id')
         if not isinstance(own_url,str) or not own_url.startswith('https://') or host(own_url)!=host(url):continue
@@ -262,7 +275,7 @@ def auto_evidence_valid(row,secret):
         for key in ('public_email','public_phone'):
             if compact(row.get(key) or '')!=compact(signed.get(key) or ''):return False
         if row.get('side') and row['side']!=signed.get('side'):return False
-        return bool(signed.get('physical_address') and allowed_url(signed['source_url']))
+        return bool(az_physical_address_postal_valid(signed.get('physical_address')) and allowed_url(signed['source_url']))
     except (ValueError,TypeError,KeyError):return False
 
 
@@ -389,6 +402,11 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         async with app.state.pool.acquire() as conn:
             jobs=await conn.fetch('select market,status,count(*) records from official_research_jobs group by market,status order by market,status')
             inventory_rows=await conn.fetch("select * from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null",VERSION)
+            rechecks=await conn.fetch("""select c.market,j.source_policy_version,j.status,count(*) records,
+              max(j.last_attempt_at) last_attempt_at from official_research_jobs j
+              join market_inventory_candidates c using(candidate_id)
+              where c.evidence->>'researched_by'=$1 and j.source_policy_version<>''
+              group by c.market,j.source_policy_version,j.status order by c.market,j.source_policy_version,j.status""",VERSION)
             from collections import Counter
             valid_counts=Counter((r['market'],r['side'],r['category_key']) for r in inventory_rows if auto_evidence_valid(dict(r),secret))
             inventory=[dict(market=k[0],side=k[1],category_key=k[2],records=n) for k,n in sorted(valid_counts.items())]
@@ -397,4 +415,4 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         from pathlib import Path
         image_catalog=json.loads(Path(__file__).with_name('service_images.json').read_text())
         imagery={'assigned':len(image_catalog['services']),'needs_review':[k for k,v in image_catalog['services'].items() if v['review_status']=='needs_review']}
-        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'native_records_requiring_revalidation':rejected_native,'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
+        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'native_revalidation_jobs':[dict(x) for x in rechecks],'primary_site_verified':[dict(x) for x in inventory],'native_records_requiring_revalidation':rejected_native,'review_reasons':[dict(x) for x in errors],'outreach_sent':0}

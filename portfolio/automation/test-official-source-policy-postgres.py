@@ -76,6 +76,10 @@ async def main():
             third=await endpoint('ci-only')
             assert third['inspected']==0,third
         assert len(searches)==2,searches
+        status_endpoint=next(route.endpoint for route in app.routes if getattr(route,'path',None)=='/api/admin/preparation-status')
+        status_readout=await status_endpoint('ci-only')
+        marked=[x for x in status_readout['native_revalidation_jobs'] if x['market']==market and x['source_policy_version']==first['source_policy_version']]
+        assert len(marked)==1 and marked[0]['status']=='needs_review' and marked[0]['records']==2 and marked[0]['last_attempt_at'],marked
         async with pool.acquire() as conn:
             jobs={row['candidate_id']:dict(row) for row in await conn.fetch('select * from official_research_jobs where market=$1',market)}
             for key,attempts in [('urgent_verified',8),('new_blocked',1)]:
