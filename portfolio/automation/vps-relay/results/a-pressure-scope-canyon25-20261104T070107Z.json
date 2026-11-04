@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T07:01:42.214846+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "798bce76284804b0636f627ff7f4426383c75962",
+  "git_commit_before": "798bce76284804b0636f627ff7f4426383c75962",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "97a8b6077e2bcb2faaca1296d62aabe73fab1682",
+  "request_id": "a-pressure-scope-canyon25-20261104T070107Z",
+  "request_sha256": "03bbcd6c80bb89e90075716dde48a3047b9adc77a269f94c6e3105dd550763e6",
+  "started_at": "2026-11-04T07:01:41.860102+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-pressure-scope-canyon25-20261104T070107Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"zP4yva0ddxQ7RFpQCnJHZ6H8WCslSYj0kr8Om14Ij6SefkEnnrGPK+mV2FneYj5BY60M/bAYbVsEXPlGT55sGUAxk1+lOv4FCsGdBfKWl3vvuey5g5Zy9DPTCAx4NjBYO4ethHLQADVCz6kxQ2EIGmybSfmJShROT4Ms+bv7zNBBkOtthJqCHJMH72k3lMqaleDXRi5y65RF5Pw4BksMOkqJxbRdq2AV/qkeRYgoP14vOV53mCnRqSKxO02GZ5gcYzvJNk466NLWOZy/V6reMIzk0chCe9nOGtv1TlW/alB5sXUJGJC2OePqpaqMAYcW56ACHLn6CIyrBaj+BflMrWGiBL81KoxGuJxFqHZq53t9Ggk0yce9OPrS0OxFXAxOfy1sY+KwJpq15fXsnXGhsGnKB3StQ8om/ErXLnDzQSB8xhOvINCn5cvB0f7m3IQhGmk5L+KOGGUM52VAXeufLZKF68CfEYUO9761weLSvHVZmcSZZU+wbPghru7B28Io\",\"nonce\":\"/+9FA4tkGhoAxRvm\",\"ciphertext\":\"DQV9+PLUdpXdOmEIk2rD5Ab5LRg6SoitqJOFPAHsKuR+3fSkPttD5e2LtXNr27gO+DC4GX71LfjnsZe4sTlU+pcib1JkzqEwX5umBoDYyhGaytS4yy/E+voyQjAsEyZXngjoLX8v0eQc/6pNOjEJFB5JQ2gkcRGo5MbROi4pHYQQXzmCd+A/NER6N/YPR/lBzoesGoU1dCfjHXSG8sBIQnc1mrseNwO0nNRMVgASFDuKbLyYlorBLMvzvGlJNz4A3pCd2JMw8GG6sKReo1DcQI9T3JB+0wM7WNaeSRt4grvX9M4=\"}",
+  "version": 1
+}
