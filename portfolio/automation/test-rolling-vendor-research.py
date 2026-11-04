@@ -185,8 +185,8 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         mutations=[sql for sql,args in self.calls if sql.startswith(('update ','insert ','delete '))]
         self.assertEqual(len(mutations),2);self.assertTrue(mutations[0].startswith('update market_inventory_candidates'))
         self.assertTrue(mutations[1].startswith('insert into events'))
-        self.assertNotIn('exists(select 1 from vendors',api.HISTORY_SQL)
-        self.assertNotIn('exists(select 1 from buyers',api.HISTORY_SQL)
+        self.assertIn("coalesce(v.status,'') not in ('prospect','discovered','research')",api.HISTORY_SQL)
+        self.assertIn("coalesce(b.status,'') not in ('prospect','discovered','research')",api.HISTORY_SQL)
         self.assertIn('left join vendors',api.HISTORY_SQL);self.assertIn('left join buyers',api.HISTORY_SQL)
         self.assertTrue(any('for update' in sql for sql,args in self.calls))
 
