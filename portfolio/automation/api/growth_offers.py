@@ -17,7 +17,7 @@ TIERS = {
     'growth_strategy_addon': {'amount':25000, 'count':0, 'name':'Competitor snapshot and outreach plan'},
 }
 POSTAL='BMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301'
-TERMS='Researched businesses to approach, not quote requests or guaranteed jobs. Limited overlap with other customers is possible; the research is not exclusive.'
+TERMS='Researched businesses to approach, not quote requests or guaranteed jobs. Research is nonexclusive; businesses may appear in another customer’s research. Each pack contains distinct businesses and retains the original sample.'
 
 def key(row):
     return re.sub('[^a-z0-9]', '', str(row.get('business_name','')).lower())
@@ -119,7 +119,7 @@ def offer_email(tier,business,territory,url,unsubscribe_url):
 def strategy_pdf(payload, reference, preview=False):
     import io,re
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, KeepTogether
-    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.pagesizes import letter
     from reportlab.lib import colors
     from growth_pdf import NAVY, TEAL, safe_website
@@ -131,6 +131,7 @@ def strategy_pdf(payload, reference, preview=False):
     styles['BodyText'].fontSize=10;styles['BodyText'].leading=15
     styles['Title'].textColor=TEAL;styles['Title'].fontSize=23
     styles['Heading2'].fontSize=13;styles['Heading2'].spaceBefore=14;styles['Heading2'].keepWithNext=True
+    styles.add(ParagraphStyle('CardHeading',parent=styles['Heading2'],fontSize=12,leading=16,spaceBefore=0,spaceAfter=6))
     story=[]
     def paragraph(text,style='BodyText'):
         text=str(text);parts=[];last=0
@@ -142,9 +143,11 @@ def strategy_pdf(payload, reference, preview=False):
         parts.append(escape(text[last:]).replace('\n','<br/>'))
         return Paragraph(''.join(parts),styles[style])
     def add(text,style='BodyText'):
-        story.append(paragraph(text,style));story.append(Spacer(1,8))
-    def card(lines):
-        content=[]
+        story.append(paragraph(text,style));space=Spacer(1,8)
+        if style in ('Title','Heading1','Heading2'):space.keepWithNext=True
+        story.append(space)
+    def card(lines,title=None):
+        content=[paragraph(title,'CardHeading'),Spacer(1,6)] if title else []
         for line in lines:content.extend([paragraph(line),Spacer(1,6)])
         table=Table([[content]],colWidths=[526],hAlign="LEFT");table.setStyle(TableStyle([
           ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#eef5f3')),('BOX',(0,0),(-1,-1),.6,colors.HexColor('#d1dfe3')),
@@ -156,8 +159,7 @@ def strategy_pdf(payload, reference, preview=False):
     add('Public observations describe published offers. Recommendations are hypotheses to test; they do not establish competitor performance or buyer demand. This document does not send outreach on your behalf.')
     add('1. Local competitor observations','Heading2')
     for c in s['competitors']:
-        add(c['name'],'Heading2')
-        card(['Published offer: '+c['observed_offer'],'What to test: '+c['implication'],'Source: '+c['source_url'],'Source reviewed: '+c['checked_at']])
+        card(['Published offer: '+c['observed_offer'],'What to test: '+c['implication'],'Source: '+c['source_url'],'Source reviewed: '+c['checked_at']],title=c['name'])
     for field,title in [('positioning','2. Positioning to test'),('priorities','3. Priority accounts'),('first_email','4. Company introduction'),('follow_up','5. One follow-up'),('phone_opener','6. Phone introduction'),('reply_handling','7. Reply guidance'),('four_week_plan','8. Four-week plan')]:
         add(title,'Heading2')
         for block in s[field].split('\n\n'):
