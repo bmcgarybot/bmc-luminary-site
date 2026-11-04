@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "a-rolling-2-deploy-update-20261104T130619Z", "action": "deploy_update", "allow_external_actions": false, "created_at": "2026-11-04T13:06:19.121170+00:00", "expires_at": "2026-11-04T14:06:19.121170+00:00", "args": {}, "required_ci_sha": "8dc1602f1b5d77ef19903bb2f6913330346a5c47"}
