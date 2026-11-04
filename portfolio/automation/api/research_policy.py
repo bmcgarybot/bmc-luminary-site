@@ -55,6 +55,13 @@ def install(app,require_admin):
     @app.post('/api/admin/research-policy-status')
     async def status(x_bmc_admin_key:str|None=Header(default=None)):
         require_admin(x_bmc_admin_key)
+        from channel_scan_state import ScanState,health
+        from datetime import datetime,timezone
+        from collections import Counter
+        def epoch(value):
+            if value is None:return None
+            if value.tzinfo is None:raise ValueError('UTC-aware channel timestamp required')
+            return value.timestamp()
         async with app.state.pool.acquire() as conn:
             coverage=await conn.fetch("""select source_key,count(*) lanes,
                 count(*) filter(where research_policy_version=$1) policy_scanned_lanes,
@@ -64,8 +71,26 @@ def install(app,require_admin):
             observations=await conn.fetch("""select source_key,observation_kind,count(*) records,
                 max(last_seen_at) last_seen from local_channel_observations
                 group by source_key,observation_kind order by source_key,observation_kind""")
+            lanes=await conn.fetch('select * from local_demand_scan_state')
+            worker=await conn.fetchrow("select * from channel_worker_metadata where worker_key='local_channels'")
+        now=datetime.now(timezone.utc).timestamp();counts=Counter();issues=[]
+        for row in lanes:
+            if row.get('state_adapter_version')!='channel-state-v1':reason='help_needed_state_migration'
+            else:
+                state=ScanState(lane_id=json.dumps([row[k] for k in ('source_key','market','group_key')]),
+                    source_key=row['source_key'],created_at=epoch(row['created_at']),
+                    last_attempt_at=epoch(row['last_run_at']),last_success_at=epoch(row['last_success_at']),
+                    next_eligible_at=epoch(row['next_eligible_at']),last_progress_at=epoch(row['last_progress_at']),
+                    failure_streak=row['failure_streak'],no_progress_batches=row['no_progress_batches'])
+                reason=health(state,now=now)
+            counts[reason]+=1
+            if reason.startswith('help_needed_'):
+                issues.append({'source':row['source_key'],'market':row['market'],'group':row['group_key'],
+                    'reason':reason,'last_error':row['last_error']})
         return {'ok':True,'policy':POLICY,'coverage':[dict(x) for x in coverage],
                 'observations':[dict(x) for x in observations],
+                'worker':dict(worker) if worker else None,'health_counts':dict(counts),'help_needed':issues,
+                'worker_metadata_missing':worker is None,
                 'note':'Configured channels and scanned lanes are not verified businesses or confirmed demand'}
 
 def contractor_priority(row,secret):

@@ -2664,7 +2664,7 @@ GROWTH_HIGH_VALUE_CATEGORIES={
   "pressure_washing":{"auto_dealers","auto_fleet","grocery","hotels_motels","property_management","restaurants","retail","warehouses_industrial"},
   "commercial_cleaning":{"grocery","hotels_motels","medical_centers","property_management","schools","schools_education","senior_daycare","warehouses_industrial"}
 }
-GROWTH_SOURCE_BLOCKLIST=tuple(sorted(INVENTORY_BLOCKED_DOMAINS | {"booking.com","tripadvisor.com","kayak.com","hotels.com","expedia.com","facebook.com","nextdoor.com"}))
+GROWTH_SOURCE_BLOCKLIST=tuple(sorted(INVENTORY_BLOCKED_DOMAINS | {"booking.com","tripadvisor.com","kayak.com","hotels.com","hotelscombined.com","solvhealth.com","sobernation.com","expedia.com","facebook.com","nextdoor.com"}))
 
 def growth_category_terms(category):
     mapping={
@@ -6366,146 +6366,199 @@ async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=N
 async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
     if not RESEARCH_SEARCH_ENABLED:
-        return {"ok":True,"enabled":False,"searches":0,"new_signals":0,"errors":[]}
-    searches=0
-    new_signals=0
-    expired_signals=0
-    errors=[]
-    lane_results=[]
+        return {"ok":True,"enabled":False,"outcome":"disabled","searches":0,"new_signals":0,"errors":[]}
+    from channel_scan_state import ScanState,select_due,query_slot,complete_batch,health
+    from datetime import datetime,timezone
+    from collections import Counter
+    def epoch(value):
+        if value is None:return None
+        if isinstance(value,datetime):
+            if value.tzinfo is None:raise ValueError('UTC-aware channel timestamp required')
+            return value.timestamp()
+        return float(value)
+    def stamp(value):return datetime.fromtimestamp(value,timezone.utc) if value is not None else None
+    def hydrate(row):
+        if row.get('state_adapter_version')!='channel-state-v1':raise ValueError('Channel state migration required')
+        return ScanState(lane_id=json.dumps([row[k] for k in ('source_key','market','group_key')]),
+            source_key=row['source_key'],created_at=epoch(row['created_at']),
+            query_variant=row['query_variant'],page=row['next_page'] or 1,
+            attempted_policy_version=row['attempted_policy_version'],successful_policy_version=row['successful_policy_version'],
+            last_attempt_at=epoch(row['last_run_at']),last_success_at=epoch(row['last_success_at']),
+            next_eligible_at=epoch(row['next_eligible_at']),failure_streak=row['failure_streak'],
+            total_failures=row['total_failures'],attempts=row['scans'] or 0,
+            last_progress_at=epoch(row['last_progress_at']),no_progress_batches=row['no_progress_batches'],last_error=row['last_error'])
+    async def persist(conn,lane,state,seen,new_requests,success):
+        await conn.execute("""update local_demand_scan_state set
+          next_page=$4,query_variant=$5,scans=$6,last_run_at=$7,last_success_at=$8,
+          next_eligible_at=$9,failure_streak=$10,total_failures=$11,last_progress_at=$12,
+          no_progress_batches=$13,last_error=$14,attempted_policy_version=$15,successful_policy_version=$16,
+          research_policy_version=case when $20 then $16 else research_policy_version end,
+          results_seen=results_seen+$17,signals_found=signals_found+$18,
+          no_progress_scans=case when not $20 then no_progress_scans when $18=0 then no_progress_scans+1 else 0 end,
+          updated_at=$19 where source_key=$1 and market=$2 and group_key=$3""",
+          lane['source_key'],lane['market'],lane['group_key'],state.page,state.query_variant,state.attempts,
+          stamp(state.last_attempt_at),stamp(state.last_success_at),stamp(state.next_eligible_at),state.failure_streak,
+          state.total_failures,stamp(state.last_progress_at),state.no_progress_batches,state.last_error,
+          state.attempted_policy_version,state.successful_policy_version,seen,new_requests,stamp(state.last_attempt_at),success)
+    errors=[];lane_results=[];searches=0;new_signals=0;new_observations=0;successful=0;expired_signals=0
     async with app.state.pool.acquire() as conn:
-      expired_signals=int(await conn.fetchval("""with expired as (
-          update local_demand_signals set status='expired',updated_at=now()
-          where status='discovered' and created_at < now()-interval '14 days'
-            and coalesce(evidence->>'publication_date_verified','false')<>'true'
-          returning 1
-        ) select count(*) from expired""") or 0)
-
-      lanes=await conn.fetch("""with ranked as (select *,row_number() over(partition by source_key
-          order by (research_policy_version=$1),last_run_at nulls first,no_progress_scans,market,group_key) policy_rank
-          from local_demand_scan_state)
-        select source_key,source_name,source_domain,market,group_key,group_label,next_page,scans,
-          results_seen,signals_found,no_progress_scans
-        from ranked order by policy_rank,source_key limit 15""",RESEARCH_POLICY['version'])
-      search_limit=asyncio.Semaphore(RESEARCH_POLICY['search_concurrency'])
-      async def channel_search(lane):
-          group=next((g for g in LOCAL_SIGNAL_GROUPS if g['key']==lane['group_key']),None)
-          if not group:return None,None,None
-          page=max(1,int(lane['next_page'] or 1))
-          query=build_local_signal_query(lane['market'],lane['source_domain'],group['terms'],int(lane['scans'] or 0))
-          async with search_limit:
-              try:
-                  results=await asyncio.wait_for(search_research_web(query,page),timeout=RESEARCH_POLICY['search_timeout_seconds'])
-                  return query,results,None
-              except Exception as exc:return query,None,type(exc).__name__
-      searched=await asyncio.gather(*(channel_search(lane) for lane in lanes))
-
-      group_map={g["key"]:g for g in LOCAL_SIGNAL_GROUPS}
-      for lane,search_result in zip(lanes,searched):
-          group=group_map.get(lane["group_key"])
-          if not group:
-              continue
-          page=max(1,int(lane["next_page"] or 1))
-          query=build_local_signal_query(lane["market"],lane["source_domain"],group["terms"],int(lane["scans"] or 0))
-          query,results,search_error=search_result
-          searches+=1
-          if search_error:
-              err=search_error
-              errors.append({"market":lane["market"],"source":lane["source_key"],
-                             "group":lane["group_key"],"page":page,"error":err})
-              await conn.execute("""update local_demand_scan_state
-                set scans=scans+1,last_run_at=now(),last_error=$4,updated_at=now()
-                where source_key=$1 and market=$2 and group_key=$3""",
-                lane["source_key"],lane["market"],lane["group_key"],err)
-              continue
-
-          lane_new=0
-          lane_seen=0
-          for result in results:
-              if not public_source_host_allowed(result["domain"],lane["source_domain"]):
-                  continue
-              if not result_matches_market(result,lane["market"]):
-                  continue
-              role=next((x['role'] for x in LOCAL_SIGNAL_SOURCES if x['key']==lane['source_key']),'mixed_public_signals')
-              kind=observation_kind(result,role,local_signal_request_intent(result))
-              if kind in ('excluded_nonbusiness_directory','job_advertisement'):
-                  continue
-              observed_service=classify_local_signal_service(f'{result["title"]} {result["snippet"]}',require_intent=False)
-              await conn.execute("""insert into local_channel_observations(source_key,market,service_key,source_url,title,snippet,observation_kind,evidence)
-                values($1,$2,$3,$4,$5,$6,$7,$8::jsonb)
-                on conflict(source_key,market,source_url) do update set last_seen_at=now(),
-                  observation_kind=excluded.observation_kind,evidence=local_channel_observations.evidence||excluded.evidence""",
-                lane['source_key'],lane['market'],observed_service,result['url'],result['title'],result['snippet'],kind,
-                json.dumps({'index_observation':observation_evidence(result,kind)}))
-              if role=='business_directory_only' or kind!='request_candidate':
-                  await conn.execute("""update local_demand_signals set status='needs_review',
-                    evidence=evidence||jsonb_build_object('index_reclassification',$4::text),updated_at=now()
-                    where source_key=$1 and market=$2 and source_url=$3 and status='discovered'""",
-                    lane['source_key'],lane['market'],result['url'],kind)
-                  continue
-              if not local_signal_result_relevant(result,lane["market"]):
-                  continue
-              lane_seen+=1
-              combined=f'{result["title"]} {result["snippet"]}'
-              service_key=classify_local_signal_service(combined)
-              if not service_key:
-                  continue
-              existing=await conn.fetchrow("""select signal_id,status,query_strategy_version
-                from local_demand_signals
-                where source_key=$1 and market=$2 and source_url=$3""",
-                lane["source_key"],lane["market"],result["url"])
-              sid=await conn.fetchval("""insert into local_demand_signals(
-                  source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,
-                  status,query_strategy_version,evidence)
-                values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10,$11::jsonb)
-                on conflict(source_key,market,source_url) do update set
-                  source_name=excluded.source_name,
-                  service_key=excluded.service_key,
-                  title=excluded.title,
-                  source_domain=excluded.source_domain,
-                  snippet=excluded.snippet,
-                  search_query=excluded.search_query,
-                  status=case when local_demand_signals.status like 'superseded_pre_v%'
-                              then 'discovered' else local_demand_signals.status end,
-                  query_strategy_version=excluded.query_strategy_version,
-                  last_seen_at=now(),
-                  evidence=local_demand_signals.evidence || excluded.evidence,
-                  updated_at=now()
-                returning signal_id""",
-                lane["source_key"],lane["source_name"],lane["market"],service_key,
-                result["title"],result["url"],result["domain"],result["snippet"],query,
-                LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
-                json.dumps({"search_engine":result["engine"],"search_score":result["score"],
-                            "public_index_only":True,"automatic_contact_allowed":False,
-                            "group_key":lane["group_key"],"page":page,
-                            "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
-                            "market_hint_matched":True,"index_observation":observation_evidence(result,"request_candidate"),
-                            "research_policy_version":RESEARCH_POLICY["version"]}))
-              activated=(existing is None or clean(existing["status"]).startswith("superseded_pre_v"))
-              if sid and activated:
-                  new_signals+=1
-                  lane_new+=1
-                  await event(conn,"local_demand_signal",sid,"discovered",{
-                    "source":lane["source_key"],"market":lane["market"],"service_key":service_key,
-                    "group_key":lane["group_key"],"page":page,
-                    "source_url":result["url"],"automatic_contact_allowed":False,
-                    "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION
-                  },"research_agent")
-
-          next_page=page+1 if page<5 else 1
-          await conn.execute("""update local_demand_scan_state
-            set next_page=$4,scans=scans+1,results_seen=results_seen+$5,
-                signals_found=signals_found+$6,
-                no_progress_scans=case when $6=0 then no_progress_scans+1 else 0 end,
-                last_run_at=now(),last_error=null,research_policy_version=$7,updated_at=now()
-            where source_key=$1 and market=$2 and group_key=$3""",
-            lane["source_key"],lane["market"],lane["group_key"],next_page,lane_seen,lane_new,RESEARCH_POLICY["version"])
-          lane_results.append({"source":lane["source_key"],"market":lane["market"],
-                               "group":lane["group_key"],"page":page,
-                               "results_seen":lane_seen,"new_signals":lane_new})
-
-    return {"ok":True,"enabled":True,"searches":searches,"new_signals":new_signals,
-      "expired_signals":expired_signals,"lanes_processed":len(lane_results),
-      "lane_results":lane_results,"errors":errors}
+      locked=await conn.fetchval('select pg_try_advisory_lock(20261104,701)')
+      if not locked:return {"ok":True,"enabled":True,"outcome":"busy","searches":0,"new_signals":0,"errors":[]}
+      try:
+        version=RESEARCH_POLICY['version'];now=datetime.now(timezone.utc).timestamp()
+        lanes=[dict(r) for r in await conn.fetch('select * from local_demand_scan_state')]
+        states={};by_id={};configuration_help=[]
+        group_map={g['key']:g for g in LOCAL_SIGNAL_GROUPS}
+        source_map={x['key']:x for x in LOCAL_SIGNAL_SOURCES}
+        for lane in lanes:
+            state=hydrate(lane);states[state.lane_id]=state;by_id[state.lane_id]=lane
+            if lane['group_key'] not in group_map or lane['source_key'] not in source_map:
+                configuration_help.append({'source':lane['source_key'],'market':lane['market'],'group':lane['group_key'],'reason':'help_needed_unconfigured_lane'})
+        metadata=await conn.fetchrow("select * from channel_worker_metadata where worker_key='local_channels'")
+        if not metadata:raise ValueError('Channel worker metadata migration required')
+        phases=metadata['source_phases'];phases=json.loads(phases) if isinstance(phases,str) else phases
+        eligible=[state for lid,state in states.items() if by_id[lid]['group_key'] in group_map and state.source_key in source_map]
+        selected,cursor,phases=select_due(eligible,now=now,policy_version=version,
+            limit=RESEARCH_POLICY['research_batch_limit'],source_cursor=metadata['source_cursor'],source_phases=phases)
+        async with conn.transaction():
+            await conn.execute("""update channel_worker_metadata set source_cursor=$1,source_phases=$2::jsonb,
+              last_attempt_at=$3 where worker_key='local_channels'""",cursor,json.dumps(phases),stamp(now))
+            expired_signals=int(await conn.fetchval("""with expired as (
+              update local_demand_signals set status='expired',updated_at=now()
+              where status='discovered' and created_at < now()-interval '14 days'
+                and coalesce(evidence->>'publication_date_verified','false')<>'true'
+              returning 1) select count(*) from expired""") or 0)
+        search_limit=asyncio.Semaphore(RESEARCH_POLICY['search_concurrency'])
+        async def channel_search(state):
+            lane=by_id[state.lane_id];group=group_map[lane['group_key']]
+            terms=[clean(x).strip('" ') for x in re.split(r'\s+OR\s+',clean(group['terms'])) if clean(x)] or ['service']
+            slot=query_slot(state,len(terms));place=clean(lane['market']).replace('"',' ');term=terms[slot['term_index']]
+            if lane['source_domain']=='whitepages.com':query=f'site:whitepages.com/business "{place}" "{term}"'
+            else:
+                query=f'site:{lane["source_domain"]} "{place}" Arizona "{term}"'
+                if slot['mode']=='request':query+=' "looking for"'
+            async with search_limit:
+                try:
+                    results=await asyncio.wait_for(search_research_web(query,slot['page']),timeout=RESEARCH_POLICY['search_timeout_seconds'])
+                    return query,slot['page'],results,None
+                except Exception as exc:return query,slot['page'],[],type(exc).__name__
+        searched=await asyncio.gather(*(channel_search(state) for state in selected))
+        for state,(query,page,results,search_error) in zip(selected,searched):
+            lane=by_id[state.lane_id];searches+=1;lane_new=0;lane_seen=0;lane_observations=0
+            completed_at=datetime.now(timezone.utc).timestamp()
+            try:
+                async with conn.transaction():
+                    if search_error:raise ValueError(search_error)
+                    for result in results:
+                        if not public_source_host_allowed(result["domain"],lane["source_domain"]):
+                            continue
+                        if not result_matches_market(result,lane["market"]):
+                            continue
+                        role=next((x['role'] for x in LOCAL_SIGNAL_SOURCES if x['key']==lane['source_key']),'mixed_public_signals')
+                        kind=observation_kind(result,role,local_signal_request_intent(result))
+                        if kind in ('excluded_nonbusiness_directory','job_advertisement'):
+                            continue
+                        observed_service=classify_local_signal_service(f'{result["title"]} {result["snippet"]}',require_intent=False)
+                        observation_id=await conn.fetchval("""insert into local_channel_observations(source_key,market,service_key,source_url,title,snippet,observation_kind,evidence)
+                          values($1,$2,$3,$4,$5,$6,$7,$8::jsonb)
+                          on conflict(source_key,market,source_url) do nothing returning observation_id""",
+                          lane['source_key'],lane['market'],observed_service,result['url'],result['title'],result['snippet'],kind,
+                          json.dumps({'index_observation':observation_evidence(result,kind)}))
+                        if observation_id:lane_observations+=1
+                        else:
+                            await conn.execute("""update local_channel_observations set last_seen_at=now(),
+                              service_key=$4,title=$5,snippet=$6,observation_kind=$7,evidence=evidence||$8::jsonb
+                              where source_key=$1 and market=$2 and source_url=$3""",
+                              lane['source_key'],lane['market'],result['url'],observed_service,result['title'],result['snippet'],kind,
+                              json.dumps({'index_observation':observation_evidence(result,kind)}))
+                        if role=='business_directory_only' or kind!='request_candidate':
+                            await conn.execute("""update local_demand_signals set status='needs_review',
+                              evidence=evidence||jsonb_build_object('index_reclassification',$4::text),updated_at=now()
+                              where source_key=$1 and market=$2 and source_url=$3 and status='discovered'""",
+                              lane['source_key'],lane['market'],result['url'],kind)
+                            continue
+                        if not local_signal_result_relevant(result,lane["market"]):
+                            continue
+                        lane_seen+=1
+                        combined=f'{result["title"]} {result["snippet"]}'
+                        service_key=classify_local_signal_service(combined)
+                        if not service_key:
+                            continue
+                        existing=await conn.fetchrow("""select signal_id,status,query_strategy_version
+                          from local_demand_signals
+                          where source_key=$1 and market=$2 and source_url=$3""",
+                          lane["source_key"],lane["market"],result["url"])
+                        sid=await conn.fetchval("""insert into local_demand_signals(
+                            source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,
+                            status,query_strategy_version,evidence)
+                          values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10,$11::jsonb)
+                          on conflict(source_key,market,source_url) do update set
+                            source_name=excluded.source_name,
+                            service_key=excluded.service_key,
+                            title=excluded.title,
+                            source_domain=excluded.source_domain,
+                            snippet=excluded.snippet,
+                            search_query=excluded.search_query,
+                            status=case when local_demand_signals.status like 'superseded_pre_v%'
+                                        then 'discovered' else local_demand_signals.status end,
+                            query_strategy_version=excluded.query_strategy_version,
+                            last_seen_at=now(),
+                            evidence=local_demand_signals.evidence || excluded.evidence,
+                            updated_at=now()
+                          returning signal_id""",
+                          lane["source_key"],lane["source_name"],lane["market"],service_key,
+                          result["title"],result["url"],result["domain"],result["snippet"],query,
+                          LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
+                          json.dumps({"search_engine":result["engine"],"search_score":result["score"],
+                                      "public_index_only":True,"automatic_contact_allowed":False,
+                                      "group_key":lane["group_key"],"page":page,
+                                      "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
+                                      "market_hint_matched":True,"index_observation":observation_evidence(result,"request_candidate"),
+                                      "research_policy_version":RESEARCH_POLICY["version"]}))
+                        activated=(existing is None or clean(existing["status"]).startswith("superseded_pre_v"))
+                        if sid and activated:
+                            lane_new+=1
+                            await event(conn,"local_demand_signal",sid,"discovered",{
+                              "source":lane["source_key"],"market":lane["market"],"service_key":service_key,
+                              "group_key":lane["group_key"],"page":page,
+                              "source_url":result["url"],"automatic_contact_allowed":False,
+                              "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION
+                            },"research_agent")
+                    updated=complete_batch(state,now=completed_at,policy_version=version,raw_results=len(results),
+                        new_observations=lane_observations,new_requests=lane_new)
+                    await persist(conn,lane,updated,lane_seen,lane_new,True)
+                states[state.lane_id]=updated;successful+=1;new_signals+=lane_new;new_observations+=lane_observations
+                lane_results.append({'source':lane['source_key'],'market':lane['market'],'group':lane['group_key'],
+                    'page':page,'query_variant':state.query_variant,'results_seen':lane_seen,
+                    'new_signals':lane_new,'new_observations':lane_observations})
+            except Exception as exc:
+                error=search_error or type(exc).__name__
+                errors.append({'source':lane['source_key'],'market':lane['market'],'group':lane['group_key'],'page':page,'error':error})
+                updated=complete_batch(state,now=datetime.now(timezone.utc).timestamp(),policy_version=version,error=error)
+                async with conn.transaction():await persist(conn,lane,updated,0,0,False)
+                states[state.lane_id]=updated
+        finished=datetime.now(timezone.utc).timestamp();health_counts=Counter();help_needed=list(configuration_help)
+        for lid,state in states.items():
+            reason=health(state,now=finished);health_counts[reason]+=1
+            if reason.startswith('help_needed_'):
+                lane=by_id[lid];help_needed.append({'source':lane['source_key'],'market':lane['market'],'group':lane['group_key'],'reason':reason,'last_error':state.last_error})
+        selected_ids={x.lane_id for x in selected}
+        outcome={'ok':not errors and not help_needed,'enabled':True,
+            'outcome':'needs_attention' if help_needed else ('degraded' if errors else ('completed' if searches else 'idle')),
+            'searches':searches,'successful_lanes':successful,'failed_lanes':len(errors),
+            'new_signals':new_signals,'new_observations':new_observations,'expired_signals':expired_signals,
+            'lanes_processed':len(lane_results),'lane_results':lane_results,'errors':errors,
+            'backed_off_lanes':sum(s.next_eligible_at>finished for s in states.values()),
+            'clock_quarantined_lanes':health_counts['help_needed_clock_skew']+health_counts['help_needed_invalid_due_time']+health_counts['help_needed_invalid_timestamp'],
+            'clock_deferred_lanes':health_counts['retry_clock_skew_deferred'],
+            'help_needed':help_needed,'health_counts':dict(health_counts),
+            'due_remaining':sum(s.lane_id not in selected_ids and s.next_eligible_at<=finished and not health(s,now=finished).startswith(('help_needed_','retry_clock_skew')) for s in states.values()),
+            'note':'Public index observations and request candidates are not confirmed demand or accepted providers'}
+        await conn.execute("""update channel_worker_metadata set last_completed_at=$1,last_outcome=$2::jsonb
+          where worker_key='local_channels'""",stamp(finished),json.dumps(outcome))
+        return outcome
+      finally:
+        await conn.fetchval('select pg_advisory_unlock(20261104,701)')
 
 @app.get("/api/admin/local-demand-coverage")
 async def admin_local_demand_coverage(x_bmc_admin_key:str|None=Header(default=None)):
