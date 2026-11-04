@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "a-canyon-scoped-draft-20261104T075442Z",
+  "action": "prepare_scoped_journey",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T07:54:42.637281+00:00",
+  "expires_at": "2026-11-04T08:54:42.637281+00:00",
+  "args": {
+    "candidate_id": "d4233ef0-b430-49e6-936e-86017453a514"
+  }
+}
