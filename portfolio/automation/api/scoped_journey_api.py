@@ -14,7 +14,7 @@ VERSION='official-pdf-v2'
 
 def install(app, require_admin, secret, original_ids, hold_required, compiler_callbacks,
             invitation_url, outreach_message):
-    from fastapi import Header, HTTPException
+    from fastapi import Header, HTTPException, Request
     frozen=frozenset(str(x) for x in original_ids)
     if len(frozen)!=9: raise ValueError('original_nine_ids_required')
 
@@ -146,4 +146,41 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                     return capsule
         except (ValueError,KeyError,TypeError):
             raise HTTPException(409,'scoped_approval_requires_review')
+    @app.post('/api/admin/authorize-scoped-batch')
+    async def authorize_batch(request:Request,request_id:str,x_bmc_admin_key:str|None=Header(default=None)):
+        require_admin(x_bmc_admin_key)
+        if not hold_required():raise HTTPException(409,'preparation_hold_required')
+        raw=await request.body()
+        if len(raw)>5000:raise HTTPException(413,'batch_too_large')
+        try:
+            body=json.loads(raw)
+            ids=body['target_ids']
+            if (len(raw)>5000 or set(body)!={'target_ids'} or not isinstance(ids,list)
+                or not 1<=len(ids)<=25 or len(set(ids))!=len(ids)
+                or not all(isinstance(t,str) and re.fullmatch('inventory:[0-9a-f-]{36}',t) for t in ids)
+                or any(t in frozen or t.removeprefix('inventory:') in frozen for t in ids)
+                or not re.fullmatch('[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id)):
+                raise ValueError('invalid_batch')
+        except (ValueError,KeyError,TypeError):raise HTTPException(422,'exact_new_target_batch_required')
+        from scoped_batch import register_target
+        waves={'commercial_cleaning':'growth-cleaning-1','pressure_washing':'growth-pressure-1'}
+        results=[]
+        for target_id in ids:
+            try:
+                async with app.state.pool.acquire() as conn:
+                    current=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1',target_id)
+                if not current:raise ValueError('target_unavailable')
+                profile=profile_for_target(dict(current),secret)
+                if not profile:raise ValueError('prepared_scope_required')
+                await approve_scope(request_id,target_id,profile['signature'],True,x_bmc_admin_key)
+                async with app.state.pool.acquire() as conn:
+                    async with conn.transaction():
+                        target=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1 for update',target_id)
+                        result=await register_target(conn,dict(target),secret,request_id,waves,outreach_message,hold_required)
+                results.append(dict(target_id=target_id,status='registered',**result))
+            except (ValueError,KeyError,TypeError,HTTPException):
+                results.append(dict(target_id=target_id,status='held',sent=0))
+        return {'ok':True,'registered':sum(x.get('registered',False) for x in results),
+            'already_registered':sum(x.get('already_registered',False) for x in results),
+            'held':sum(x['status']=='held' for x in results),'results':results,'sent':0,'history_reset':False}
     return prepare

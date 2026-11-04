@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -56,6 +56,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "configure_growth_review_scope",
     "official_research_step",
     "prepare_scoped_journey",
+    "authorize_scoped_batch",
     "queue_census_research",
     "census_queue_step",
     "market_inventory_step",
@@ -638,7 +639,7 @@ def execute(req: dict) -> dict:
             # This records explicit owner authorization only. All send switches
             # stay OFF; the separate strict launch audit/action still governs send.
             authorization=admin_post("/api/admin/authorize-reviewed-phoenix-launch",timeout=120)
-            if authorization.get("ok") is not True or int(authorization.get("approved_queued",0))<1:
+            if authorization.get("ok") is not True or (int(authorization.get("approved_queued",0))+int(authorization.get("already_sent",0)))<1:
                 raise RelayError("No current qualified unsent Phoenix recipients could be authorized")
             metadata["recipient_authorization"]=authorization
             changes["BMC_OWNER_LAUNCH_HOLD"]="false"
@@ -719,10 +720,13 @@ def execute(req: dict) -> dict:
             raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
         cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
         configured=sorted(x for x in app_env().get("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x)
-        if (set(args)!={"wave","target_ids"} or args.get("wave")!=cohort["wave"]
+        if (not {"wave","target_ids"}<=set(args)<={"wave","target_ids","daily_limit"} or args.get("wave")!=cohort["wave"]
             or not isinstance(args.get("target_ids"),list) or sorted(args["target_ids"])!=configured
             or configured!=sorted(cohort["target_ids"]) or app_env().get("GROWTH_OUTREACH_WAVE")!=cohort["wave"]):
             raise RelayError("Launch requires the exact configured Phoenix cohort; broad or historic waves are refused")
+        daily_limit=args.get('daily_limit',10)
+        if type(daily_limit) is not int or not 1<=daily_limit<=100:
+            raise RelayError('Explicit daily limit must be between 1 and 100')
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
@@ -734,7 +738,7 @@ def execute(req: dict) -> dict:
             raise RelayError("Growth launch readiness failed; outbound was not enabled")
         set_env_values({
           "GROWTH_OUTREACH_ENABLED":"true",
-          "GROWTH_OUTREACH_DAILY_LIMIT":"10",
+          "GROWTH_OUTREACH_DAILY_LIMIT":str(daily_limit),
           "GROWTH_OUTREACH_WAVE":cohort["wave"],
           "GROWTH_SAMPLE_MIN_RESERVE":"125",
           "GROWTH_AUTO_FULFILL_ENABLED":"true",
@@ -764,7 +768,11 @@ def execute(req: dict) -> dict:
         stderr=""; exit_code=0
 
     elif action == "growth_launch_disable":
-        set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+        if args and args!={'hold_for_preparation':True}:
+            raise RelayError('Only an explicit preparation hold may accompany pause')
+        changes={"GROWTH_OUTREACH_ENABLED":"false"}
+        if args:changes['BMC_OWNER_LAUNCH_HOLD']='true'
+        set_env_values(changes)
         cp=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
         stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
         metadata["outreach_after"]=outreach_state()
@@ -872,6 +880,22 @@ def execute(req: dict) -> dict:
     elif action == "nevada_status":
         status=admin_post("/api/admin/nevada/status",timeout=30)
         stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "reply_review_export":
+        if args:raise RelayError('Reply review export takes no arguments')
+        path='/api/admin/reply-review-export?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=120));stderr='';exit_code=0
+
+    elif action == "authorize_scoped_batch":
+        ids=args.get('target_ids')
+        if (set(args)!={'target_ids'} or not isinstance(ids,list) or not 1<=len(ids)<=25
+            or any(not isinstance(t,str) or not re.fullmatch(r'inventory:[0-9a-f-]{36}',t) for t in ids)
+            or len(set(ids))!=len(ids)):
+            raise RelayError('Exact prepared target IDs are required')
+        if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').lower()!='true':
+            raise RelayError('Batch registration requires preparation hold')
+        path='/api/admin/authorize-scoped-batch?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=300,body=args));stderr='';exit_code=0
 
     elif action == "prepare_scoped_journey":
         candidate_id=str(args.get('candidate_id') or '')

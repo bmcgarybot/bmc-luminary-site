@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Actual reply worker: ingest while held, never send around campaign gates."""
 import ast
+import sys
 import email
 from email.utils import parseaddr
 import hashlib
@@ -12,6 +13,7 @@ from types import SimpleNamespace
 import unittest
 import urllib.parse
 
+sys.path.insert(0,str(Path(__file__).parent/'api'))
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 class ReplyIntentTests(unittest.TestCase):
     def classify(self,text):
@@ -53,10 +55,12 @@ class Box:
 class Connection:
     def __init__(self):self.writes=[];self.cursor=dict(uidvalidity="42",last_uid=0)
     def transaction(self):return Context(self)
-    async def fetchval(self,*args):return True
+    async def fetchval(self,*args):return False if "outreach_suppressions" in args[0] else True
     async def fetchrow(self,sql,*args):
         if "mailbox_poll_state" in sql:return self.cursor
-        if "select o.outreach_id" in sql:return dict(outreach_id="outreach",entity_type="growth_customer",entity_id="target",owner_review_required=False)
+        if "select o.outreach_id" in sql:
+            assert 'o.wave' in sql, 'Actual reply query must supply its authorized wave'
+            return dict(outreach_id="outreach",entity_type="growth_customer",entity_id="target",owner_review_required=False,wave="growth-cleaning-1")
         if "select sample_id" in sql:return None
         if "growth_outreach_targets" in sql:return dict(target_id="target",business_name="Fixture",
             public_email="owner@example.test",market="Test",service_key="pressure_washing",experiment_cell="cell")

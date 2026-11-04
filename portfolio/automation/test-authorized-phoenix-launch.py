@@ -11,6 +11,7 @@ class Conn(Tx):
  async def fetch(self,sql,*args):
   for clause in ["o.sent_at is null","o.opt_out=false","g.fit_score>=65","outreach_suppressions","o.status='queued'","g.target_id=any($1::text[])"]:assert clause in sql
   return [{'outreach_id':'eligible'},{'outreach_id':'bad-copy'}]
+ async def fetchval(self,sql,*args):return 0
  async def execute(self,sql,*args):self.writes.append((sql,args))
 class Tests(unittest.IsolatedAsyncioTestCase):
  def load(self,hold=True):
