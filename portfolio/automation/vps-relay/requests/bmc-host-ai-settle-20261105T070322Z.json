@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-host-ai-settle-20261105T070322Z", "action": "api_research_settle", "args": {"source_request_id": "bmc-recovery2-research-1-20261105T062536Z"}, "allow_external_actions": false, "created_at": "2026-11-05T07:03:22.073395+00:00", "expires_at": "2026-11-05T08:03:22.073395+00:00"}
