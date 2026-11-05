@@ -1,0 +1,24 @@
+{
+  "action": "api_research_worker_resume",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-05T14:00:31.438487+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "git_commit_before": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "f56f0dba649594dc3feb8cea7cab9c036512e23b",
+  "request_id": "bmc-source-fix-resume-20261105T135935Z",
+  "request_sha256": "90bbacc21792606a372e5cffef2fd34e4d7a469f72b9778acd092773339c4939",
+  "started_at": "2026-11-05T14:00:31.278852+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"relay_research_status\",\"driver\":\"existing_vps_relay_timer\",\"driver_enabled\":true,\"timer_active\":true,\"driver_ready\":true,\"scope\":\"Phoenix/property_management\",\"cadence_seconds\":300,\"last_driver_failure\":null,\"queue\":{\"status\":\"research_queue_status\",\"scope\":\"Phoenix/property_management\",\"lifetime_job_limit\":40,\"lifetime_attempts\":15,\"queue_jobs\":12,\"completed_jobs\":8,\"verified_sources\":18,\"inserted_inventory\":16,\"stop_reason\":null,\"consecutive_no_progress\":0,\"source_recovery_after_job\":12,\"last_job_reason\":\"no_verified_sources\",\"worker_active\":false,\"needs_help\":false,\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":1.940544,\"available_usd\":8.059456,\"committed_upper_usd\":1.940544,\"original_reservation_amount_usd\":15.861796,\"reconciliation_credit_usd\":13.921252,\"retained_completed_calls\":5,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.861796,\"missions\":15,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0},\"outreach_sent\":0,\"customer_actions\":false},\"outreach_sent\":0,\"customer_actions\":false,\"recovery\":{\"status\":\"source_fix_recovery_recorded\",\"after_job\":12,\"history_reset\":false}}\n",
+  "version": 1
+}
