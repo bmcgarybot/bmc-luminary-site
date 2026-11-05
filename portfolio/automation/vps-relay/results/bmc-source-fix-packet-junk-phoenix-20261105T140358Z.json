@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T14:04:52.063392+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "git_commit_before": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "a264a9f6d73572163a5324a10e0e80859a323639",
+  "request_id": "bmc-source-fix-packet-junk-phoenix-20261105T140358Z",
+  "request_sha256": "15e0e64f5607aef0d2cbf8e1eaa5dbbd55e32c7ec074a5aaf83688cd1a9c8af2",
+  "started_at": "2026-11-05T14:04:51.579834+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-source-fix-packet-junk-phoenix-20261105T140358Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"5C/waI7Y3LYRrFeR4cDnDi+v3W1dcQTevzRHBLSpG76UYKvDRLITWKNjhYu4uVNlsDYnwMClXQSYvCGSMIpOaeWxzsZkxmba7kl4LW57PxsyUDcx+c90vhoChB1B5VvWOEylAyAZwgk8135IXnOJryy2rFvlaiPLjSR3iBwVOXxlMfDCnPDMtu+IZ7b+rXDGdZK0XZaULYTCfrzkczrInQ3mSKCWk0n5vCAVMCBD46PuD7v6KWGK2z9tggRAghCM6bMDFUt0e4so0Z/YRNqpK3/4unCpiFv0vNdCD1BAE6qZQGaHUiemn3XnufOk15Zk+wyM932Ni8kk+iJilggmydyUTTF0VmPi0C79i1KGCRWd/if4C6SHfrz9FqSTuj6Y2FzEruBPV4BJqP+VbLsDu1WJUIVKilpuNepqkiLZ5LaJwMzAWMxsaREg363cxZ5RkDxgyfngBzNv/E0LjBgt+EYB1RBsQO4466gnrw+N4KgjwB3PuEc88LWB/iybgf+M\",\"nonce\":\"QlzmrjTTPFOlMpAz\",\"ciphertext\":\"phhOTlgkAuY3cd1GkUBpN0aFun3r4+4B/i6nOR1qdHEYQvJplsSL6ItlsU+DGgOPZjXzC3DUQ5IFZYwMaaTUKcDU1MP9AQAe8al1q1nFdmBQGPr3960TZ4wILm49JaAdt0vCnXj4k6pWZodxAGyGS0xRsKiqejEzYQGQjQB4+2in684Y5BuELqPI48BehFfYkXkBFB13AmZt6ZmkTeACJumU+zS3vgyGF9g2ah0lv1Fcgf1KKQVaf3bI3vi6eqK+DRK3q/1WccT0jM47kRZ84uI/QI4CjA8E2U/dlV2ljnQBvrqCP1BXYYm0EgRNHHfncQ80GhixMnXu67lsNBufi9wFxxpLrIUHjs7Q4RrbYNhV/FnLVAE6zHEtk0QtV7NmDy/MrvKz6tWVyt4ngoa4qbwVZN9461LcFGmpbxT4bg2RPf8bNJWnceoboc6iH9Lfxy8xZe8+z2CTgf1cNzPM6bU2ZSxmmSu1s7lfHFcjSq6qoMCn\"}",
+  "version": 1
+}
