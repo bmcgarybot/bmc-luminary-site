@@ -636,6 +636,7 @@ jobs:
           docker compose --env-file .env.ci exec -T -e BMC_CI_API_PILOT_IMPORT=1 ops_api python - < test-api-pilot-import-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_REVIEW=1 ops_api python - < test-census-research-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_QUEUE=1 ops_api python - < test-census-research-queue-postgres.py
+          docker compose --env-file .env.ci exec -T -e BMC_CI_PREPARATION_SCHEMA=1 ops_api python - < test-preparation-schema-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_SCOPED_STAGE=1 ops_api python - < test-protected-scoped-stage.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_SCOPED_BATCH=1 ops_api python - < test-scoped-batch-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_NATIVE_RESEARCH=1 ops_api python - < test-native-research-postgres.py
