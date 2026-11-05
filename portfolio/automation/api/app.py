@@ -1,7 +1,7 @@
 from scoped_quote_api import request_fields as scoped_quote_request_fields
 from scoped_growth import profile_for_target, public_offer_fields
 from research_policy import POLICY as RESEARCH_POLICY, contractor_priority, observation_kind, observation_evidence, install as install_research_policy
-from official_research import VENDOR_TERMS, auto_evidence_valid, install as install_official_research
+from official_research import NATIVE_VERSIONS, VENDOR_TERMS, auto_evidence_valid, install as install_official_research
 from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
 from growth_strategy import build_owner_strategy
@@ -3023,6 +3023,7 @@ async def growth_record_exposures(conn,rows,recipient_key,service_key,delivery_k
           r.get("candidate_id"),delivery_kind,delivery_ref,status)
 
 async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None,recipient_key="",delivery_kind="free",recipient_business_key="",_qualification_scope=None,_qualification_diagnostics=None):
+    from official_research import NATIVE_VERSIONS
     categories=growth_selected_categories(service_key,ideal_customer,exclusions)
     if _qualification_scope is not None:
         from qualification_scope import validate
@@ -3044,7 +3045,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
             (evidence->>'researched_by'='assistant_manual_census'
               and jsonb_typeof(evidence->'artifact_files')='array'
               and evidence->'artifact_files'<>'[]'::jsonb)
-            or (evidence->>'researched_by'='vps_primary_site_v1')
+            or (evidence->>'researched_by'=any($4::text[]))
             or (source_tier in ('government','government_registry') and verification_status='government_record')
           )
           and (
@@ -3056,7 +3057,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
                when verification_status in ('credential_corroborated','corroborated') then 1 else 2 end,
           case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last
-        limit $3""",market,categories,max(limit*4,500))
+        limit $3""",market,categories,max(limit*4,500),list(NATIVE_VERSIONS))
     diagnostic['raw_rows']=len(rows)
     diagnostic['raw_category_counts']={cat:sum(row.get('category_key')==cat for row in rows) for cat in categories}
     excluded_ids={str(x) for x in (exclude_ids or [])}
@@ -6129,7 +6130,7 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     closed_at=excluded.closed_at,
                     closure_reason=excluded.closure_reason,
                     updated_at=now()
-                  where coalesce(market_inventory_candidates.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1','vps_vendor_published_area_v2')
+                  where coalesce(market_inventory_candidates.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1','vps_vendor_published_area_v2','vps_property_visible_evidence_v3')
                   returning candidate_id""",
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
