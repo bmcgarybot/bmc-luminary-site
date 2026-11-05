@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-safe-c11-20261105T171656Z-10-business_metrics",
+  "action": "business_metrics",
+  "created_at": "2026-11-05T17:17:26.127Z",
+  "expires_at": "2026-11-05T18:21:56.510Z",
+  "allow_external_actions": false,
+  "args": {}
+}
