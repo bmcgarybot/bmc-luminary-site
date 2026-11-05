@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-auto11-20261105T0335Z-13-research_refresh_status",
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T03:36:16.197Z",
+  "expires_at": "2026-11-05T05:06:16.197Z",
+  "args": {}
+}
