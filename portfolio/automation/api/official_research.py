@@ -8,7 +8,7 @@ from urllib.parse import urlsplit, urlunsplit, urljoin
 from research_policy import ownership_evidence
 
 VERSION='vps_primary_site_v1'
-NATIVE_VERSIONS=(VERSION,'vps_vendor_published_area_v2')
+NATIVE_VERSIONS=(VERSION,'vps_vendor_published_area_v2','vps_property_visible_evidence_v3')
 BUYER_TYPES={
  'auto_dealers':('AutoDealer',),'auto_fleet':('MovingCompany','AutomotiveBusiness'),
  'churches':('Church','PlaceOfWorship'),'dental':('Dentist',),'grocery':('GroceryStore',),
@@ -322,6 +322,9 @@ def auto_evidence_valid(row,secret):
         if (evidence.get('vps_verification') or {}).get('verifier')=='vps_vendor_published_area_v2':
             from vendor_published_area import auto_vendor_area_valid
             return auto_vendor_area_valid(row,secret)
+        if (evidence.get('vps_verification') or {}).get('verifier')=='vps_property_visible_evidence_v3':
+            from property_visible_source import auto_property_visible_valid
+            return auto_property_visible_valid(row,secret)
         token=evidence.get('contact_verification')
         if token is None:return _primary_auto_evidence_valid(row,secret)
         if not isinstance(token,dict):return False

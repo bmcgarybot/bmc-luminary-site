@@ -10,7 +10,7 @@ class Tests(unittest.TestCase):
    result=ns['execute']({'request_id':'pilot-test-20261104','action':action,'args':args or {},'allow_external_actions':action=='api_research_run'})
   return result,calls
  def test_prepare_status_and_run_use_fixed_commands(self):
-  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_run','--run')]:
+  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_run','--run-grounded')]:
    with self.subTest(action=action):
     result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],10)
     self.assertLessEqual(calls[0][1]['timeout'],900)
@@ -26,6 +26,8 @@ class Tests(unittest.TestCase):
   q={'request_id':'pilot-test-20261104','version':1,'action':'api_research_run','args':{},'created_at':datetime.now(timezone.utc).isoformat(),'allow_external_actions':False}
   with self.assertRaises(ns['RelayError']):ns['validate_request'](q)
   q['allow_external_actions']=True;ns['validate_request'](q)
+ def test_import_rejects_unbounded_source_paths(self):
+  with self.assertRaises(ns['RelayError']):self.execute('api_research_import',{'source_request_id':'../../secret'})
  def test_export_rejects_paths_and_unknown_args(self):
   for payload in ({},{'source_request_id':'../../secret'},{'source_request_id':'validrequest','path':'/tmp/private'}):
    with self.subTest(payload=payload),self.assertRaises(ns['RelayError']):self.execute('api_research_export',payload)

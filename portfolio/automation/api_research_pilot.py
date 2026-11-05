@@ -3,8 +3,9 @@
 
 Uses six bounded native SearXNG searches, one tool-free Responses extraction,
 then actual native primary-page verification. Search/model output is untrusted.
-$3 is permanently reserved BEFORE each model request, including uncertain calls;
-no mission ID retries, automatic retries, DB promotions, sends or orders.
+$3 is reserved BEFORE each model request. Uncertain/default calls retain it;
+validated completed grounded calls may settle once to an audited generous upper.
+No mission ID retries, automatic retries, DB promotions, sends or orders.
 Docs checked 2026-11-04: developers.openai.com/api/docs/models/gpt-6.1-sol,
 /api/docs/pricing, /api/reference/python/resources/responses/methods/create.
 """
@@ -72,6 +73,26 @@ def read_env(path):
         if os.environ.get(key):values[key]=os.environ[key]
     return values
 
+def usage_upper_micro(usage,proof):
+    """Fixed generous list-price upper, not invoice reconciliation or caller rates."""
+    fields={'version','status','model','phase','search_requests','tools_verified','usage'}
+    if not isinstance(proof,dict) or set(proof)!=fields or proof['version']!='completed-usage-upper-v1':raise Held('invalid_cost_proof')
+    if proof['status']!='completed' or proof['tools_verified'] is not True or proof['usage']!=usage:raise Held('invalid_cost_proof')
+    if not isinstance(usage,dict):raise Held('invalid_cost_usage')
+    incoming=usage.get('input_tokens');outgoing=usage.get('output_tokens')
+    if type(incoming) is not int or type(outgoing) is not int or not 0<=outgoing<=16000:raise Held('invalid_cost_usage')
+    model=proof['model'];phase=proof['phase'];searches=proof['search_requests']
+    if type(searches) is not int:raise Held('invalid_cost_proof')
+    if phase=='web' and isinstance(model,str) and re.fullmatch(r'gpt-6-luna(?:-\d{4}-\d{2}-\d{2})?',model):
+        if not 0<=incoming<=3150000 or not 0<=searches<=2:raise Held('invalid_cost_usage')
+        upper=(incoming+1)//2+outgoing*2+20000+10000  # MAX2 search fees +1cent buffer
+    elif phase=='extract' and isinstance(model,str) and re.fullmatch(r'gpt-6\.1-sol(?:-\d{4}-\d{2}-\d{2})?',model):
+        if not 0<=incoming<=272000 or searches!=0:raise Held('invalid_cost_usage')
+        upper=incoming*10+outgoing*15+10000
+    else:raise Held('unknown_cost_model_or_phase')
+    if not 0<upper<=RESERVE_MICRO:raise Held('cost_upper_exceeds_reservation')
+    return upper
+
 class Ledger:
     def __init__(self,root,budget=CAP_MICRO):
         self.root=private_dir(root);path=self.root/'pilot.sqlite3'
@@ -84,27 +105,57 @@ class Ledger:
         self.db.execute('insert or ignore into config values(1,?)',(min(CAP_MICRO,int(budget)),))
         self.db.execute('create table if not exists missions(id text primary key,state text not null,created text not null,report text)')
         self.db.execute('create table if not exists reservations(id text primary key,mission text not null,amount integer not null,state text not null,usage text,created text not null)')
+        self.db.execute('create table if not exists cost_settlements(call_id text primary key,reserved_before integer not null,upper_micro integer not null,usage text not null,model text not null,proof text not null,created text not null)')
+        self.db.execute("create trigger if not exists cost_settlements_no_update before update on cost_settlements begin select raise(abort,'immutable_cost_settlement'); end")
+        self.db.execute("create trigger if not exists cost_settlements_no_delete before delete on cost_settlements begin select raise(abort,'immutable_cost_settlement'); end")
     def status(self):
         spent=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
         cap=min(CAP_MICRO,self.db.execute('select cap from config where id=1').fetchone()[0])
         return {'model':MODEL,'cap_usd':cap/1e6,'reserved_usd':spent/1e6,'available_usd':max(0,cap-spent)/1e6,
+            'committed_upper_usd':spent/1e6,'budget_accounting':'conservative_committed_upper_not_invoice',
+            'pending_reserved_usd':self.db.execute("select coalesce(sum(amount),0) from reservations where state='reserved'").fetchone()[0]/1e6,
+            'settled_upper_usd':self.db.execute('select coalesce(sum(upper_micro),0) from cost_settlements').fetchone()[0]/1e6,
             'missions':self.db.execute('select count(*) from missions').fetchone()[0],
             'uncertain_calls':self.db.execute("select count(*) from reservations where state='reserved'").fetchone()[0],
-            'max_searches':MAX_SEARCHES,'model_tools_enabled':False,'outreach_sent':0}
+            'max_searches':MAX_SEARCHES,'model_tools_enabled':False,
+            'grounded_models':{'discovery':'gpt-6-luna','visible_extraction':MODEL},'outreach_sent':0}
     def begin(self,request_id):
         try:self.db.execute('insert into missions values(?,?,?,null)',(valid_id(request_id),'running',now()))
         except sqlite3.IntegrityError:raise Held('duplicate_mission_no_retry')
-    def reserve(self,request_id):
+    def reserve(self,request_id,phase='extract'):
+        if phase not in ('extract','web'):raise Held('invalid_reservation_phase')
         self.db.execute('begin immediate')
         try:
             if self.status()['available_usd']*1e6<RESERVE_MICRO:raise Held('budget_exhausted')
-            call_id=request_id+'-extract'
+            call_id=request_id+'-'+phase
             self.db.execute('insert into reservations values(?,?,?,?,?,?)',(call_id,request_id,RESERVE_MICRO,'reserved',None,now()))
             self.db.execute('commit');return call_id
         except Exception:self.db.execute('rollback');raise
-    def complete(self,call_id,usage):
-        # FULL reservation remains charged locally; actual lower usage never frees it.
-        self.db.execute("update reservations set state='completed',usage=? where id=?",(canonical(usage),call_id))
+    def complete(self,call_id,usage,*,settled_upper_micro=None,cost_proof=None):
+        # Existing/default completion retains the FULL reserve. Only a validated
+        # new completed call may atomically settle once; uncertainty never frees it.
+        if settled_upper_micro is not None:
+            if type(settled_upper_micro) is not int or not 0<settled_upper_micro<=RESERVE_MICRO:raise Held('invalid_settlement_upper')
+            if usage_upper_micro(usage,cost_proof)!=settled_upper_micro:raise Held('settlement_cost_mismatch')
+            if not call_id.endswith('-'+cost_proof['phase']):raise Held('settlement_phase_mismatch')
+        self.db.execute('begin immediate')
+        try:
+            row=self.db.execute('select amount,state,usage from reservations where id=?',(call_id,)).fetchone()
+            if row is None:raise Held('reservation_missing')
+            prior=self.db.execute('select upper_micro,usage,proof from cost_settlements where call_id=?',(call_id,)).fetchone()
+            if prior:
+                if (settled_upper_micro!=prior[0] or canonical(usage)!=prior[1] or canonical(cost_proof)!=prior[2]):raise Held('settlement_immutable')
+            elif row[1]=='completed':
+                if settled_upper_micro is not None or row[2]!=canonical(usage):raise Held('completed_reservation_immutable')
+            else:
+                if settled_upper_micro is not None:
+                    if settled_upper_micro>row[0]:raise Held('settlement_cannot_increase_reservation')
+                    self.db.execute('insert into cost_settlements values(?,?,?,?,?,?,?)',
+                        (call_id,row[0],settled_upper_micro,canonical(usage),cost_proof['model'],canonical(cost_proof),now()))
+                    self.db.execute("update reservations set amount=?,state='completed',usage=? where id=?",(settled_upper_micro,canonical(usage),call_id))
+                else:self.db.execute("update reservations set state='completed',usage=? where id=?",(canonical(usage),call_id))
+            self.db.execute('commit')
+        except Exception:self.db.execute('rollback');raise
     def finish(self,request_id,state,report=None):
         self.db.execute('update missions set state=?,report=? where id=?',(state,str(report) if report else None,request_id))
 
@@ -274,7 +325,7 @@ def run_pilot(ledger,request_id,config,*,search=search_native,api=responses_http
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     modes=parser.add_mutually_exclusive_group(required=True)
-    for mode in ('status','configure','run'):modes.add_argument('--'+mode,action='store_true')
+    for mode in ('status','configure','run','run-grounded'):modes.add_argument('--'+mode,action='store_true')
     parser.add_argument('--request-id')
     args=parser.parse_args();os.umask(0o077)
     root=Path.home()/'.local/state/bmc-api-research'
@@ -300,7 +351,10 @@ def main():
             if not 0<budget<=10:raise Held('invalid_budget_configuration')
             # A smaller owner-configured budget is a lower bound, never raised.
             ledger.db.execute('update config set cap=min(cap,?) where id=1',(int(budget*1e6),))
-            result=run_pilot(ledger,args.request_id,config)
+            if args.run_grounded:
+                from api_grounded_research import run_grounded
+                result=run_grounded(ledger,args.request_id,config)
+            else:result=run_pilot(ledger,args.request_id,config)
         print(json.dumps(result,separators=(',',':')))
     except Exception as exc:
         reason=str(exc) if isinstance(exc,Held) else 'pilot_unavailable'
