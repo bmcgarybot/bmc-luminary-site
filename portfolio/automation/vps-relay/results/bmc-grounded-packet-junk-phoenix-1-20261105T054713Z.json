@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T05:48:12.751455+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "git_commit_before": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "a79c4c3303a2ab857ca335dd39a03943ea346fa3",
+  "request_id": "bmc-grounded-packet-junk-phoenix-1-20261105T054713Z",
+  "request_sha256": "e3f6ce7d6afb36a480ee10197166b7def19f07b9153a6cad336522154465de1a",
+  "started_at": "2026-11-05T05:48:12.283564+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-grounded-packet-junk-phoenix-1-20261105T054713Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"x2lsfa6PS3i4V4Knb7EcD5yjWdvvf/QO1xxKHL28eFsfyVNbCGW0P20xXa3tTNJlFqZG9oLYB8Lwhepj60rfKqZ5Alw5vrEAK7YeXA6wS8/WXXxl+e/P7OLmvDoxSYV2MZSW9+iCziDU02gVzKOHD+0w9S1sFprPaidcF40iW5mCT/26RlrfFHGKA1B0KyMn4zdQBtCVNv+XMyiQtz7Nt+SJJO3+05KhapB9vPDIGo7mrSWdwkDzb3XMqvXSzAdXeZMy/fCLGXwrIEFILISdenuhMDPb56nHIuOh7cRTFdq6nQWw97HNiPVMezt0VbDK8ArByY5Pf6S8UyJlZM9Gie9aC2XXgbRrbR8zeMADFqaZgnz7jFY63/0JVCpDzIGg+qHGkxjCxjyP2aNjzAzpdQXlYxS4/47fLlLknnI338p+C5n1WaxOsli+kfLNlk9qJh/qi8VDgiAY1c5nT1IPUr2g7aJo7Q2/l76BrxbfiRVcDqvpWi2sjTNUtxNT0kuK\",\"nonce\":\"CL+8QXFxHJ9limwz\",\"ciphertext\":\"kcR5YhrhvvVtTAvbbgVZkgLnJ6EWlrmy3972PGNjzaldtm/ICdBlH/kDxWRltgj3Zh+4HhhR6584Np1C4djlnEt56Hkprv84JW5FIU3BXgOz2DnbhYNdERb2wIT8V/DsgD4pQ2pdgVHFlB1QCuIapV1vHpXW3OpZQl2jPFg05Y09pJfrhG4eRMCUGXai+tLTOLct0K8gbL6WdBKejZq6L+hgxHPmiO3bYdwt7sHubzVGSukGis7uY5p807YzRbWkXcmMtr8pJWXDL9EBjC4y+aJo040/GuLF9eqLMG+k/DXr6Jbqjab2ueI233Qgr5OUyo3qcHIMrK08U3v0TukJcgzTfTCBiBgQU6L8CdG/4CydPvLTzMa38mEvW/miyfN0H8za/OydMWufYAdrCw7CMEEV3Rq+XbPnNx3PxOriGmKh4lAcBzAfcw4dK15asIIVw9QXrwKgiXmf5SxI5cMZffIxO+RZI0B6ZDw3izWLxYxWyJs=\"}",
+  "version": 1
+}
