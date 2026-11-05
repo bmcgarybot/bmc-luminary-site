@@ -182,7 +182,7 @@ async def import_report(conn,report,secret):
 async def main():
     try:
         if os.environ.get('BMC_API_PILOT_IMPORT')!='1':raise ValueError('explicit_pilot_import_required')
-        if not os.getenv('DATABASE_URL') or not os.getenv('ADMIN_KEY'):raise ValueError('container_native_config_required')
+        if not os.getenv('DATABASE_URL') or not os.getenv('BMC_ADMIN_KEY'):raise ValueError('container_native_config_required')
         raw=sys.stdin.buffer.read(MAX_INPUT_BYTES+1)
         if len(raw)>MAX_INPUT_BYTES:raise ValueError('private_report_too_large')
         report=json.loads(raw)
@@ -190,7 +190,7 @@ async def main():
         report_records(report)
         import asyncpg
         conn=await asyncpg.connect(os.environ['DATABASE_URL'])
-        try:summary=await import_report(conn,report,os.environ['ADMIN_KEY'])
+        try:summary=await import_report(conn,report,os.environ['BMC_ADMIN_KEY'])
         finally:await conn.close()
         print(json.dumps(summary,sort_keys=True))
     except Exception:

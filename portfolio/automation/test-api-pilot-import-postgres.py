@@ -7,12 +7,12 @@ for directory in (Path(__file__).resolve().parent/'api',Path('/app')):
 
 async def main():
     if os.getenv('BMC_CI_API_PILOT_IMPORT')!='1':raise RuntimeError('Explicit disposable CI guard required')
-    if not os.getenv('DATABASE_URL') or not os.getenv('ADMIN_KEY'):raise RuntimeError('CI native configuration required')
+    if not os.getenv('DATABASE_URL') or not os.getenv('BMC_ADMIN_KEY'):raise RuntimeError('CI native configuration required')
     import asyncpg
     from official_research import FetchedPageReceipt,auto_evidence_valid
     from property_visible_source import verify_property_visible_source
     from api_pilot_import import import_report
-    secret=os.environ['ADMIN_KEY'];tag=uuid.uuid4().hex
+    secret=os.environ['BMC_ADMIN_KEY'];tag=uuid.uuid4().hex
     url='https://ci-visible.example.test/'+tag;name='CI Visible Property '+tag;email=tag+'@ci-visible.example.test'
     now=datetime.now(timezone.utc);cid=str(uuid.uuid5(uuid.NAMESPACE_URL,url))
     candidate={'candidate_id':cid,'business_name':name,'side':'buyer','market':'Phoenix','category_key':'property_management','source_url':url}
