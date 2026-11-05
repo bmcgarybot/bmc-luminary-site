@@ -32,32 +32,85 @@ def request_for(services,exclusions):
     if len(pilot.canonical(request).encode())>8000:raise pilot.Held('catalogue_request_too_large')
     return request
 
+QUOTE_CHECK_VERSION='quoted-fragments-v2'
+
+def normalized_text(value):
+    import unicodedata
+    value=unicodedata.normalize('NFC',value).translate(str.maketrans({'“':'"','”':'"','‘':"'",'’':"'"}))
+    return ' '.join(value.split()).casefold()
+
+def quote_matches(quote,text):
+    quote=normalized_text(quote);text=normalized_text(text)
+    if not quote:return False
+    if quote in text:return True
+    if quote.startswith('"'):
+        matches=list(re.finditer(r'"([^"\n]+)"',quote))
+        if not matches:return False
+        remainder=re.sub(r'"[^"\n]+"','',quote)
+        # Only formatting separators may be outside separately quoted fragments.
+        # Never discard invented assertions, negation, or ellipses between them.
+        return bool(re.fullmatch(r'[\s;,]*',remainder)) and all(normalized_text(m.group(1)) in text for m in matches)
+    if len(quote)>2 and quote[0]==quote[-1]=="'":return quote[1:-1] in text
+    return False
+
+def revalidate_cached(root,limit=100):
+    import hashlib
+    from types import SimpleNamespace
+    path=root/'catalogue.sqlite3'
+    counts={'version':QUOTE_CHECK_VERSION,'checked':0,'newly_source_checked':0,'still_incomplete':0,'receipt_unavailable':0,'api_calls':0}
+    if not path.exists():return counts
+    db=sqlite3.connect(path)
+    try:
+        for service,url,raw in db.execute('select service,url,record_json from source_records order by service,url').fetchall():
+            value=json.loads(raw)
+            if value.get('quote_check_version')==QUOTE_CHECK_VERSION:continue
+            if counts['checked']>=limit:break
+            filename=value.get('receipt_file','')
+            if not re.fullmatch(r'[a-f0-9]{32}\.html',filename):counts['receipt_unavailable']+=1;continue
+            paths=list(root.glob('bmc-catalogue-*/'+filename))
+            if len(paths)!=1 or paths[0].is_symlink() or paths[0].parent.is_symlink() or paths[0].stat().st_size>1_000_000:
+                counts['receipt_unavailable']+=1;continue
+            data=paths[0].read_bytes();digest=hashlib.sha256(data).hexdigest()
+            if digest!=value.get('content_sha256'):counts['receipt_unavailable']+=1;continue
+            receipt=SimpleNamespace(document=data.decode('utf-8',errors='replace'),content_sha256=digest,fetched_at=value['checked_at'])
+            updated=inspect(value,receipt)
+            updated['prior_quote_check_missing']=value.get('missing_checks',[])
+            db.execute('update source_records set record_json=? where service=? and url=?',(json.dumps(updated),service,url))
+            counts['checked']+=1
+            if updated['evidence_status']=='advertised_service_contact':
+                counts['newly_source_checked']+=value.get('evidence_status')!='advertised_service_contact'
+            else:counts['still_incomplete']+=1
+        db.commit()
+    finally:db.close()
+    if counts['checked'] or counts['receipt_unavailable']:
+        pilot.write_private(root/('quote-revalidation-'+uuid.uuid4().hex+'.json'),dict(counts,at=pilot.now()))
+    return counts
+
 def inspect(value,receipt):
     from research_policy import VisibleText
-    p=VisibleText();p.feed(receipt.document);text=' '.join(' '.join(p.parts).split()).casefold()
+    p=VisibleText();p.feed(receipt.document);text=normalized_text(' '.join(p.parts))
     missing=[]
     if ' '.join(value['business_name'].split()).casefold() not in text:missing.append('advertiser_name')
     for field in ('service_quote','location_quote','contact_quote'):
-        quote=' '.join(value[field].split()).casefold()
-        if not quote or quote not in text:missing.append(field)
+        if not quote_matches(value[field],text):missing.append(field)
     if 'phoenix' not in value['location_quote'].casefold():missing.append('phoenix_territory')
     contact=value['contact_quote']
     if not re.search(r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|(?:\(?[2-9]\d{2}\)?[ .-]?)[2-9]\d{2}[ .-]?\d{4}',contact,re.I):missing.append('public_contact')
-    return dict(value,source_page_checked=True,content_sha256=receipt.content_sha256,checked_at=receipt.fetched_at,
+    return dict(value,quote_check_version=QUOTE_CHECK_VERSION,source_page_checked=True,content_sha256=receipt.content_sha256,checked_at=receipt.fetched_at,
         evidence_status='advertised_service_contact' if not missing else 'research_incomplete',missing_checks=missing,
         proposal_is_inference=True,offer_ready=False,accepted_provider=False,confirmed_demand=False)
 
 def run_catalogue(ledger,request_id,config,*,api=pilot.responses_https,fetch=None):
     from official_research import fetch_page_receipt,allowed_url
     from public_contractor_ads import allowed_ad_url
-    services=catalogue();lanes=queue_status(ledger.root);selected=lanes[:BATCH];keys=[x[0] for x in selected]
+    services=catalogue();lanes=queue_status(ledger.root);revalidation=revalidate_cached(ledger.root);selected=lanes[:BATCH];keys=[x[0] for x in selected]
     if not config.get('OPENAI_API_KEY') or config.get('OPENAI_BILLING_ATTESTED')!='true':raise pilot.Held('private_api_configuration_required')
     if ledger.status()['available_usd']<3:raise pilot.Held('catalogue_budget_unavailable')
     cache=sqlite3.connect(ledger.root/'catalogue.sqlite3')
     prior=cache.execute('select url from source_records where service in ('+','.join('?' for _ in keys)+') order by url',keys).fetchall();cache.close()
     request=request_for([services[k] for k in keys],[row[0] for row in prior])
     ledger.begin(request_id);directory=pilot.private_dir(ledger.root/request_id)
-    report=dict(request_id=request_id,mode='phoenix_catalogue',service_keys=keys,records=[],held=[],status='research_running',outreach_sent=0,offer_ready=False,database_writes=False)
+    report=dict(request_id=request_id,mode='phoenix_catalogue',quote_revalidation=revalidation,service_keys=keys,records=[],held=[],status='research_running',outreach_sent=0,offer_ready=False,database_writes=False)
     db=sqlite3.connect(ledger.root/'catalogue.sqlite3')
     for key in keys:db.execute("update lanes set attempts=attempts+1,last_request=?,last_status='running',updated=? where service=?",(request_id,pilot.now(),key))
     db.commit()
