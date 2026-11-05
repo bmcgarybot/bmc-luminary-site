@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-morning-pack-harris-20261105T123556Z", "action": "private_held_packet", "args": {"candidate_id": "03f2d033-347c-4dae-804d-cf1587dd0244", "pack_count": 25}, "allow_external_actions": false, "created_at": "2026-11-05T12:35:56.186869+00:00", "expires_at": "2026-11-05T13:35:56.186869+00:00"}
