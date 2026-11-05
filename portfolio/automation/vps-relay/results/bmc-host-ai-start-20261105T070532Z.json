@@ -1,0 +1,16 @@
+{
+  "action": "api_research_worker_start",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-05T07:06:22.488326+00:00",
+  "error": "API pilot action failed; inspect private VPS status, no secret published",
+  "exit_code": null,
+  "git_commit_after": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "git_commit_before": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bmc-host-ai-start-20261105T070532Z",
+  "started_at": "2026-11-05T07:06:22.488307+00:00",
+  "status": "rejected",
+  "version": 1
+}
