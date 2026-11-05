@@ -14,7 +14,7 @@ async def prepare_one(conn,prepare,admin_key,frozen):
         or g.target_id='inventory:'||c.candidate_id::text)
       and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(c.public_email))
       and not exists(select 1 from events e where e.entity_type='research_candidate' and e.entity_id=c.candidate_id::text
-        and e.event_type=$4 and (e.payload->>'status'='draft_prepared' or e.created_at>now()-interval '24 hours'))
+        and e.event_type=$4 and (e.payload->>'status'='draft_prepared' or e.occurred_at>now()-interval '24 hours'))
       order by case when c.market='Phoenix' then 0 else 1 end,c.last_verified_at desc nulls last,c.candidate_id limit 1""",
       list(SUPPORTED),list(NATIVE_VERSIONS),list(frozen),EVENT)
     if not row:return {'status':'idle','prepared':0,'supported_services':list(SUPPORTED),'outreach_sent':0}
