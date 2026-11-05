@@ -47,7 +47,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             def transaction(self,**kwargs):return self
             async def fetch(self,sql,*args):
                 calls.append((sql,args))
-                if "j.status='needs_review'" in sql or "from local_channel_observations" in sql:return []
+                if "j.status='needs_review'" in sql or "from local_channel_observations" in sql or "from events" in sql:return []
                 assert 'researched_by\'=any($2::text[])' in sql
                 assert args[1]==list(official.NATIVE_VERSIONS)
                 return copy.deepcopy(rows)
