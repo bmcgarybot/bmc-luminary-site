@@ -74,11 +74,12 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
-ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS
+API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_export"}
+ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS | API_RESEARCH_ACTIONS
 
 API_ACTIONS = {
     "official_research_step": "/api/process-official-research",
@@ -290,7 +291,12 @@ def run_due_research_refreshes() -> dict:
 
 def secret_values() -> list[tuple[str, str]]:
     values: list[tuple[str, str]] = []
-    for source in (app_env(), dict(os.environ)):
+    private_env=Path.home()/'.local/state/bmc-api-research/openai.env'
+    pilot_env={}
+    try:
+        if private_env.is_file() and not private_env.is_symlink():pilot_env=parse_env_file(private_env)
+    except OSError:pass
+    for source in (app_env(), dict(os.environ),pilot_env):
         for key, value in source.items():
             upper = key.upper()
             if value and any(x in upper for x in ("PASSWORD", "SECRET", "TOKEN", "API_KEY", "ADMIN_KEY")):
@@ -705,6 +711,44 @@ def execute(req: dict) -> dict:
         stdout=json.dumps({"ok":True,"approved_sha":sha,"message":"Owner preview approved for this exact deployed commit only."},indent=2)
         stderr=""
         exit_code=0
+
+    elif action in API_RESEARCH_ACTIONS or action == "api_research_run":
+        # No campaign, order, provider or scheduler mutation. Credentials stay
+        # in host-private storage; research reports use the pinned owner key.
+        if action == "api_research_prepare":
+            if args:raise RelayError('API preparation takes no arguments')
+            command=['python3','./api_research_config.py','--prepare'];timeout=90
+        elif action == "api_research_configure":
+            encrypted=args.get('ciphertext','')
+            if set(args)!={'ciphertext'} or not isinstance(encrypted,str) or not re.fullmatch(r'[A-Za-z0-9+/=]{684}',encrypted):
+                raise RelayError('Only VPS-encrypted API pilot configuration is accepted')
+            command=['python3','./api_research_config.py','--configure-encrypted',encrypted];timeout=30
+        elif action == "api_research_status":
+            if args:raise RelayError('API status takes no arguments')
+            command=['python3','./api_research_pilot.py','--status'];timeout=30
+        elif action == "api_research_run":
+            if args:raise RelayError('The bounded Phoenix pilot takes no arguments')
+            command=['python3','./api_research_pilot.py','--run','--request-id',req['request_id']];timeout=900
+        else:
+            source_id=args.get('source_request_id','')
+            if set(args)!={'source_request_id'} or not isinstance(source_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',source_id):
+                raise RelayError('One existing pilot request ID is required')
+            from api_research_pilot import report_path
+            path=report_path(source_id)
+            if path.is_symlink() or not path.is_file() or path.stat().st_size>850000:raise RelayError('Bounded private pilot report unavailable')
+            payload={'status':'api_pilot_private_report','report':json.loads(path.read_text())}
+            encryption='import sys,json;from owner_research_export import seal_export;print(json.dumps(seal_export(json.load(sys.stdin),sys.argv[1])))'
+            cp=subprocess.run(['docker','compose','--env-file',ENV_FILE,'exec','-T','ops_api','python','-c',encryption,req['request_id']],cwd=AUTOMATION,
+                input=json.dumps(payload),text=True,capture_output=True,timeout=45)
+            if cp.returncode:raise RelayError('Private pilot export unavailable')
+            stdout=cp.stdout;stderr='';exit_code=0
+            command=None
+        if command:
+            cp=run(command,timeout=timeout)
+            if cp.returncode:raise RelayError('API pilot action failed; inspect private VPS status, no secret published')
+            stdout=cp.stdout;stderr='';exit_code=0
+        metadata['customer_actions']=False
+        metadata['pilot_budget_ceiling_usd']=10
 
     elif action == "prepare_ops_configuration":
         if args:raise RelayError("Operational key preparation takes no arguments")

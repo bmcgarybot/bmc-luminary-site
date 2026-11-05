@@ -75,6 +75,10 @@ jobs:
           python3 portfolio/automation/test-operator-console.py
           python3 portfolio/automation/test-operator-relay.py
           python3 portfolio/automation/test-relay-control-maintenance.py
+          python3 portfolio/automation/test-api-research-config.py
+          python3 portfolio/automation/test-api-research-pilot.py
+          python3 portfolio/automation/test-api-research-relay.py
+          python3 portfolio/automation/test-api-pilot-property.py
           python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-ops-supervisor.py
