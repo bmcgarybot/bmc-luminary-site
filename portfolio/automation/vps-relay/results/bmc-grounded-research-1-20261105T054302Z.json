@@ -1,0 +1,24 @@
+{
+  "action": "api_research_run",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-05T05:44:28.975180+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "git_commit_before": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "08f1bf5c885edc40c803c91adf35bddf39bdaa95",
+  "request_id": "bmc-grounded-research-1-20261105T054302Z",
+  "request_sha256": "a121d4e4ce4f51ce3995cc99f107213060d8963af338f9731689865477c6d5a5",
+  "started_at": "2026-11-05T05:43:53.898328+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"research_partial\",\"request_id\":\"bmc-grounded-research-1-20261105T054302Z\",\"native_primary_verified_count\":2,\"verified_count\":2,\"raw_candidate_count\":15,\"held_count\":13,\"private_report\":\"/home/ubuntu/.local/state/bmc-api-research/bmc-grounded-research-1-20261105T054302Z/report-private.json\",\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":9.0,\"available_usd\":1.0,\"committed_upper_usd\":9.0,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.0,\"missions\":2,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0},\"offer_ready\":false,\"outreach_sent\":0,\"qualified_reserve_count\":null}\n",
+  "version": 1
+}
