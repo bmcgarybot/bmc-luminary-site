@@ -41,7 +41,8 @@ class Tests(unittest.TestCase):
   with self.assertRaises(ValueError):validate_property_source(C,'<title>Example Realty LLC</title><p>We sell residential homes.</p>'+schema('US'))
  def test_suppliers_education_and_nearby_community_not_operator(self):
   for text in ('We provide software for property management companies.','We provide insurance for apartment communities.',
-   'We work with property management companies.','We offer cleaning for property management companies.',
+   'We work with property management companies.','We provide maintenance for property management companies.',
+   'Our property management clients trust our building repairs.','We offer cleaning for property management companies.',
    'We are near an apartment community.','How to start a property management company.'):
    with self.subTest(text=text),self.assertRaises(ValueError):validate_property_source(C,'<title>Example Realty LLC</title><p>'+text+'</p>')
  def test_wrong_scope_or_missing_identity_or_empty_source(self):

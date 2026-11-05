@@ -110,7 +110,7 @@ def validate_property_source(candidate,document):
             raise ValueError('property_role_declined')
         if re.search(r'\b(?:software|platform|training|courses?|jobs?|careers?|equipment|insurance|cleaning|landscaping|tree care|junk removal)\b',low):continue
         # Mere suppliers/partners/nearby references do not identify an operator.
-        if re.search(r'\b(?:work with|serve|serving|suppl(?:y|ier|ies)|for property manag|near|adjacent to)\b',low):continue
+        if re.search(r'\b(?:work with|serve|serving|suppl(?:y|ier|ies)|for property manag(?:ement|ers?)|property management (?:clients|customers|companies|firms|partners)|near|adjacent to)\b',low):continue
         management=bool(re.search(r'\b(?:we|our|provides?|offers?|specializ\w*|deliver\w*)\b[^.!?;]{0,100}\bproperty management\b',low)
             or (tag in ('h1','h2','h3','h4') and re.search(r'\bproperty management(?: services)?\b',low)
                 and not re.search(r'\b(?:what is|how to|guide|article|news|tips)\b',low)))
