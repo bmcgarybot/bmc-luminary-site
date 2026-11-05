@@ -1,0 +1,16 @@
+{
+  "action": "research_policy_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T17:46:31.000780+00:00",
+  "error": "local admin POST /api/admin/research-policy-status failed: HTTP Error 500: Internal Server Error",
+  "exit_code": null,
+  "git_commit_after": "5ac02f70c82a0d76dd55612c6a0a997f10b3c4ba",
+  "git_commit_before": "5ac02f70c82a0d76dd55612c6a0a997f10b3c4ba",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bmc101-2-20261105T174230Z",
+  "started_at": "2026-11-05T17:46:31.000758+00:00",
+  "status": "rejected",
+  "version": 1
+}
