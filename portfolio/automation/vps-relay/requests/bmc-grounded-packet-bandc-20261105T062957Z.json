@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-grounded-packet-bandc-20261105T062957Z", "action": "private_held_packet", "args": {"candidate_id": "18b42c9c-adf3-41e0-bb19-0641547426bd", "pack_count": 25}, "allow_external_actions": false, "created_at": "2026-11-05T06:29:57.374501+00:00", "expires_at": "2026-11-05T07:29:57.374501+00:00"}
