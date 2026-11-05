@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-autonomy-audit-worker-20261105T164631Z",
+  "action": "api_research_worker_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T16:46:31.903701+00:00",
+  "expires_at": "2026-11-05T17:46:31.903701+00:00"
+}
