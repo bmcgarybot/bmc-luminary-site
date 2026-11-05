@@ -28,7 +28,7 @@ async def prepare_one(conn,prepare,admin_key,frozen):
     except Exception as exc:
         # Record the failure, do not let one company block the queue. Compiler
         # owns rollback and suppression/history checks; no fallback fabricated data.
-        result.update(status='requires_research',reason=str(getattr(exc,'detail','compiler_failed'))[:120])
+        result.update(status='requires_research',reason=str(getattr(exc,'preparation_reason','compiler_failed'))[:120])
     await conn.execute("""insert into events(entity_type,entity_id,event_type,actor,payload)
       values('research_candidate',$1,$2,'vps_preparation_worker',$3::jsonb)""",cid,EVENT,json.dumps(result))
     return dict(status=result['status'],prepared=int(result['status']=='draft_prepared'),outreach_sent=0,offer_ready=False)

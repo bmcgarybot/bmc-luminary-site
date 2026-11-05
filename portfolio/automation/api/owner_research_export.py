@@ -85,8 +85,8 @@ def install(app, require_admin, markets, secret):
                     from local_channel_observations where evidence->'public_ad_check'->>'status'='advertised_service_contact'
                     order by last_seen_at desc limit 50""")
                 prepared=await conn.fetch("""select entity_id,payload,created_at from events
-                    where event_type='autonomous_scoped_preparation' and payload->>'status'='draft_prepared'
-                    order by created_at desc limit 3""")
+                    where event_type='autonomous_scoped_preparation'
+                    order by created_at desc limit 10""")
         records = [reviewed_row(row, secret) for row in native]
         held_records = [dict(reviewed_row(row, secret), review_reason=row['error_code']) for row in held]
         payload = dict(observed_at=datetime.now(timezone.utc).isoformat(), markets=list(markets),

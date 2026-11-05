@@ -77,8 +77,8 @@ def install(app,require_admin):
                 from local_channel_observations where observation_kind='contractor_advertisement'
                 group by market,coalesce(evidence->'public_ad_check'->>'status','unchecked') order by market,status""")
             preparation=await conn.fetch("""select payload->>'market' market,payload->>'service_key' service_key,
-                payload->>'status' status,count(*) attempts,max(created_at) latest
-                from events where event_type='autonomous_scoped_preparation' group by 1,2,3 order by 1,2,3""")
+                payload->>'status' status,payload->>'reason' reason,count(*) attempts,max(created_at) latest
+                from events where event_type='autonomous_scoped_preparation' group by 1,2,3,4 order by 1,2,3,4""")
             lanes=await conn.fetch('select * from local_demand_scan_state')
             worker=await conn.fetchrow("select * from channel_worker_metadata where worker_key='local_channels'")
         now=datetime.now(timezone.utc).timestamp();counts=Counter();issues=[]
