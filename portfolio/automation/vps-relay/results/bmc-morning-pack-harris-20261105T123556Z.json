@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T12:36:22.294171+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "git_commit_before": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "3f7540a3f1c1210eca0f6ee47e52db42c37e3f9b",
+  "request_id": "bmc-morning-pack-harris-20261105T123556Z",
+  "request_sha256": "ab0a0519cdca1390daa6bd0c1845d32a39d4898af2972c9c4fb424cf01e0587c",
+  "started_at": "2026-11-05T12:36:21.740416+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-morning-pack-harris-20261105T123556Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"q8ascZt1B0+rpKEVXNkmu9XCz5g6P94D/oDdHwm/XUOqd15ou4WzY039a30ys7kMK0nol3WtORAMTwrHITqKf48LAHvK4M5UksyL/2GuCA+uoazy5BePH5SdW0f/QM4l00LlPWuhz/uLxg3CeieWeFT6JFzGffWYexaQgU7F/4zLfOslFsNNy8N4cDUhlRF3i1kU+a5w4KyIzkggNRyTTc0JWjIv/qBwwdJ0cNisCUNVG/+LcVUJtHbbM1FZA+GDfyzJdGaIgYZHKQ2RdYxb3kH61rYaMFhWH4LQUAgSJkDga93SvHvB+L0E98VUnNvpwYWW6zpSFFIyYmB8ApB42ONlaFxRN2OiKE9vo7YzLicd59BrSs0XJYnmNZ82KqrbmzoRXQ49QcX78nn9gLuLmhsIhKKXYHJmTVNtl2ghcqj9TPBBbLxjhowwkqtJf05AWwC1mcu5EYu8uyuvIr7a8QgZrOZv36XtprChdNNSb5T5ag1rKDgj1BfT7/V32uG7\",\"nonce\":\"CkptKBITgfH2tmrn\",\"ciphertext\":\"DJdqk9lPQQ7cRIfsA3U8OmgAyThnX1H/tEAp66UgnM7h0xJheigyGoDxXX+ae0QmGH+wuYS0LWA+2AioZBkHngnOCaBD+0etLjKyBttB9pXlOGEowAaX6gaCcGtKcrorydYLer99063BP6e9E9W2MV91wg0kuiGHsGtDcmoEMiHMyEXQBrVNq98jmLjMnNXDYGXF0qAVYmPVfvLUbrkg8ymWrXM+MFJgMyw7q5H97fRMsqAJ8RfWA5GqcekACtme1AZ9jOw+Y73QnbhitmQDtNKUk0nRdUyX2h5X54amRiG9IXYExcr3VhXHoSA8o7BVR/cNqjrjUQBKQDY67mOGtgUPTIv2HDUvzZuhBZ+DOhbSXMNwKI6hSN4a8s1YM1UvcpyUpzf4kPcqcnwHqwjKONQnY4ya6VjThJ/KpZGHfzavmurXkUudBGOC57ksNNPKE4LUyv3Mm+rPZnSdXPhINRdLcAovzQ+QxtT+g/L0uF0=\"}",
+  "version": 1
+}
