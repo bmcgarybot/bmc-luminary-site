@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261105T1527Z-14-historical_growth_review",
+  "action": "historical_growth_review",
+  "created_at": "2026-11-05T15:27:46.984Z",
+  "expires_at": "2026-11-05T17:40:00Z",
+  "allow_external_actions": false,
+  "args": {}
+}
