@@ -121,7 +121,7 @@ class FetchedPageReceipt:
         return self.raw_bytes.decode('utf-8', 'replace')
 
 
-def fetch_page_receipt(url):
+def fetch_page_receipt(url, *, url_policy=None):
     """Fetch once (up to four HTTPS hops); return immutable successful facts.
 
     Uses existing ten-second transport timeouts, public DNS pinning, URL policy
@@ -131,7 +131,7 @@ def fetch_page_receipt(url):
     requested_url=url
     redirects=[]
     for _ in range(4):
-        if not allowed_url(url):raise ValueError('unsupported_source_url')
+        if not (url_policy or allowed_url)(url):raise ValueError('unsupported_source_url')
         p=urlsplit(url);addresses=public_addresses(p.hostname)
         conn=PinnedHTTPS(p.hostname,addresses[0])
         try:

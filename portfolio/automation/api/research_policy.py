@@ -38,6 +38,8 @@ def observation_kind(result,source_role,request_candidate=False):
     # request wording. Ownership preferences alone do not establish an ad.
     if re.search(r'\b(?:free estimates?|we offer|we provide|call/text|call us|call now|services offered|book now|contact us|schedule your)\b',text):
         return 'contractor_advertisement'
+    if re.search(r'/(?:hss|lbs|fgs)/d/',urlsplit(str(result.get('url') or '')).path) and not request_candidate:
+        return 'contractor_advertisement'
     if request_candidate:return 'request_candidate'
     if 'recommend' in text:return 'recommendation_candidate'
     return 'unclassified_public_result'
@@ -71,6 +73,9 @@ def install(app,require_admin):
             observations=await conn.fetch("""select source_key,observation_kind,count(*) records,
                 max(last_seen_at) last_seen from local_channel_observations
                 group by source_key,observation_kind order by source_key,observation_kind""")
+            public_ads=await conn.fetch("""select market,coalesce(evidence->'public_ad_check'->>'status','unchecked') status,count(*) records
+                from local_channel_observations where observation_kind='contractor_advertisement'
+                group by market,coalesce(evidence->'public_ad_check'->>'status','unchecked') order by market,status""")
             lanes=await conn.fetch('select * from local_demand_scan_state')
             worker=await conn.fetchrow("select * from channel_worker_metadata where worker_key='local_channels'")
         now=datetime.now(timezone.utc).timestamp();counts=Counter();issues=[]
@@ -88,7 +93,7 @@ def install(app,require_admin):
                 issues.append({'source':row['source_key'],'market':row['market'],'group':row['group_key'],
                     'reason':reason,'last_error':row['last_error']})
         return {'ok':True,'policy':POLICY,'coverage':[dict(x) for x in coverage],
-                'observations':[dict(x) for x in observations],
+                'observations':[dict(x) for x in observations],'public_contractor_ads':[dict(x) for x in public_ads],
                 'worker':dict(worker) if worker else None,'health_counts':dict(counts),'help_needed':issues,
                 'worker_metadata_missing':worker is None,
                 'note':'Configured channels and scanned lanes are not verified businesses or confirmed demand'}

@@ -69,7 +69,7 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(calls,[])
         with patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.fingerprint):
             encrypted=asyncio.run(endpoint('test-research-export-123','allowed'))
-        self.assertEqual(calls,[{'isolation':'repeatable_read','readonly':True},'fetch','fetch'])
+        self.assertEqual(calls,[{'isolation':'repeatable_read','readonly':True},'fetch','fetch','fetch'])
         self.assertEqual(self.decrypt(encrypted)['native_records'],[])
 
 if __name__=='__main__':unittest.main()

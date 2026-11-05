@@ -1,13 +1,33 @@
 {
-  "version": "2026-11-03-small-contractors-v2",
+  "version": "2026-11-05-small-contractors-v3",
   "scope": "All configured territories, including previously scanned territories",
   "priority": "Smaller and owner-operated contractors, where supported by evidence",
   "ownership_rule": "Local ownership, a small website or an LLC name do not establish owner operation or employee count",
   "channels": [
-    {"key":"nextdoor_public","name":"Publicly indexed Nextdoor","domain":"nextdoor.com","role":"mixed_public_signals"},
-    {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com","role":"mixed_public_signals"},
-    {"key":"craigslist_public","name":"Publicly indexed Craigslist","domain":"craigslist.org","role":"mixed_public_signals"},
-    {"key":"whitepages_business_public","name":"Public business-only Whitepages results","domain":"whitepages.com","role":"business_directory_only"}
+    {
+      "key": "nextdoor_public",
+      "name": "Publicly indexed Nextdoor",
+      "domain": "nextdoor.com",
+      "role": "mixed_public_signals"
+    },
+    {
+      "key": "facebook_public",
+      "name": "Publicly indexed Facebook",
+      "domain": "facebook.com",
+      "role": "mixed_public_signals"
+    },
+    {
+      "key": "craigslist_public",
+      "name": "Publicly indexed Craigslist",
+      "domain": "craigslist.org",
+      "role": "mixed_public_signals"
+    },
+    {
+      "key": "whitepages_business_public",
+      "name": "Public business-only Whitepages results",
+      "domain": "whitepages.com",
+      "role": "business_directory_only"
+    }
   ],
   "continuous_rescanning": true,
   "scan_every_scheduler_cycle": true,
@@ -22,5 +42,12 @@
   ],
   "research_batch_limit": 15,
   "search_concurrency": 3,
-  "search_timeout_seconds": 12
+  "search_timeout_seconds": 12,
+  "contractor_qualification": {
+    "website_required": false,
+    "email_required": false,
+    "license_required_for_research": false,
+    "source": "Public self-advertised service plus territory and published business phone or email",
+    "limits": "Research contact is not provider acceptance, license verification, demand or permission to send"
+  }
 }

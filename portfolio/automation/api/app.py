@@ -8313,3 +8313,6 @@ install_historical_growth(app,require_admin,ADMIN_KEY,GROWTH_NONEXCLUSIVE_COHORT
 # Explicit owner-authorized re-entry of the isolated pre-review batch; no sends.
 from campaign_reentry import install as install_campaign_reentry
 install_campaign_reentry(app,require_admin,ADMIN_KEY)
+
+from public_contractor_ads import install as install_public_contractor_ads
+install_public_contractor_ads(app,require_admin)
