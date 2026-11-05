@@ -59,6 +59,7 @@ jobs:
           python3 portfolio/automation/test-growth-offers.py
           python3 portfolio/automation/test-growth-strategy.py
           python3 portfolio/automation/test-official-research.py
+          python3 portfolio/automation/test-property-source-coverage.py
 
       - name: Verify Growth mobile sample rendering
         run: |
@@ -73,6 +74,7 @@ jobs:
           python3 -m py_compile portfolio/automation/operator-console.py
           python3 portfolio/automation/test-operator-console.py
           python3 portfolio/automation/test-operator-relay.py
+          python3 portfolio/automation/test-relay-control-maintenance.py
           python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-ops-supervisor.py

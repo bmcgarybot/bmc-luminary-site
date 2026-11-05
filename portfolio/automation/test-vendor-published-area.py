@@ -161,6 +161,22 @@ class Tests(unittest.TestCase):
             with self.subTest(description=description),self.assertRaises(ValueError):
                 parse(DOCUMENT+'<script type="application/ld+json">'+json.dumps(obj)+'</script>')
 
+    def test_affirmative_extension_idiom_not_withdrawn_but_real_exclusion_remains(self):
+        doc=DOCUMENT.replace('We provide commercial pressure washing for business properties.',
+            "We provide commercial pressure washing and that doesn't stop with our commercial clients.")
+        self.assertTrue(auto_evidence_valid(parse(doc),SECRET))
+        with self.assertRaises(ValueError):parse(doc+'<p>We do not serve Prescott.</p>')
+        with self.assertRaises(ValueError):parse(doc.replace("doesn't stop with our commercial clients.","doesn't stop with our commercial clients, but we no longer provide pressure washing."))
+
+    def test_explicit_county_including_city_cleaning_offer_is_service_area(self):
+        candidate=dict(CANDIDATE,category_key='commercial_cleaning',category_label='Commercial cleaning')
+        doc=DOCUMENT.replace('commercial pressure washing','commercial cleaning').replace(
+            'We serve Prescott, Prescott Valley and Chino Valley, Arizona.',
+            'We proudly offer our deep-cleaning services to all of Example County including Prescott and Prescott Valley, Arizona.')
+        self.assertTrue(auto_evidence_valid(parse(doc,candidate),SECRET))
+        with self.assertRaises(ValueError):parse(doc.replace('Prescott and Prescott Valley','Other City'),candidate)
+        with self.assertRaises(ValueError):parse(doc.replace('We proudly offer','We do not offer'),candidate)
+
     def test_foreign_and_blocked_source_and_missing_digest_rejected(self):
         for url,digest in (('https://yelp.com/biz/example','a'*64),(URL,'bad')):
             with self.subTest(url=url),self.assertRaises(ValueError):parse_vendor_published_area(CANDIDATE,url,DOCUMENT,digest,SECRET)

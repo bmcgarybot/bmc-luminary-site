@@ -81,6 +81,21 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   with self.assertRaises(ValueError):scope.validate(self.grant,SECRET,**dict(self.binding,service_key='pressure_washing'))
   with self.assertRaises(ValueError):scope.validate(dict(self.grant,category_keys=['restaurants']),SECRET,**self.binding)
   with self.assertRaises(ValueError):scope.from_fresh(self.vendor,dict(self.focus,category_keys=['hotels_motels']),self.receipt,SECRET)
+ def test_explicit_positive_cleanout_language_and_service_headings(self):
+  doc="<h2>Junk removal</h2><p>We help property managers with full property cleanouts so you don't have to.</p><p>Junk removal includes office and commercial cleanouts.</p>"
+  focus=api.source_focus(doc,'junk_hauling')
+  self.assertEqual(focus['category_keys'],['insurance_professional','property_management'])
+  self.assertEqual(scope.categories(focus,'junk_hauling'),['insurance_professional','property_management'])
+  focus=api.source_focus('<h4>Office and Retail Item Haul-Away</h4>','junk_hauling')
+  self.assertEqual(focus['category_keys'],['insurance_professional','retail'])
+  self.assertEqual(scope.categories(focus,'junk_hauling'),['insurance_professional','retail'])
+  for doc in ('<h2>Commercial junk removal</h2>',
+              '<h4 hidden>Office and Retail Item Haul-Away</h4>',
+              '<footer><h4>Office and Retail Item Haul-Away</h4></footer>',
+              '<section class="testimonials"><h4>Office and Retail Item Haul-Away</h4></section>',
+              '<h4>We sell junk removal equipment for property managers</h4>',
+              "<p>We do not serve property managers for junk removal so you don't have to.</p>"):
+   with self.subTest(document=doc),self.assertRaises(ValueError):api.source_focus(doc,'junk_hauling')
  def test_actual_copy_path_wave_fixed25_and_no_unscoped_junk_copy(self):
   self.setup();ids=[str(r['candidate_id']) for r in self.rows]
   p=dict(version=VERSION,state='approved',pack_count=25,amount_cents=14900,service_key='junk_hauling',email='junk@example.test',business_name=self.vendor['business_name'],market='Phoenix',source_url=self.url,target_id='fixture-target',scope=self.focus,candidate_ids=ids,sample_ids=ids[:5],nonexclusive=True,includes_free_five=True,expires_at=(self.now+timedelta(days=1)).isoformat())

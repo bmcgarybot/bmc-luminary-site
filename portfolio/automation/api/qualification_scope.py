@@ -16,8 +16,8 @@ TREE_SECTORS=(
 TREE_ALLOWED={key for _,key,_ in TREE_SECTORS}
 JUNK_SECTORS=(
     (r'property managers?|property management(?: companies)?|real estate agents?|realtors?|apartment communities', 'property_management', 'property management'),
-    (r'offices|office buildings', 'insurance_professional', 'office'),
-    (r'retail stores|retail businesses', 'retail', 'retail'),
+    (r'offices|office buildings|office (?:and commercial )?cleanouts?|office furniture|office(?: and retail)? item haul[- ]away', 'insurance_professional', 'office'),
+    (r'retail stores|retail businesses|retail item haul[- ]away', 'retail', 'retail'),
     (r'warehouses|industrial facilities', 'warehouses_industrial', 'warehouse'),
     (r'hotels|resorts', 'hotels_motels', 'hotel'),
 )

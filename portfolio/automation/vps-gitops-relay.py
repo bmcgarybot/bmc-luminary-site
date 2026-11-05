@@ -16,6 +16,8 @@ Security model:
 from __future__ import annotations
 
 import argparse
+import fcntl
+from contextlib import contextmanager
 import base64
 import hashlib
 import json
@@ -561,6 +563,55 @@ def admin_get(path: str, timeout: int = 120):
         raise RelayError(f"local admin GET {path} failed: {exc}") from exc
 
 
+WATCHDOG_CONTROL_ACTIONS=frozenset({'growth_launch_disable','growth_owner_preview_approve','growth_launch_enable'})
+
+@contextmanager
+def watchdog_control_maintenance(action,lock_path=None,acquire_timeout=30):
+    """Only actual relay control execution uses this; deploy owns its own lock."""
+    if action not in WATCHDOG_CONTROL_ACTIONS:
+        yield;return
+    path=Path(lock_path) if lock_path is not None else Path.home()/'.local/state/bmc-watchdog/maintenance.lock'
+    path.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
+    deadline=time.monotonic()+min(30,max(0,acquire_timeout))
+    with path.open('a') as lock:
+        os.chmod(path,0o600)
+        while True:
+            try:
+                fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB);break
+            except BlockingIOError:
+                if time.monotonic()>=deadline:raise RelayError('Watchdog maintenance lock unavailable; control not executed')
+                time.sleep(min(.1,max(0,deadline-time.monotonic())))
+        try:yield
+        finally:fcntl.flock(lock,fcntl.LOCK_UN)
+
+def execute_request(req):
+    # Keep direct execute() unit fixtures free of host state/home writes.
+    # Never wrap deploy_update: deploy-update.sh already takes this same lock.
+    with watchdog_control_maintenance(req['action']):return execute(req)
+
+def reconcile_owner_release():
+    """Apply hold release to running containers while every send switch stays OFF."""
+    command=['docker','compose','--env-file',ENV_FILE,'up','-d','--force-recreate','ops_api','scheduler','webhook_proxy']
+    off={key:'false' for key in ('OUTREACH_ENABLED','BUYER_OUTREACH_ENABLED','GROWTH_OUTREACH_ENABLED')}
+    try:
+        if run(command,timeout=300).returncode!=0:raise RelayError('restart_failed')
+        for attempt in range(30):
+            if run(['curl','-fsS','--max-time','2','http://127.0.0.1:8000/health'],timeout=3).returncode==0:break
+            time.sleep(1)
+        else:raise RelayError('health_unavailable')
+        status=admin_post('/api/admin/growth-status',timeout=30)
+        flags=status.get('outreach_switches',{})
+        if status.get('owner_launch_hold_active') is not False or any(flags.get(key) is not False for key in off):raise RelayError('runtime_hold_or_switch_mismatch')
+        if any(str(app_env().get(key,'')).strip().lower()!='false' for key in off) or app_env().get('BMC_OWNER_LAUNCH_HOLD','true').strip().lower()!='false':raise RelayError('configured_hold_or_switch_mismatch')
+        return {'runtime_reconciled':True,'owner_launch_hold_active':False,'outreach_switches':{key:False for key in off},'sent':0}
+    except Exception:
+        # Authorization history stays intact; fail closed in configuration and
+        # attempt to reconcile that safe state before reporting a control error.
+        set_env_values(dict(off,BMC_OWNER_LAUNCH_HOLD='true'))
+        try:restored=run(command,timeout=300).returncode==0
+        except Exception:restored=False
+        raise RelayError('Owner release runtime reconciliation failed; hold restored ON and all outreach OFF; safe runtime restart '+('submitted' if restored else 'requires operator review')) from None
+
 def execute(req: dict) -> dict:
     action = req["action"]
     args = req.get("args") or {}
@@ -648,6 +699,7 @@ def execute(req: dict) -> dict:
             metadata["owner_release_authorization"]={"request_id":req["request_id"],"sha":sha,
                 "wave":cohort["wave"],"target_count":len(configured),"outreach_enabled":False}
         set_env_values(changes)
+        if args:metadata["owner_release_runtime"]=reconcile_owner_release()
         metadata["outreach_gate"]=state
         metadata["approved_sha"]=sha
         stdout=json.dumps({"ok":True,"approved_sha":sha,"message":"Owner preview approved for this exact deployed commit only."},indent=2)
@@ -1241,7 +1293,7 @@ def process_once() -> dict:
             if request_id != fallback_id:
                 raise RelayError("request_id must exactly match the JSON filename")
             validate_request(req)
-            result = execute(req)
+            result = execute_request(req)
         except Exception as exc:
             request_id = fallback_id
             result = failed_result(req, request_id, exc)

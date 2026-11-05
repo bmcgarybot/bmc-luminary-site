@@ -47,6 +47,14 @@ def city_in(value,market):
         for i in range(len(tokens)-len(city)+1)))
 
 
+def negative_claim(value):
+    # Exact additive idioms are not withdrawal claims. Retain every other
+    # negation in the same block so an actual exclusion cannot be laundered.
+    value=re.sub(r"\b(?:doesn['’]t|does not)\s+stop\s+with\b",'extends to',value,flags=re.I)
+    value=re.sub(r'\bnot only\b','also',value,flags=re.I)
+    return NEGATIVE.search(value)
+
+
 def contains_term(value,terms):
     return any(re.search(r'(?<!\w)'+re.escape(t)+r'(?!\w)',value,re.I) for t in terms)
 
@@ -116,7 +124,7 @@ def _geography(document,page,candidate,url):
         for entity in entities(obj):
             description=str(entity.get('description') or '')
             if CLOSED.search(description):raise ValueError('source_closed')
-            if NEGATIVE.search(description) and (city_in(description,candidate['market']) or contains_term(description,VENDOR_TERMS.get(candidate['category_key'],()))):
+            if negative_claim(description) and (city_in(description,candidate['market']) or contains_term(description,VENDOR_TERMS.get(candidate['category_key'],()))):
                 raise ValueError('structured_service_withdrawn')
             direct_country=entity.get('addressCountry')
             if isinstance(direct_country,dict):direct_country=direct_country.get('name')
@@ -183,7 +191,7 @@ def parse_vendor_published_area(candidate,url,document,digest,secret):
     az_visible=any(re.search(r'\b(?:AZ|Arizona)\b',text) for _,text in positive)
     for tag,text in positive:
         city=city_in(text,candidate['market'])
-        if NEGATIVE.search(text):
+        if negative_claim(text):
             if city:raise ValueError('service_city_withdrawn')
             if contains_term(text,terms):raise ValueError('service_withdrawn')
             continue
@@ -191,14 +199,16 @@ def parse_vendor_published_area(candidate,url,document,digest,secret):
             or any(re.search(re.escape(term)+r'\s+(?:equipment|machines|supplies|training|courses)\b',text,re.I) for term in terms))
         if contains_term(text,terms) and not supplier_claim and (tag in ('h1','h2','h3','h4','h5','h6') or re.search(r'\b(?:we|our|provides?|offers?|specializ|services|professional|commercial|mobile)\b',text,re.I)):
             service.append(text)
-        if city and (re.search(r'\b(?:serve|serves|serving|cover|covers|covering|service areas?)\b',text,re.I)
+        county_cleaning_offer=(candidate['category_key']=='commercial_cleaning'
+            and re.search(r'\b(?:we|our)\b[^.!?;]{0,70}\b(?:offer|provide|deliver)\b[^.!?;]{0,100}\bcleaning services\b[^.!?;]{0,180}\b(?:including|throughout|across|to|in)\b',text,re.I))
+        if city and (county_cleaning_offer or re.search(r'\b(?:serve|serves|serving|cover|covers|covering|service areas?)\b',text,re.I)
                      or (contains_term(text,terms) and re.search(r'\b(?:in|across|throughout|for)\b',text,re.I))):
             area.append(text)
     if not service:raise ValueError('positive_main_service_unproven')
     if not area or not (az_structured or az_visible):raise ValueError('explicit_city_arizona_service_area_unproven')
     # Negative city claims in excluded navigation/footer also cannot be overridden.
     for _,text,_ in page.blocks:
-        if city_in(text,candidate['market']) and NEGATIVE.search(text):raise ValueError('service_city_withdrawn')
+        if city_in(text,candidate['market']) and negative_claim(text):raise ValueError('service_city_withdrawn')
     phones={phone(m.group()) for m in PHONE.finditer(all_text)}|set(page.phones)
     phones.discard('')
     if len(phones)!=1:raise ValueError('single_public_business_phone_required')

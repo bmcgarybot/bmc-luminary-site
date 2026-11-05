@@ -96,12 +96,21 @@ def source_focus(document,service_key=None):
     if service_key=='junk_hauling':
         from qualification_scope import JUNK_SECTORS
         parser=PressureBlocks();parser.feed(document);parser.flush()
+        # A self-contained visible service heading can name an actual offering
+        # (e.g. office item haul-away), without borrowing a distant heading's
+        # context for unrelated paragraphs or navigation/testimonials.
+        from vendor_published_area import VisiblePage
+        visible=VisiblePage();visible.feed(document)
+        blocks=list(parser.blocks)+[('',text.lower()) for tag,text,excluded in visible.blocks
+            if not excluded and tag in ('h1','h2','h3','h4')]
         categories=set();terms=[];excerpts=[]
-        for heading,text in parser.blocks:
+        for heading,text in blocks:
             context=heading+' '+text
-            if not re.search(r'\b(?:junk (?:removal|hauling)|(?:estate|property|office|commercial|business) cleanouts?)\b',context):continue
+            context=re.sub(r"\bso you (?:don['’]t|do not) have to\b",'for your convenience',context)
+            if not re.search(r'\b(?:junk (?:removal|hauling)|(?:estate|property|office|commercial|business) cleanouts?|haul[- ]away)\b',context):continue
             if re.search(r"\b(?:no longer|exclude[ds]?|excluding|do not|does not|don['’]t|doesn['’]t|not|never|except|unavailable|discontinued|withdrawn|residential only|only residential|for sale|equipment sales|training only)\b",context):continue
             if re.search(r'\bno (?:commercial|business|office|retail|property|warehouse)\b|\bresidential\b[^.!?;]{0,30}\bonly\b',context):continue
+            if re.search(r'\b(?:sell|sells|selling|supplier)\b|\bjunk removal (?:equipment|training|courses)\b',context):continue
             for pattern,key,term in JUNK_SECTORS:
                 match=re.search(r'\b(?:'+pattern+r')\b',text)
                 if match and key not in categories:
