@@ -1,0 +1,24 @@
+{
+  "action": "api_research_run",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-05T04:49:24.562195+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "git_commit_before": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "8f2a42cfde41fa7e7ccbf91ed5893f4da642dbb7",
+  "request_id": "bmc-api-pilot-20261105T044813Z",
+  "request_sha256": "19d8b0c501b4db4c7c57d6952f18a9e6dd083c22195c830b2f6589449093c4a6",
+  "started_at": "2026-11-05T04:49:11.551584+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"research_partial\",\"request_id\":\"bmc-api-pilot-20261105T044813Z\",\"verified_count\":0,\"native_primary_verified_count\":0,\"qualified_reserve_count\":null,\"raw_candidate_count\":14,\"held_count\":4,\"private_report\":\"/home/ubuntu/.local/state/bmc-api-research/bmc-api-pilot-20261105T044813Z/report-private.json\",\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":3.0,\"available_usd\":7.0,\"missions\":1,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"outreach_sent\":0},\"outreach_sent\":0,\"offer_ready\":false}\n",
+  "version": 1
+}
