@@ -1,0 +1,24 @@
+{
+  "action": "api_research_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T04:48:02.076867+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "git_commit_before": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "1ffa82f3c8af90604236e84aff20592a908be733",
+  "request_id": "bmc-api-status-20261105T044657Z",
+  "request_sha256": "b5331bd09ab25cafa48f13a52e68ee9e536be618b4421b47a4ca0e02708063cc",
+  "started_at": "2026-11-05T04:48:01.949073+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"pilot_status\",\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":0.0,\"available_usd\":10.0,\"missions\":0,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"outreach_sent\":0}\n",
+  "version": 1
+}
