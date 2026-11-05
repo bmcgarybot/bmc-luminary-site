@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:31:03.353197+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "0ae521f11ca1d453cf9ac156eb491d5c007c13c1",
+  "request_id": "bmc-recovery2-packet-junk-phoenix-1-20261105T063006Z",
+  "request_sha256": "dee96694e07e0f8c7810e29fd691ee5ea0b98b2ea143eed936b716f346a2fde9",
+  "started_at": "2026-11-05T06:31:02.867409+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-recovery2-packet-junk-phoenix-1-20261105T063006Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"x9g/fZi/SkluFShD5eXGifBWgSceA1gqoL33cIN1ZupAt9xEsUhg7pEyoy5s1yf82ejpJuwSs/zfJQEbv1V+m4pyUHiylc2B36bxYSoYwdNC6o3MeLdW4qkyfpWFq27s7gssir1VCJbFbxUVuYSn8KcOrZTLZkYZzOOsYSTlKCy0o3bxRXL8xCZptTaHRX12xuwwdrL4GliYccqLjmH9NqQWRHz35NChrsew5022c6tg4zmCb2g60+J0lc52YHKusrdCLt3+kof7mGaAcMz/UVoGIMF8YkASW9rDn0MiZMybT30ec1yWRVOU++n28Y5eEPtKoASlQF0pPYzQmVOCxzgpKnurOCDNFa9U8MeDQQCzzMvpp8LJ9V07TqKY2ss3n1kTz6ENf2OjJxsFt9EVhWtZPCrmvPv4mPnV0w+kUfiVsCx3U0hBfZ3K37M/BFVYCR3Y7j3vUiZjt/oRchuRHv9spDXWHImuM1NVyVodhKE2CdtVoUM33RPctIx1bEHG\",\"nonce\":\"rXELNM9AhkQdZZoW\",\"ciphertext\":\"EZgAGI1AUOZVSOymtUJfxvEZcd1ChC0ZZ08j9j8N4P+KJ50Wgls9B85JzhxBCJ063kyUkvBX9M9P1WO82lZeJSsdKVES68niuC+3oVDGkFhe5tg8mnVz8g3YQI5Ol923Q3VPQjm/8UmZAI90iU03FTj3uAifs2bqCkjeQP5Kk79Qt46z0SG5QzfkrqclA1uSVd3S/+c8R/aEi5gTMfHNTtKNae5OC9TTZ8mtgf8JGJhPK1heUN8TL2keWma5jD3OeML86y5ELzBnY7Y6Lxba/R74ZjIMBwm994W6OHLGb02fZwanpvZHL36PHoSAShgctFntTUjUNKiB9y7X3EyvGM8mjxHoRBcoXOfZ1Xb8OMNRC9XqgSMiKzaZ0EL4dEnwC1dWc7y4M9gjaMQsWvaFH9ieHsJyyTnM/CiENRhhZ9hv4ZAM77/lW8O02nFxVugo9YRYWOCNkqK4innvB+BGSto5/M6570EwAJrFB43ah9K8JKg=\"}",
+  "version": 1
+}
