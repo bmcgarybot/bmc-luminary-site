@@ -3023,6 +3023,7 @@ async def growth_record_exposures(conn,rows,recipient_key,service_key,delivery_k
           r.get("candidate_id"),delivery_kind,delivery_ref,status)
 
 async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None,recipient_key="",delivery_kind="free",recipient_business_key="",_qualification_scope=None,_qualification_diagnostics=None):
+    from official_research import NATIVE_VERSIONS
     categories=growth_selected_categories(service_key,ideal_customer,exclusions)
     if _qualification_scope is not None:
         from qualification_scope import validate
