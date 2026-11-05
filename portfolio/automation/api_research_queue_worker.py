@@ -7,7 +7,7 @@ Uses the existing private pilot ledger and existing cryptographic importer.
 """
 import argparse,fcntl,json,os,sqlite3,subprocess,sys
 from contextlib import contextmanager
-from datetime import datetime,timezone
+from datetime import datetime,timezone,timedelta
 from pathlib import Path
 import api_research_pilot as pilot
 
@@ -98,7 +98,16 @@ class Queue:
             streak+=1
         live=worker_active(self.root) if unresolved else False
         stop=failed[-1][5] if failed else (('running_or_unresolved_job' if live else 'orphaned_running_job') if unresolved else None)
-        if not stop and streak>=3:stop='consecutive_no_progress'
+        next_attempt_at=None
+        if not stop and streak>=3:
+            if ledger.status()['cap_usd']<=10:stop='consecutive_no_progress'
+            else:
+                # New distinct missions may resume after bounded backoff. Preserve
+                # all failed attempts; uncertain paid/import work still stops above.
+                finished=self.db.execute('select finished from jobs order by job_no desc limit 1').fetchone()[0]
+                delay=min(21600,1800*(2**min(4,(streak-3)//3)))
+                next_attempt_at=(datetime.fromisoformat(finished)+timedelta(seconds=delay)).isoformat()
+                if datetime.now(timezone.utc)<datetime.fromisoformat(next_attempt_at):stop='no_progress_cooldown' 
         if not stop and (ledger.status()['cap_usd']<=10 and self.lifetime_count(ledger)>=MAX_JOBS):stop='lifetime_job_limit'
         budget=ledger.status()
         if not stop and round(budget['available_usd']*1e6)<MIN_AVAILABLE_MICRO:stop='insufficient_next_phase_reserve'
@@ -106,7 +115,7 @@ class Queue:
             'lifetime_attempts':self.lifetime_count(ledger),'queue_jobs':len(rows),'completed_jobs':sum(row[2]=='completed' for row in rows),
             'verified_sources':sum(row[3] or 0 for row in rows),'inserted_inventory':sum(row[4] or 0 for row in rows),
             'stop_reason':stop,'consecutive_no_progress':streak,'source_recovery_after_job':recovery_after,'last_job_reason':rows[-1][5] if rows else None,
-            'worker_active':live,'needs_help':bool(failed or streak>=3 or stop in ('insufficient_next_phase_reserve','lifetime_job_limit','orphaned_running_job')),'budget':budget,'outreach_sent':0,'customer_actions':False}
+            'next_attempt_at':next_attempt_at,'worker_active':live,'needs_help':bool(failed or (streak>=3 and ledger.status()['cap_usd']<=10) or streak>=6 or stop in ('insufficient_next_phase_reserve','lifetime_job_limit','orphaned_running_job')),'budget':budget,'outreach_sent':0,'customer_actions':False}
     def claim(self,ledger):
         self.db.execute('begin immediate')
         try:
