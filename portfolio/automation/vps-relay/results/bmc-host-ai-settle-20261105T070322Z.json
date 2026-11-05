@@ -1,0 +1,24 @@
+{
+  "action": "api_research_settle",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T07:04:12.025610+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "git_commit_before": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "26a2763221f1b3a5a114e8adf9f851a51aaba54a",
+  "request_id": "bmc-host-ai-settle-20261105T070322Z",
+  "request_sha256": "8bb38974b5f54543629dc199ea4d5e93fd7f845020ffbf11f4b33c5f1052adea",
+  "started_at": "2026-11-05T07:04:11.858612+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"completed_grounded_settled\",\"aggregate_upper_usd\":0.078748,\"history_reset\":false,\"outreach_sent\":0,\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":1.078748,\"available_usd\":8.921252,\"committed_upper_usd\":1.078748,\"original_reservation_amount_usd\":15.0,\"reconciliation_credit_usd\":13.921252,\"retained_completed_calls\":5,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.0,\"missions\":3,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0}}\n",
+  "version": 1
+}
