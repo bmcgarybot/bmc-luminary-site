@@ -1,0 +1,21 @@
+{
+  "action": "refresh_uncontacted_vendor",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:26:42.263112+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "b024cfc1c4facdec319a26c190d5d60e8fa2bca4",
+  "request_id": "bmc-grounded-refresh-onestop-20261105T062537Z",
+  "request_sha256": "353e4877aeac1ba4c3f1866e8abbc5df2cb7fa8bed83fcf6187e440dd7db1335",
+  "started_at": "2026-11-05T06:26:41.242712+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"bmc-grounded-refresh-onestop-20261105T062537Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"wfGRWgXerxTo1QUD0ogMeYOeFeGcg/t16nn7VfAS2y1Vx1q5i5LlFKRQ+vL/sgpIEUSpduRWU26BjUg16sTCPpsrdBwgsWQRiGuDxzKj/vp08zqwMj85HwhLtANhG1SMIwmz8VkErTULn3tM1MmpJdDW8clPpAZzsN+sF7+LCrOIUA4+NLcNSX6hD+wg/VG8PT6vdpJeVa++gqC5JPP+W3g7j2vAI0ewsFFZoGnM849RpahkJ3Fx8d1KjQr4RJJrZebKlqVM2mfldo9ZLR2+fNifyiyQotw3+r4+iA62xUuB/ztuszo+pnQzbglZK9gwSuuefCs4xZNj6jQv7bRy3PLMYacG8MUMVKHIWNTpR7ZcVCMPtdjr9ccKAbyaT4wfm3X1dizS5MZqCRljPhwxNaFpRm2vQjSdGcu49NRo6xGpffZVLZbf1IR8lg7eh4/B3mOSXmBWvusNw5bzjqvgc6VVY1iQTiI7ozUVViyUAyLSuL5peBCriA5uU0mKMFoR\", \"nonce\": \"FHiA9VNyuSwEGEt+\", \"ciphertext\": \"tcS4IsRxabNYrc2X0GHT4wwFfDGXkCssDwpQiMW2HjY8zt43tOJ44emA8KYrbpVXz1BcQJYc4r7n1DLhu9qsWV0CfiDoa1LCIJli892aY3WtWDt9NtqxkNX7FYibxzfuLFEoK4+HLmOyX+PuUAV2cNDQ2oCdUXQuS9GOGtjONzoGAcTpQ9RfaVxfj3l0pdxxMMVLwgnAmuCAWq4rv559gLCO9xHYOWrDZdi5FVja/86yBtxCTyXbS8Wl1Ep8DzUTLgGIEgflrIQ45xqjl2ZtX2ChtDBftJ4vfpyeb+IH1P9PyjO86Afafav/bD9yBjtXSkn+2XP/R0CgMsPE5jc74sE9BVNouUEx/JVUD6OxdAi+zg84ve+kOtX/F/soINj4CRrO1g7z+t2HPeipvYXok0hBREE7nj3KXOjLGm0+zTmZncX9wJd/Mc2MvgRP2DUnisefW+vAIa9I+tgXdwVdZUWXYjwOIQ==\"}",
+  "version": 1
+}
