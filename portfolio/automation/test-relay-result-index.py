@@ -77,4 +77,16 @@ class Tests(unittest.TestCase):
                 second=G['process_once']();self.assertEqual(second['uploaded_cached'],1)
                 self.assertEqual(path.read_bytes(),before);self.assertEqual(len(uploads),2)
 
+    def test_cached_success_survives_remote_read_failure(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=pathlib.Path(d);results=root/'results';results.mkdir()
+            path=results/'saved-success.json';path.write_text('{"request_id":"saved-success","status":"success"}')
+            before=path.read_bytes()
+            def unavailable(*args):raise NS['RelayError']('GitHub HTTP 500')
+            with patch.dict(G,STATE_DIR=root,LOCAL_RESULTS=results,list_remote_result_ids=lambda:set(),
+                list_requests=lambda:[{'name':'saved-success.json'}],remote_result_exists=unavailable,
+                execute_request=lambda req:self.fail('No repeated action'),run_due_research_refreshes=lambda:{}):
+                stats=G['process_once']()
+            self.assertEqual(path.read_bytes(),before);self.assertEqual(len(stats['errors']),1)
+
 if __name__=="__main__":unittest.main()

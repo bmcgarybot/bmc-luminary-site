@@ -1372,7 +1372,7 @@ def process_once() -> dict:
         try:
             # Keep a fresh per-request check for apparently pending work, while
             # historical acknowledgments need no repeated network round trips.
-            if fallback_id in known_results or remote_result_exists(fallback_id):
+            if fallback_id in known_results:
                 known_results.add(fallback_id)
                 stats["skipped_remote_result"] += 1
                 continue
@@ -1385,6 +1385,10 @@ def process_once() -> dict:
                         stats["uploaded_cached"] += 1
                 except Exception as exc:
                     stats["errors"].append({"request_id":fallback_id,"upload_error":redact(str(exc))})
+                continue
+            if remote_result_exists(fallback_id):
+                known_results.add(fallback_id)
+                stats["skipped_remote_result"] += 1
                 continue
 
             req = load_request(item)
