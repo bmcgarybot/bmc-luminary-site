@@ -12,7 +12,7 @@ class Tests(unittest.TestCase):
  def test_prepare_status_and_run_use_fixed_commands(self):
   for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_worker_status','--status'),('api_research_worker_start','--enable'),('api_research_worker_stop','--disable'),('api_research_worker_resume','--resume-after-source-fix'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
    with self.subTest(action=action):
-    result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],10)
+    result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],50)
     self.assertLessEqual(calls[0][1]['timeout'],900)
  def test_reconciliation_rejects_arbitrary_credits(self):
   with self.assertRaises(ns['RelayError']):self.execute('api_research_reconcile',{'amount':0})
