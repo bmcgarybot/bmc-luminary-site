@@ -1,0 +1,16 @@
+{
+  "action": null,
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T16:11:33.995876+00:00",
+  "error": "GitHub API PUT https://api.github.com/repos/bmcgarybot/bmc-luminary-site/contents/portfolio/automation/vps-relay/results/bmc97-2-20261105T160312Z.json failed HTTP 500: ",
+  "exit_code": null,
+  "git_commit_after": "49086117867a31cdac909d1ce71a81e4769b847c",
+  "git_commit_before": "49086117867a31cdac909d1ce71a81e4769b847c",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bmc97-2-20261105T160312Z",
+  "started_at": "2026-11-05T16:11:33.995808+00:00",
+  "status": "rejected",
+  "version": 1
+}
