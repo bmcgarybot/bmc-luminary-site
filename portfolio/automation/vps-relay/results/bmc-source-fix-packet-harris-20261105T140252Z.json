@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T14:03:52.418890+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "git_commit_before": "aed40dd041f6f6b81f6ffd7f4f05158238855117",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "54e176bb3ffa03d122e048928d8d3d759256c750",
+  "request_id": "bmc-source-fix-packet-harris-20261105T140252Z",
+  "request_sha256": "e9f3c4032fca56a83f93a271c705a424e0f82fca6ef033c7a7ae9818bece203c",
+  "started_at": "2026-11-05T14:03:51.842943+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-source-fix-packet-harris-20261105T140252Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"pJLNcZ3drNXHiv+eYqNRpNf9tVVLED6qaWLxouCu25S1xu0GlvpJXaVsZ5UN8AEmcuwgbAzQRdC8Uq/pl0waGW0oggrqkKhJAFUml+hwSdrzJjr5T+JSO54Jcje//WwDW02PFU0YZzCGc86ML9WrWaiPcz7Du3kkZRefT1Hu4tpo3U+z3xqm6P2GGLbskazZvLQOufxxTCF+2172T2F10bj+AfYA8a/zN5p/JDAIaK0y/arAqQ2MsOTnDnU9GM46NspD/uk3CxkQAG8v6i3axmhtsl/AX4YXAe/5YCDSJADeTz2gsUJbATGc2hqYutMvgONJD95GydakuE8UrVuI3mY1CHC0wXj7Qr25+FpO6fUaMeQQI72BD8tb8Ch/64+P2kizhFQUXbbn0kX7Yi6HH6ER5v1F0lBWt76tDNEL+DBN0j/723UfCAPz7AU0SUxbRMr6/LhwoMFdNochxo+fTIpC1rDqPy03/FIRUTUzBG4+RreTj9bXCaFhP3b7f1xW\",\"nonce\":\"XrsX6QFuG4WEIhxN\",\"ciphertext\":\"/5rft95bVsMN3hYPS7ymltpxDCLQBSdP1AYfOQ9TQ852cPyfaNI/X2s7C1ZEOdif2dkVlmd/kfA5K9oAmzgtoG4lPU6u4pjfTSGyskj4/oYK0WmkVJgu2uKr10335dhxrg5XFuALhTq/Ltw5jDOIcEYK/cRkoZGwDKRfB63xyHkLQYM6xVi9f8MWUGN4hWgrI6NuR8K0u3qBNHyZaPA6mQ+EQvxmR8cX7c4n5oythpmKJ9aiXzh4k2s4gdyMh0Y9uIceyAS39RcJSjL9amQg4ok4wRSvTUVg1z4D7B8YPK4vPbJYSr/ORtL6RkU/LCIXG303oNc2xOa9D4M/7mbgDFoGCgNGsSeZ/F1IoQgZDF02LbpvD2OekNVojitY5fRi5VuSxzS2MCAZ7xNnQt20twuMm7tyP0DiqBIJwXiMPU3Sog1BDDv//1XwP8o1tfyE2JFgfnCPBe+UKtRdps7KA1MZ6prIoNQeF/wbdkwYvA==\"}",
+  "version": 1
+}
