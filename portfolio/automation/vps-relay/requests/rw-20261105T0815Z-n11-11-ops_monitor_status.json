@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-20261105T0815Z-n11-11-ops_monitor_status",
+  "action": "ops_monitor_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T08:15:00Z",
+  "expires_at": "2026-11-05T09:45:00Z"
+}
