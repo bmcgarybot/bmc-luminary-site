@@ -100,4 +100,17 @@ class Tests(unittest.TestCase):
 
     def test_extra_extraction_key_reject(self):
         with self.assertRaises(ValueError):verify(x={**X,'model_says_verified':True})
+    def test_semantic_address_descendants_do_not_join_unrelated_or_hidden_blocks(self):
+        actual='<a href="https://maps.app.goo.gl/one"><div>123 North Main Street,</div><div hidden>999 Fake Street,</div><div>Phoenix, AZ 85004</div></a>'
+        html=HTML.replace('<address>'+X['address_quote']+'</address>',actual)
+        row=verify(html);self.assertTrue(auto_property_visible_valid(row,SECRET,now=NOW))
+        split='<a href="https://maps.app.goo.gl/one"><div>123 North Main Street,</div></a><a href="https://maps.app.goo.gl/two"><div>Phoenix, AZ 85004</div></a>'
+        with self.assertRaises(ValueError):verify(HTML.replace('<address>'+X['address_quote']+'</address>',split))
+    def test_own_apartment_heading_is_direct_community_role(self):
+        name='Example Apartments';html=HTML.replace(C['business_name'],name).replace('<p>'+X['role_quote']+'</p>','')
+        c={**C,'business_name':name};x={**X,'business_name':name,'identity_quote':name,'role_quote':name}
+        row=verify(html,x=x,c=c);self.assertEqual(row['published_role'],'apartment_community')
+        self.assertTrue(auto_property_visible_valid(row,SECRET,now=NOW))
+        with self.assertRaises(ValueError):verify(html.replace('<h1>'+name+'</h1>','<h1>Near '+name+'</h1>'),x=x,c=c)
+
 if __name__=='__main__':unittest.main()

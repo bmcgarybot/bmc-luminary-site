@@ -97,4 +97,24 @@ class Tests(unittest.TestCase):
         result=w.run_once(self.root,enabled=True,handoff_confirmed=True,research=wrong_scope,importer=self.importer)
         self.assertEqual(result['stop_reason'],'research_scope_changed');self.assertEqual(self.import_calls,[])
 
+    def test_audited_source_recovery_preserves_jobs_and_is_single_use(self):
+        self.setup();self.verified=0;self.inserted=0
+        for i in range(3):self.once()
+        q=w.Queue(self.root);self.addCleanup(q.db.close);before=q.db.execute('select * from jobs').fetchall()
+        result=q.recover_source_fix(self.ledger);self.assertFalse(result['history_reset'])
+        self.assertEqual(q.db.execute('select * from jobs').fetchall(),before)
+        self.assertEqual(q.diagnostic(self.ledger)['consecutive_no_progress'],0)
+        self.assertEqual(q.recover_source_fix(self.ledger)['status'],'source_fix_already_recorded')
+        for i in range(3):self.once()
+        self.assertEqual(q.diagnostic(self.ledger)['stop_reason'],'consecutive_no_progress')
+        q.recover_source_fix(self.ledger)
+        self.assertEqual(q.diagnostic(self.ledger)['stop_reason'],'consecutive_no_progress')
+        self.assertEqual(q.db.execute('select count(*) from source_recoveries').fetchone()[0],1)
+        with self.assertRaises(sqlite3.IntegrityError):q.db.execute('delete from source_recoveries')
+    def test_source_recovery_cannot_retry_uncertain_work(self):
+        self.setup();q=w.Queue(self.root);self.addCleanup(q.db.close)
+        request=q.claim(self.ledger);q.finish(request,'research_uncertain',reason='uncertain')
+        with self.assertRaisesRegex(w.Held,'source_fix_recovery_not_eligible'):q.recover_source_fix(self.ledger)
+        self.assertEqual(q.db.execute('select count(*) from source_recoveries').fetchone()[0],0)
+
 if __name__=='__main__':unittest.main()

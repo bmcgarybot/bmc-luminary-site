@@ -42,6 +42,15 @@ def disable(directory=None):
  directory=pilot.private_dir(directory or root());value=read_state(directory)
  if value:value['enabled']=False;save_state(directory,value)
  return status(directory)
+def resume_source_fix(directory=None):
+ directory=directory or root();value=read_state(directory)
+ if value.get('enabled') is not True or not timer_active():raise pilot.Held('existing_research_driver_must_be_enabled')
+ ledger=pilot.Ledger(directory);queue=worker.Queue(directory)
+ try:
+  with worker.worker_lock(directory):recovery=queue.recover_source_fix(ledger)
+ finally:ledger.db.close();queue.db.close()
+ value['next_run_after']=0;save_state(directory,value)
+ return {**status(directory),'recovery':recovery}
 def run_due(directory=None,*,run=worker.run_once,clock=time.time):
  directory=directory or root()
  if not (directory/'relay-research.json').exists():return {'status':'relay_research_disabled'}
@@ -66,8 +75,8 @@ def run_due(directory=None,*,run=worker.run_once,clock=time.time):
    value['next_run_after']=clock()+300;save_state(directory,value)
  finally:os.close(fd)
 def main():
- parser=argparse.ArgumentParser();m=parser.add_mutually_exclusive_group(required=True);m.add_argument('--enable',action='store_true');m.add_argument('--status',action='store_true');m.add_argument('--disable',action='store_true');args=parser.parse_args();os.umask(0o077)
- try:print(json.dumps(enable() if args.enable else disable() if args.disable else status(),separators=(',',':')));return 0
+ parser=argparse.ArgumentParser();m=parser.add_mutually_exclusive_group(required=True);m.add_argument('--enable',action='store_true');m.add_argument('--status',action='store_true');m.add_argument('--disable',action='store_true');m.add_argument('--resume-after-source-fix',action='store_true');args=parser.parse_args();os.umask(0o077)
+ try:print(json.dumps(enable() if args.enable else disable() if args.disable else resume_source_fix() if args.resume_after_source_fix else status(),separators=(',',':')));return 0
  except Exception as exc:
   print(json.dumps({'status':'relay_research_held','reason':str(exc) if isinstance(exc,pilot.Held) else 'relay_research_unavailable','outreach_sent':0}));return 1
 if __name__=='__main__':raise SystemExit(main())

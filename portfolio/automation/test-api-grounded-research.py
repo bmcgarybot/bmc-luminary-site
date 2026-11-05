@@ -210,4 +210,23 @@ class Tests(unittest.TestCase):
             self.assertEqual(g.complete_usage(self.ledger,call,response,response['usage'],grounded=False),'full_reservation_retained')
             self.assertEqual(self.ledger.status()['reserved_usd'],3)
 
+    def test_search_rotation_continues_after_ten_reports(self):
+        self.setup()
+        for i in range(12):
+            request='synthetic-history-'+str(i);self.ledger.begin(request)
+            directory=p.private_dir(self.ledger.root/request);path=directory/'report-private.json'
+            p.write_private(path,{'mode':'grounded_recovery','verified':[]});self.ledger.finish(request,'research_partial',path)
+        coverage=g.prior_coverage(self.ledger)
+        self.assertEqual(coverage['prior_grounded_missions'],12)
+        self.assertIn(g.FOCI[0],g.discovery_request(coverage,12)['input'])
+        self.assertIn(g.FOCI[1],g.discovery_request(coverage,13)['input'])
+    def test_split_semantic_address_is_supplied_instead_of_city_only(self):
+        from property_visible_source import visible_property_blocks
+        html='<main><h1>Example Property LLC</h1><p>We provide property management.</p></main><footer><div>Phoenix, AZ 85004</div><a href="https://maps.app.goo.gl/example"><div>123 North Main Street,</div><div>Phoenix, AZ 85004</div></a><p>602-555-0101</p></footer>'
+        observed=visible_property_blocks(html);page,diagnostic=g.balanced_evidence_page(observed,'Example Property LLC')
+        self.assertTrue(diagnostic['evidence_text_shown']['address'])
+        self.assertTrue(any('123 North Main Street, Phoenix, AZ 85004' in text for text in page['blocks']))
+        page,diagnostic=g.balanced_evidence_page(visible_property_blocks('<div>Phoenix, AZ 85004</div>'),'Example')
+        self.assertFalse(diagnostic['evidence_text_shown']['address'])
+
 if __name__=='__main__':unittest.main()
