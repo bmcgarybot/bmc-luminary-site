@@ -1,0 +1,24 @@
+{
+  "action": "api_research_worker_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T07:08:42.408989+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "git_commit_before": "4c9d285edf2cb537b21ad1d05c8e646e339c4bb5",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "47404b6b1a2d8a9b5c2b7256b23e7b56a2385a31",
+  "request_id": "bmc-host-ai-activation-diagnostic-20261105T070753Z",
+  "request_sha256": "b5d3d41ddc19fa13e060f3fd85f69b949e1875de7f554c1e9ed2f7174b9cda06",
+  "started_at": "2026-11-05T07:08:42.193373+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"research_queue_service_status\",\"scope\":\"Phoenix/property_management\",\"service_user\":\"ubuntu\",\"timer_enabled\":false,\"timer_active\":false,\"fixed_units_match\":false,\"cadence\":\"5 minutes after prior job completes\",\"credentials_copied\":false,\"outreach_sent\":0,\"customer_actions\":false,\"queue\":{\"status\":\"research_queue_status\",\"scope\":\"Phoenix/property_management\",\"lifetime_job_limit\":40,\"lifetime_attempts\":3,\"queue_jobs\":0,\"completed_jobs\":0,\"verified_sources\":0,\"inserted_inventory\":0,\"stop_reason\":null,\"consecutive_no_progress\":0,\"last_job_reason\":null,\"worker_active\":false,\"needs_help\":false,\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":1.078748,\"available_usd\":8.921252,\"committed_upper_usd\":1.078748,\"original_reservation_amount_usd\":15.0,\"reconciliation_credit_usd\":13.921252,\"retained_completed_calls\":5,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.0,\"missions\":3,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0},\"outreach_sent\":0,\"customer_actions\":false}}\n",
+  "version": 1
+}
