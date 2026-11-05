@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T05:47:11.777541+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "git_commit_before": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "fc0af9566c9dc82b88311ec427af3169ca51d75a",
+  "request_id": "bmc-grounded-packet-harris-1-20261105T054619Z",
+  "request_sha256": "f0bd59b1b7d709228614fd008d1bd6992f0a7903f9bc4c449de927688b8a934d",
+  "started_at": "2026-11-05T05:47:11.107962+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-grounded-packet-harris-1-20261105T054619Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"402ARfDNI5QK85+hfIr+9MQOWbGlMJmeAnfJNLniTTLJ1fjh8Emyvq+zWjaqMMpgbBD8YWqv3/RK2jRpNuHgShkEzzW24qrsmEOTXzd+IeuzJ1LOsevROfr/sX3MOeJBoW9rIqN7xh5lXwJ973PO7LQ2+bPVJA0FO7GV5wWPhk5tEZ4o+obOQjFLeBM3xLlr9J7liYst6vUM2+y41uKcYuwgogBcqkGQY4gCsnnJBNsFKMuD2ItZxdhSlI8egjLL+VB8XY8l4VzOsa51gQj0Mavh8ttK0VtWhUBDGEXODGnVA6cedvpIfHp267AsO+GQh6ut6/i681+3BxGWtJ0wkLfvtupaQ1ec/KYx0oaQ4DSoRtzR0nET2jKQf5ybboNVR4h8pUV8sRblR9P/t5q9t13aL7H7BNXHaxrEErVRWVs2mn+XaN2+Bp5/sWDZ8GImt/pkBx79JyAK4ewReCUWkdvwgFfYJeiepTjELyduPKxhMG8rx1Mn7Yw4BYfRdy2D\",\"nonce\":\"bkWngFjnasnPDYkS\",\"ciphertext\":\"Wy4jrDYcO+xDzp/ZDxxJXfMdyRx+DmsUHhQT0s4zPP3bQPTUnr7PU5Fq9ULomRYKE4tfxFaewZr16N0nEVMrO5/9oinx45eQcy4NBx8MCKqFshCoPaHCgvFeiNSElkrBFImq1JCAhODpx/Y4oHgMR51cgxzU8ivmGDR2UxrPKUXv7szt2ST4YhwpVHc70buCYjdEILUo/Dn+TrYMngLGw60epGLBJb3NL8bTQuyL/Y2i33QZ9jhMDiEjX18Zi+uzn7MrPJIUjM4RHxXC3bFHut1OldNM/DuTcXmFM+r3508qw9YyRtQn2tMVhmOy5eFikd+/+Jh94rmak1QMM5rjBT8hVrqJs3o/yTSisBdsKg8dyt5qbCVHHKtspywsSoqIHAoIZy+6tux/K8aBdYqzGe9yxwvsHgWPVbz4Pww3mNlXIMW5K+wYU9HTH5TZ/tK5WAuGFYiqTlZ7wIVZvBDzQo3sYkiqoDYcvwjEW6ea\"}",
+  "version": 1
+}
