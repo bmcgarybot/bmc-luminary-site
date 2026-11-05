@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "a-fixed-junk-25-20261105T044236Z", "action": "private_held_packet", "args": {"candidate_id": "00bfbc43-d669-4170-b3fe-ebb606adbf2d", "pack_count": 25}, "allow_external_actions": false, "created_at": "2026-11-05T04:42:36.149426+00:00", "expires_at": "2026-11-05T05:42:36.149426+00:00"}
