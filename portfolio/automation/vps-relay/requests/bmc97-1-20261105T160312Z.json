@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "bmc97-1-20261105T160312Z",
+  "action": "deploy_update",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T16:03:12.375995+00:00",
+  "expires_at": "2026-11-05T17:03:12.375995+00:00",
+  "required_ci_sha": "49086117867a31cdac909d1ce71a81e4769b847c"
+}
