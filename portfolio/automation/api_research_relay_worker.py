@@ -31,7 +31,13 @@ def catalogue_status(directory):
  try:
   from api_catalogue_research import queue_status
   rows=queue_status(directory,seed=False)
-  return {'scope':'Phoenix/all_configured_services','categories':len(rows),'attempted_categories':sum(r[1]>0 for r in rows),'records':sum(r[4] for r in rows),'lanes':[{'service_key':r[0],'attempts':r[1],'last_request':r[2],'status':r[3],'records':r[4]} for r in rows]}
+  evidence_counts={}
+  if (directory/'catalogue.sqlite3').exists():
+   import sqlite3
+   db=sqlite3.connect(directory/'catalogue.sqlite3')
+   records=[json.loads(r[0]) for r in db.execute('select record_json from source_records')];db.close()
+   evidence_counts={'quote_rechecked_records':sum(r.get('quote_check_version')=='quoted-fragments-v2' for r in records),'source_checked_contacts':sum(r.get('evidence_status')=='advertised_service_contact' for r in records)}
+  return {'scope':'Phoenix/all_configured_services',**evidence_counts,'categories':len(rows),'attempted_categories':sum(r[1]>0 for r in rows),'records':sum(r[4] for r in rows),'lanes':[{'service_key':r[0],'attempts':r[1],'last_request':r[2],'status':r[3],'records':r[4]} for r in rows]}
  except Exception:return {'status':'catalogue_status_unavailable'}
 
 def catalogue_once(directory):

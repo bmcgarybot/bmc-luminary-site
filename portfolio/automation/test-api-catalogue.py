@@ -46,4 +46,29 @@ class Tests(unittest.TestCase):
    c.run_catalogue(ledger,'synthetic-catalogue-002',{'OPENAI_API_KEY':'fixture','OPENAI_BILLING_ATTESTED':'true'},api=again,fetch=lambda u:receipt)
    self.assertIn(url,calls[0]['input'])
    db=sqlite3.connect(Path(d)/'catalogue.sqlite3');self.assertEqual(db.execute('select count(*) from source_records').fetchone()[0],1);db.close();ledger.db.close()
+ def test_quote_formatting_without_accepting_missing_claims(self):
+  text='Backflow testing. Commercial repairs. Phoenix, AZ. Call (602) 555-1234.'
+  for quote in ('“Backflow testing”', '"Backflow testing"; “Commercial repairs”', '‘Phoenix, AZ’', '  Phoenix,   AZ  '):
+   self.assertTrue(c.quote_matches(quote,text),quote)
+  for quote in ('“Backflow testing”; “Licensed statewide”','“Backflow testing” and licensed statewide','“Phoenix … (602) 555-1234”','“not commercial repairs”',''):
+   self.assertFalse(c.quote_matches(quote,text),quote)
+ def test_cached_receipts_revalidated_without_network_or_ledger_changes(self):
+  import sqlite3,hashlib
+  import api_research_pilot as pilot
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);ledger=pilot.Ledger(root);before=ledger.status();c.queue_status(root)
+   directory=root/'bmc-catalogue-fixture';directory.mkdir();filename='a'*32+'.html'
+   raw=b'<p>Synthetic Auto glass Phoenix 6025551234</p>';(directory/filename).write_bytes(raw)
+   row={'service_key':'auto_glass','source_url':'https://synthetic.example/','business_name':'Synthetic','service_quote':'“Auto glass”','location_quote':'“Phoenix”','contact_quote':'“6025551234”','content_sha256':hashlib.sha256(raw).hexdigest(),'checked_at':'2026-11-05T18:00:00Z','receipt_file':filename,'missing_checks':['service_quote','location_quote','contact_quote'],'evidence_status':'research_incomplete'}
+   db=sqlite3.connect(root/'catalogue.sqlite3');db.execute('insert into source_records values(?,?,?)',('auto_glass',row['source_url'],json.dumps(row)));db.commit()
+   result=c.revalidate_cached(root);self.assertEqual(result['newly_source_checked'],1);self.assertEqual(result['api_calls'],0)
+   updated=json.loads(db.execute('select record_json from source_records').fetchone()[0]);self.assertEqual(updated['checked_at'],row['checked_at']);self.assertFalse(updated['offer_ready'])
+   self.assertEqual(c.revalidate_cached(root)['checked'],0);self.assertEqual(ledger.status(),before)
+   db.close();ledger.db.close()
+ def test_changed_cached_receipt_is_not_accepted(self):
+  import sqlite3
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);c.queue_status(root);directory=root/'bmc-catalogue-fixture';directory.mkdir();filename='b'*32+'.html';(directory/filename).write_text('changed')
+   db=sqlite3.connect(root/'catalogue.sqlite3');db.execute('insert into source_records values(?,?,?)',('auto_glass','https://synthetic.example/',json.dumps({'receipt_file':filename,'content_sha256':'0'*64})));db.commit()
+   result=c.revalidate_cached(root);self.assertEqual(result['checked'],0);self.assertEqual(result['receipt_unavailable'],1);db.close()
 if __name__=='__main__':unittest.main()
