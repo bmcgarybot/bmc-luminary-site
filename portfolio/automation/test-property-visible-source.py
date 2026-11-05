@@ -64,8 +64,18 @@ class Tests(unittest.TestCase):
     def test_cross_block_address_and_email_hidden(self):
         with self.assertRaises(ValueError):verify(HTML.replace(X['address_quote'],'123 North Main Street</address><address>Phoenix, AZ 85004'))
         with self.assertRaises(ValueError):verify(HTML.replace('hello@example.test','<span hidden>hello@example.test</span>'))
-    def test_multientity_and_negative_quote(self):
-        with self.assertRaises(ValueError):verify(HTML+'<address>456 South Other Street, Phoenix, AZ 85005</address>')
+    def test_multiple_company_offices_selected_exact_address(self):
+        second='456 South Other Street, Phoenix, AZ 85005'
+        document=HTML+'<h2>Example Property LLC second office</h2><address>'+second+'</address>'
+        first=verify(document)
+        self.assertTrue(auto_property_visible_valid(first,SECRET,now=NOW))
+        chosen=verify(document,x={**X,'physical_address':second,'address_quote':second})
+        self.assertEqual(chosen['physical_address'],second)
+        self.assertTrue(auto_property_visible_valid(chosen,SECRET,now=NOW))
+        for physical,quote in [('999 Invented Street, Phoenix, AZ 85004','999 Invented Street, Phoenix, AZ 85004'),(second,X['address_quote']),('456 South Other Street, Scottsdale, AZ 85251','456 South Other Street, Scottsdale, AZ 85251')]:
+            with self.subTest(physical=physical,quote=quote),self.assertRaises(ValueError):
+                verify(document+'<address>456 South Other Street, Scottsdale, AZ 85251</address>',x={**X,'physical_address':physical,'address_quote':quote})
+    def test_negative_quote_still_rejected(self):
         negative='We do not provide property management services.'
         with self.assertRaises(ValueError):verify(HTML+'<p>'+negative+'</p>',x={**X,'role_quote':negative})
     def test_publisher_contact_not_business(self):
