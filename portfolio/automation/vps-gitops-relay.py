@@ -74,7 +74,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume"}
+EXTERNAL_ACTIONS = {"growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
@@ -569,7 +569,7 @@ def admin_get(path: str, timeout: int = 120):
         raise RelayError(f"local admin GET {path} failed: {exc}") from exc
 
 
-WATCHDOG_CONTROL_ACTIONS=frozenset({'growth_launch_disable','growth_owner_preview_approve','growth_launch_enable'})
+WATCHDOG_CONTROL_ACTIONS=frozenset({'growth_scoped_launch_enable','growth_launch_disable','growth_owner_preview_approve','growth_launch_enable'})
 
 @contextmanager
 def watchdog_control_maintenance(action,lock_path=None,acquire_timeout=30):
@@ -827,6 +827,39 @@ def execute(req: dict) -> dict:
             raise RelayError("Review scope health check failed; prior configuration restored")
         stdout=json.dumps({"review_scope_configured":True,"wave":cohort["wave"],"target_count":len(requested),"owner_launch_hold_active":True,"outreach":assert_outreach_off(),"approved":False,"sent":0},indent=2)
         exit_code=0
+
+    elif action == "growth_scoped_launch_enable":
+        # Rolling release names only newly prepared recipients, never the original nine.
+        ids=args.get('target_ids')
+        if (set(args)!={'target_ids'} or not isinstance(ids,list) or not 1<=len(ids)<=25
+            or any(not isinstance(t,str) or not re.fullmatch(r'inventory:[0-9a-f-]{36}',t) for t in ids)
+            or len(set(ids))!=len(ids)):raise RelayError('Exact prepared targets required')
+        state=assert_outreach_off()
+        if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').lower()!='true':
+            raise RelayError('Preparation hold required before exact scoped release')
+        checked=admin_post('/api/admin/check-scoped-launch',body={'target_ids':ids},timeout=120)
+        if checked.get('ok') is not True or checked.get('target_ids')!=ids:
+            raise RelayError('Exact prepared recipients failed release check')
+        def recreate_scoped_runtime():
+            result=run(['docker','compose','--env-file',ENV_FILE,'up','-d','--force-recreate','ops_api','scheduler','webhook_proxy'],timeout=300)
+            if result.returncode:raise RelayError('Scoped release runtime restart failed')
+            for _ in range(30):
+                if run(['curl','-fsS','http://127.0.0.1:8000/health'],timeout=10).returncode==0:return
+                time.sleep(1)
+            raise RelayError('Scoped release API health failed')
+        try:
+            set_env_values({'BMC_OWNER_LAUNCH_HOLD':'false','GROWTH_OUTREACH_ENABLED':'true',
+                'GROWTH_OWNER_APPROVED_SHA':current_sha()})
+            recreate_scoped_runtime()
+            health=admin_post('/api/process-growth-health',timeout=120)
+            if not health.get('health_ok'):raise RelayError('Growth health failed')
+            first=admin_post('/api/process-growth-outreach',body={'target_ids':ids},timeout=180)
+            stdout=json.dumps({'enabled':True,'target_ids':ids,'first_send':first,'history_reset':False})
+            stderr='';exit_code=0
+        except Exception:
+            set_env_values({'BMC_OWNER_LAUNCH_HOLD':'true','GROWTH_OUTREACH_ENABLED':'false'})
+            recreate_scoped_runtime()
+            raise
 
     elif action == "growth_launch_enable":
         # Separate owner-controlled hold: technical/email approval never authorizes launch.

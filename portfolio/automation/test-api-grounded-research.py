@@ -229,4 +229,16 @@ class Tests(unittest.TestCase):
         page,diagnostic=g.balanced_evidence_page(visible_property_blocks('<div>Phoenix, AZ 85004</div>'),'Example')
         self.assertFalse(diagnostic['evidence_text_shown']['address'])
 
+    def test_completed_answer_without_search_evidence_is_bounded_zero_progress(self):
+        self.setup()
+        response=self.response({'candidates':[]});response['tool_usage']={'web_search':{'num_requests':2}}
+        result=g.run_grounded(self.ledger,'synthetic-no-search-evidence',self.config,api=lambda *a:response,fetch=lambda u:None)
+        self.assertEqual(result['status'],'research_partial');self.assertEqual(result['verified_count'],0)
+        self.assertEqual(self.ledger.status()['reserved_usd'],3)
+        self.assertEqual(self.ledger.status()['uncertain_calls'],0)
+        report=json.loads(Path(result['private_report']).read_text())
+        self.assertEqual(report['grounded_usage'],response['usage'])
+        self.assertEqual(report['openai_web_search_calls'],0)
+        self.assertEqual(report['gate_reason'],'grounded_tool_count_unproven')
+
 if __name__=='__main__':unittest.main()
