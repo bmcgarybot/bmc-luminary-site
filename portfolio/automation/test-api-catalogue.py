@@ -38,5 +38,12 @@ class Tests(unittest.TestCase):
    self.assertEqual(result['records'],1);self.assertEqual(result['preparation_packets'],1)
    report=json.loads(Path(result['private_report']).read_text());self.assertFalse(report['preparation_packets'][0]['customer_ready'])
    self.assertEqual(sum(row[1]>0 for row in c.queue_status(Path(d))),6)
-   self.assertLess(ledger.status()['reserved_usd'],1);ledger.db.close()
+   self.assertLess(ledger.status()['reserved_usd'],1)
+   import sqlite3
+   db=sqlite3.connect(Path(d)/'catalogue.sqlite3');db.execute('update lanes set attempts=1');db.commit();db.close()
+   calls=[]
+   def again(request,*args):calls.append(request);return response
+   c.run_catalogue(ledger,'synthetic-catalogue-002',{'OPENAI_API_KEY':'fixture','OPENAI_BILLING_ATTESTED':'true'},api=again,fetch=lambda u:receipt)
+   self.assertIn(url,calls[0]['input'])
+   db=sqlite3.connect(Path(d)/'catalogue.sqlite3');self.assertEqual(db.execute('select count(*) from source_records').fetchone()[0],1);db.close();ledger.db.close()
 if __name__=='__main__':unittest.main()
