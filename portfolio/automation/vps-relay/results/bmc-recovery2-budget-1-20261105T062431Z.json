@@ -1,0 +1,24 @@
+{
+  "action": "api_research_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:25:34.223679+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "34032596109efbe4e9b10e9d47f6a41627250a00",
+  "request_id": "bmc-recovery2-budget-1-20261105T062431Z",
+  "request_sha256": "766f110425ea9fa48c363bed71edab9fe2c4657c459f7d0c137fa967ebd4644a",
+  "started_at": "2026-11-05T06:25:34.099627+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"pilot_status\",\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":1.0,\"available_usd\":9.0,\"committed_upper_usd\":1.0,\"original_reservation_amount_usd\":9.0,\"reconciliation_credit_usd\":8.0,\"retained_completed_calls\":3,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.0,\"missions\":2,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0}\n",
+  "version": 1
+}
