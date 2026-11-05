@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-two-phx-authorize-20261105T144834Z", "action": "authorize_scoped_batch", "args": {"target_ids": ["inventory:03f2d033-347c-4dae-804d-cf1587dd0244", "inventory:e04f25cb-c4d9-42bd-94eb-19d801f1ae09"]}, "allow_external_actions": false, "created_at": "2026-11-05T14:48:34.884980+00:00", "expires_at": "2026-11-05T15:48:34.884980+00:00"}
