@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T12:36:24.869265+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "git_commit_before": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "92da5db5190b632d610efdef1785e19a7c4c804e",
+  "request_id": "bmc-morning-pack-junk-phoenix-20261105T123557Z",
+  "request_sha256": "a57b24d2ae8b247f0efbff21a861216f9f1103a3de3882a1b813641f459ed147",
+  "started_at": "2026-11-05T12:36:24.446902+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-morning-pack-junk-phoenix-20261105T123557Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"M3evdANV1GJvOwP0AttSqHHxgU8kqKZYmCGDwD6hieJleMC6m+aPFJsc4qZqlemdHs25w9/iAn1hZfRqrqunNVNfDAWd/atCI9UI/9SQdhbopLlePc4dsPmw1Lyp+aL9g/mZfJQS62F9eFWlOsTQVXNzyGC/UFtH4ps5HYVKnBLZg8ZpQSoXwm5HAmxnMwaT5BUOzpmEsM9nomcgEU+7YemCPXUIlINePpBGV8L0oUTrff8EWMFndUe4FAa7ASjJNF2JzbXcTia3r4ZdP/XOcmre4wPYdt8Ud5D/y0HHo6UgBDGqtxHjN41v2AStPamcvKuemy6VtzaKuTcAn4JibYTVoYFJK6WI31WTanDgAxnTMehP4oh2/4DqwsZAqX+LRA/LdWrKS+bD7PDYbYJuJ5yrFAVtUeBQkKijziP8J5ZM50neEx7q+uX6+VUqr+mC8CtpUYpZL70A1g/HrCyFuE64PN4ZlIFuefmkTjra2bbIAC2UH35mUyiRiP8hWw7s\",\"nonce\":\"ST6Iya/ZFLAgLixQ\",\"ciphertext\":\"lUuX48nlkQyhgKHPQCSs7t58lT7SaAboDDDizVBWyvOL2n2hPiAQS61Am1kAtS3MF9vXKR9QiMJP4rgFnam5gLM6u3bzmNxmPk8lzZnzpQuVxA2acIqKyIYvM6OgdRLrkt0V06Lp1d3b452kvkMQVne8TVAV+I2axH79jLa+fPtWWEM0AQ5oDu44L+jjM5tLeXooT8MTdSX8TZJ7iLWq8ajdY4fNNSXdXgvP+trWL0y9cO2sqRwnZR8TzMVhahYDqU3F3h8orGNWgCl2IEhnSE4MwnuNFq2q4sZ8yNZlNSXoQn2UGhS0Op+U4wVodHyoOP2QpH2k5NGiop9ehbcuzr3T9yXk2V58EZuG3LqeG6U/OB39+Gof+R6c8+D2hI50WLMCCPPFQF+osgww8yeOJwX/c5Y7HT86OI34Epv/Ic6ifN508ruIu7RcbHzIvnZFTxhA/dXE8ITn7MlwKsaUvD9srYlrTQu99QHK/8bxUl2Ih/hN\"}",
+  "version": 1
+}
