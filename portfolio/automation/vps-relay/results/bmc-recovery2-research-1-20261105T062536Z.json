@@ -1,0 +1,24 @@
+{
+  "action": "api_research_run",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-05T06:27:11.352046+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "bd5f67e521ded5e0bafc7278148f0379cc5756cc",
+  "request_id": "bmc-recovery2-research-1-20261105T062536Z",
+  "request_sha256": "86d1071f3570c6d702a5ccf1915a8c3711d36a972ae350713ec233f3bf3860cd",
+  "started_at": "2026-11-05T06:26:44.007503+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"research_partial\",\"request_id\":\"bmc-recovery2-research-1-20261105T062536Z\",\"native_primary_verified_count\":3,\"verified_count\":3,\"raw_candidate_count\":21,\"held_count\":13,\"private_report\":\"/home/ubuntu/.local/state/bmc-api-research/bmc-recovery2-research-1-20261105T062536Z/report-private.json\",\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":7.0,\"available_usd\":3.0,\"committed_upper_usd\":7.0,\"original_reservation_amount_usd\":15.0,\"reconciliation_credit_usd\":8.0,\"retained_completed_calls\":5,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":0.0,\"settled_upper_usd\":0.0,\"missions\":3,\"uncertain_calls\":0,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0},\"accounting_outcome\":{\"web\":\"full_reservation_retained\",\"extraction\":\"full_reservation_retained\"},\"offer_ready\":false,\"outreach_sent\":0,\"qualified_reserve_count\":null}\n",
+  "version": 1
+}
