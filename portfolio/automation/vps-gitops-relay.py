@@ -74,11 +74,11 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume"}
+EXTERNAL_ACTIONS = {"api_research_budget_50", "growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
-API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_worker_status", "api_research_worker_stop", "api_research_reconcile", "api_research_settle", "api_research_export", "api_research_import"}
+API_RESEARCH_ACTIONS = {"api_research_budget_50", "api_research_prepare", "api_research_configure", "api_research_status", "api_research_worker_status", "api_research_worker_stop", "api_research_reconcile", "api_research_settle", "api_research_export", "api_research_import"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS | API_RESEARCH_ACTIONS
 
 API_ACTIONS = {
@@ -733,6 +733,9 @@ def execute(req: dict) -> dict:
             source_id=args.get('source_request_id','')
             if set(args)!={'source_request_id'} or not isinstance(source_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,100}',source_id):raise RelayError('One existing completed private research report is required')
             command=['python3','./api_research_pilot.py','--settle-completed','--request-id',source_id];timeout=30
+        elif action == "api_research_budget_50":
+            if args:raise RelayError('Fixed owner-authorized total50 budget takes no arguments')
+            command=['python3','./api_research_pilot.py','--authorize-budget-50'];timeout=30
         elif action == "api_research_reconcile":
             if args:raise RelayError('Fixed audited pilot reconciliation takes no arguments')
             command=['python3','./api_research_pilot.py','--reconcile-20261105'];timeout=30
@@ -765,7 +768,7 @@ def execute(req: dict) -> dict:
             if cp.returncode:raise RelayError('API pilot action failed; inspect private VPS status, no secret published')
             stdout=cp.stdout;stderr='';exit_code=0
         metadata['customer_actions']=False
-        metadata['pilot_budget_ceiling_usd']=10
+        metadata['pilot_budget_ceiling_usd']=50
 
     elif action == "prepare_ops_configuration":
         if args:raise RelayError("Operational key preparation takes no arguments")

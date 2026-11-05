@@ -74,7 +74,7 @@ class Queue:
                     eligible=(report.get('request_id')==row[1] and report.get('gate_reason')=='grounded_tool_count_unproven'
                         and report.get('discovery_accounting_diagnostic',{}).get('response_status')=='completed'
                         and ledger.status()['uncertain_calls']==1)
-            if not eligible or ledger.status()['available_usd']<3 or self.lifetime_count(ledger)>=MAX_JOBS:raise Held('source_fix_recovery_not_eligible')
+            if not eligible or ledger.status()['available_usd']<3 or (ledger.status()['cap_usd']<=10 and self.lifetime_count(ledger)>=MAX_JOBS):raise Held('source_fix_recovery_not_eligible')
             last=self.rows()[-1][0]
             self.db.execute('insert into source_recoveries values(?,?,?,?)',(SOURCE_FIX_REVISION,last,'deployed_completed_answer_and_phase_budget_fix',now()))
             self.db.execute('commit');return {'status':'source_fix_recovery_recorded','after_job':last,'history_reset':False}
@@ -99,10 +99,10 @@ class Queue:
         live=worker_active(self.root) if unresolved else False
         stop=failed[-1][5] if failed else (('running_or_unresolved_job' if live else 'orphaned_running_job') if unresolved else None)
         if not stop and streak>=3:stop='consecutive_no_progress'
-        if not stop and self.lifetime_count(ledger)>=MAX_JOBS:stop='lifetime_job_limit'
+        if not stop and (ledger.status()['cap_usd']<=10 and self.lifetime_count(ledger)>=MAX_JOBS):stop='lifetime_job_limit'
         budget=ledger.status()
         if not stop and round(budget['available_usd']*1e6)<MIN_AVAILABLE_MICRO:stop='insufficient_next_phase_reserve'
-        return {'status':'research_queue_status','scope':SCOPE,'lifetime_job_limit':MAX_JOBS,
+        return {'status':'research_queue_status','scope':SCOPE,'lifetime_job_limit':MAX_JOBS if ledger.status()['cap_usd']<=10 else None,
             'lifetime_attempts':self.lifetime_count(ledger),'queue_jobs':len(rows),'completed_jobs':sum(row[2]=='completed' for row in rows),
             'verified_sources':sum(row[3] or 0 for row in rows),'inserted_inventory':sum(row[4] or 0 for row in rows),
             'stop_reason':stop,'consecutive_no_progress':streak,'source_recovery_after_job':recovery_after,'last_job_reason':rows[-1][5] if rows else None,
