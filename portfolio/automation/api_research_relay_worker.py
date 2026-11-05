@@ -26,7 +26,25 @@ def status(directory=None):
  enabled=value.get('enabled') is True and value.get('mac_driver_stopped') is True
  return {'status':'relay_research_status','driver':'existing_vps_relay_timer','driver_enabled':enabled,
   'timer_active':active,'driver_ready':enabled and active,'scope':worker.SCOPE,'cadence_seconds':300,
-  'last_driver_failure':value.get('last_failure'),'queue':diagnostic,'outreach_sent':0,'customer_actions':False}
+  'active_scope':'Phoenix/all_configured_services' if diagnostic['budget']['cap_usd']>10 else worker.SCOPE,'last_result':value.get('last_result'),'last_driver_failure':value.get('last_failure'),'queue':diagnostic,'catalogue':catalogue_status(directory),'outreach_sent':0,'customer_actions':False}
+def catalogue_status(directory):
+ try:
+  from api_catalogue_research import queue_status
+  rows=queue_status(directory,seed=False)
+  return {'scope':'Phoenix/all_configured_services','categories':len(rows),'attempted_categories':sum(r[1]>0 for r in rows),'records':sum(r[4] for r in rows),'lanes':[{'service_key':r[0],'attempts':r[1],'last_request':r[2],'status':r[3],'records':r[4]} for r in rows]}
+ except Exception:return {'status':'catalogue_status_unavailable'}
+
+def catalogue_once(directory):
+ ledger=pilot.Ledger(directory)
+ try:
+  if ledger.status()['available_usd']<3:return {'status':'catalogue_budget_wait'}
+  from datetime import datetime,timezone
+  import uuid
+  request_id='bmc-catalogue-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')+'-'+uuid.uuid4().hex[:8]
+  cp=subprocess.run(['python3',str(Path(__file__).with_name('api_research_pilot.py')),'--run-catalogue','--request-id',request_id],capture_output=True,text=True,timeout=780)
+  return json.loads(cp.stdout) if cp.returncode==0 else {'status':'catalogue_run_failed'}
+ finally:ledger.db.close()
+
 def enable(directory=None):
  directory=pilot.private_dir(directory or root())
  for name in ('openai.env','pilot.sqlite3'):
@@ -65,8 +83,12 @@ def run_due(directory=None,*,run=worker.run_once,clock=time.time):
   if clock()<value.get('next_run_after',0):return {'status':'relay_research_not_due'}
   value['next_run_after']=clock()+300;save_state(directory,value)
   try:
-   result=run(directory,enabled=True,handoff_confirmed=True)
+   ledger=pilot.Ledger(directory)
+   try:catalogue_enabled=ledger.status()['cap_usd']>10 and run is worker.run_once
+   finally:ledger.db.close()
+   result=catalogue_once(directory) if catalogue_enabled else run(directory,enabled=True,handoff_confirmed=True)
    value['last_failure']=None
+   value['last_result']=result
    return result
   except Exception:
    value['last_failure']='bounded_research_worker_failed'

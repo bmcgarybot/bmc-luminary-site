@@ -441,7 +441,7 @@ def run_pilot(ledger,request_id,config,*,search=search_native,api=responses_http
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     modes=parser.add_mutually_exclusive_group(required=True)
-    for mode in ('status','configure','run','run-grounded','reconcile-20261105','settle-completed','authorize-budget-50'):modes.add_argument('--'+mode,action='store_true')
+    for mode in ('status','configure','run','run-grounded','run-catalogue','reconcile-20261105','settle-completed','authorize-budget-50'):modes.add_argument('--'+mode,action='store_true')
     parser.add_argument('--request-id')
     args=parser.parse_args();os.umask(0o077)
     root=Path.home()/'.local/state/bmc-api-research'
@@ -470,7 +470,10 @@ def main():
             if not 0<budget<=10:raise Held('invalid_budget_configuration')
             # A smaller owner-configured budget is a lower bound, never raised.
             ledger.db.execute('update config set cap=min(cap,?) where id=1',(int(budget*1e6),))
-            if args.run_grounded:
+            if args.run_catalogue:
+                from api_catalogue_research import run_catalogue
+                result=run_catalogue(ledger,args.request_id,config)
+            elif args.run_grounded:
                 from api_grounded_research import run_grounded
                 result=run_grounded(ledger,args.request_id,config)
             else:result=run_pilot(ledger,args.request_id,config)
