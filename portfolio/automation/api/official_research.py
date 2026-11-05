@@ -324,7 +324,9 @@ def auto_evidence_valid(row,secret):
             return auto_vendor_area_valid(row,secret)
         if (evidence.get('vps_verification') or {}).get('verifier')=='vps_property_visible_evidence_v3':
             from property_visible_source import auto_property_visible_valid
-            return auto_property_visible_valid(row,secret)
+            # asyncpg returns JSONB as text by default; normalize only the
+            # representation, preserving every signed value and the caller row.
+            return auto_property_visible_valid(dict(row,evidence=evidence),secret)
         token=evidence.get('contact_verification')
         if token is None:return _primary_auto_evidence_valid(row,secret)
         if not isinstance(token,dict):return False

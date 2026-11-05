@@ -74,11 +74,11 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
-API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_reconcile", "api_research_export", "api_research_import"}
+API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_worker_status", "api_research_reconcile", "api_research_settle", "api_research_export", "api_research_import"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS | API_RESEARCH_ACTIONS
 
 API_ACTIONS = {
@@ -712,7 +712,7 @@ def execute(req: dict) -> dict:
         stderr=""
         exit_code=0
 
-    elif action in API_RESEARCH_ACTIONS or action == "api_research_run":
+    elif action in API_RESEARCH_ACTIONS or action in ("api_research_run", "api_research_worker_start"):
         # No campaign, order, provider or scheduler mutation. Credentials stay
         # in host-private storage; research reports use the pinned owner key.
         if action == "api_research_prepare":
@@ -726,6 +726,13 @@ def execute(req: dict) -> dict:
         elif action == "api_research_status":
             if args:raise RelayError('API status takes no arguments')
             command=['python3','./api_research_pilot.py','--status'];timeout=30
+        elif action in ("api_research_worker_status", "api_research_worker_start"):
+            if args:raise RelayError('Fixed VPS research worker takes no arguments')
+            command=['python3','./api_research_queue_service.py','--install' if action.endswith('_start') else '--status'];timeout=90
+        elif action == "api_research_settle":
+            source_id=args.get('source_request_id','')
+            if set(args)!={'source_request_id'} or not isinstance(source_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,100}',source_id):raise RelayError('One existing completed private research report is required')
+            command=['python3','./api_research_pilot.py','--settle-completed','--request-id',source_id];timeout=30
         elif action == "api_research_reconcile":
             if args:raise RelayError('Fixed audited pilot reconciliation takes no arguments')
             command=['python3','./api_research_pilot.py','--reconcile-20261105'];timeout=30

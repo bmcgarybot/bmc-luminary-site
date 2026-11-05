@@ -14,6 +14,15 @@ def rec(html=HTML,url=C['source_url'],when=NOW):
 def verify(html=HTML,x=None,c=None,**kw):
     r=rec(html);return verify_property_visible_source(c or C,r,x or X,SECRET,receipt_is_trusted=lambda v:v is r,now=NOW,**kw)
 class Tests(unittest.TestCase):
+    def test_native_dispatch_database_jsonb_text(self):
+        from official_research import auto_evidence_valid
+        row=verify();row['evidence']=json.dumps(row['evidence']);original=copy.deepcopy(row)
+        self.assertTrue(auto_evidence_valid(row,SECRET));self.assertEqual(row,original)
+        for field,value in [('source_url','https://other.test/'),('public_phone','6025550199')]:
+            bad=copy.deepcopy(row);bad[field]=value
+            self.assertFalse(auto_evidence_valid(bad,SECRET))
+        bad=copy.deepcopy(row);e=json.loads(bad['evidence']);e['vps_verification']['signature']='0'*64;bad['evidence']=json.dumps(e)
+        self.assertFalse(auto_evidence_valid(bad,SECRET))
     def test_valid_visible_without_schema(self):
         r=verify();self.assertTrue(auto_property_visible_valid(r,SECRET,now=NOW));self.assertFalse(r['confirmed_demand'])
     def test_tamper_every_row_binding(self):

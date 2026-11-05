@@ -188,4 +188,26 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.ledger.status()['reserved_usd'],0.0315)
         proof=json.loads(self.ledger.db.execute('select proof from cost_settlements').fetchone()[0]);self.assertEqual(proof['model'],'gpt-6-luna');self.assertEqual(proof['search_requests'],2)
         diagnostic=g.accounting_diagnostic(response,grounded=True);self.assertIn('fixed_requested_model_basis',diagnostic['conservative_basis_codes']);self.assertIn('maximum_two_search_fees',diagnostic['conservative_basis_codes'])
+    def test_exact_zero_image_and_text_zero_web_metadata_settle_both_phases(self):
+        for grounded in (True,False):
+            self.setup();phase='web' if grounded else 'extract';self.ledger.begin('synthetic-zero-tool-usage');call=self.ledger.reserve('synthetic-zero-tool-usage',phase=phase)
+            response=self.discovery() if grounded else self.response({'records':[]})
+            response.update(model='gpt-6-luna' if grounded else 'gpt-6.1-sol',service_tier='default',
+                tool_usage={'image_gen':copy.deepcopy(g.ZERO_IMAGE_USAGE),'web_search':{'num_requests':2 if grounded else 0}})
+            self.assertEqual(g.complete_usage(self.ledger,call,response,response['usage'],grounded=grounded),'conservative_usage_upper_settled')
+            self.assertLess(self.ledger.status()['reserved_usd'],0.1)
+            diagnostic=g.accounting_diagnostic(response,grounded=grounded)
+            self.assertEqual(diagnostic['retention_reason_codes'],[]);self.assertIn('exact_zero_image_usage_not_billable',diagnostic['conservative_basis_codes'])
+    def test_nonzero_unknown_or_boolean_image_metadata_stays_full_reserved(self):
+        for mode in ('nonzero','unknown','boolean','text_search'):
+            self.setup();self.ledger.begin('synthetic-bad-tool-usage');call=self.ledger.reserve('synthetic-bad-tool-usage')
+            tools={'image_gen':copy.deepcopy(g.ZERO_IMAGE_USAGE),'web_search':{'num_requests':0}}
+            if mode=='nonzero':tools['image_gen']['input_tokens']=1
+            elif mode=='unknown':tools['image_gen']['unknown_tokens']=0
+            elif mode=='boolean':tools['image_gen']['input_tokens']=False
+            else:tools['web_search']['num_requests']=1
+            response=self.response({'records':[]});response.update(model='gpt-6.1-sol',service_tier='default',tool_usage=tools)
+            self.assertEqual(g.complete_usage(self.ledger,call,response,response['usage'],grounded=False),'full_reservation_retained')
+            self.assertEqual(self.ledger.status()['reserved_usd'],3)
+
 if __name__=='__main__':unittest.main()

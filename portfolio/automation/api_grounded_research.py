@@ -69,6 +69,21 @@ def response_payload(response,*,grounded):
     except (ValueError,TypeError):raise pilot.Held('invalid_extraction')
     return payload,usage
 
+ZERO_IMAGE_USAGE={'input_tokens':0,'input_tokens_details':{'image_tokens':0,'text_tokens':0},
+ 'output_tokens':0,'output_tokens_details':{'image_tokens':0,'text_tokens':0},'total_tokens':0}
+
+def exact_zero_usage(value,expected):
+    if isinstance(expected,dict):return isinstance(value,dict) and set(value)==set(expected) and all(exact_zero_usage(value[key],item) for key,item in expected.items())
+    return type(value) is int and value==0
+
+def tool_usage_allowed(tools,*,grounded):
+    if tools in (None,{}):return True
+    if not isinstance(tools,dict) or not set(tools)<= {'image_gen','web_search'}:return False
+    if 'image_gen' in tools and not exact_zero_usage(tools['image_gen'],ZERO_IMAGE_USAGE):return False
+    web=tools.get('web_search')
+    if not isinstance(web,dict) or set(web)!={'num_requests'} or type(web['num_requests']) is not int:return False
+    return 0<=web['num_requests']<=2 if grounded else web['num_requests']==0
+
 def accounting_diagnostic(response,*,grounded):
     model=response.get('model');tier=response.get('service_tier');tools=response.get('tool_usage')
     reasons=[];assumptions=[]
@@ -77,9 +92,8 @@ def accounting_diagnostic(response,*,grounded):
     elif not isinstance(model,str) or not re.fullmatch(expected,model):reasons.append('returned_model_unrecognized')
     if tier not in (None,'default'):reasons.append('returned_service_tier_not_default')
     if grounded and tools in (None,{}):assumptions.append('maximum_two_search_fees')
-    elif grounded and (not isinstance(tools,dict) or set(tools)!={'web_search'} or not isinstance(tools.get('web_search'),dict)
-        or set(tools['web_search'])!={'num_requests'} or type(tools['web_search'].get('num_requests')) is not int):reasons.append('tool_billing_metadata_unknown')
-    if not grounded and tools not in (None,{}):reasons.append('unexpected_tool_billing_metadata')
+    if not tool_usage_allowed(tools,grounded=grounded):reasons.append('tool_billing_metadata_unknown')
+    elif isinstance(tools,dict) and 'image_gen' in tools:assumptions.append('exact_zero_image_usage_not_billable')
     encoded=pilot.canonical(tools)
     return {'response_model':model if isinstance(model,str) and len(model)<=100 else None,'response_service_tier':tier if isinstance(tier,str) and len(tier)<=60 else None,
         'response_status':response.get('status'),'tool_usage_json':encoded[:8192],'tool_usage_truncated':len(encoded)>8192,
@@ -98,16 +112,14 @@ def complete_usage(ledger,call_id,response,usage,*,grounded):
         ledger.complete(call_id,usage);return 'full_reservation_retained'
     if grounded:
         calls=[item for item in response.get('output',[]) if item.get('type')=='web_search_call']
-        tool_metadata_ok=tool_usage in (None,{}) or (isinstance(tool_usage,dict) and set(tool_usage)=={'web_search'}
-            and isinstance(tool_usage['web_search'],dict) and set(tool_usage['web_search'])=={'num_requests'}
-            and type(tool_usage['web_search']['num_requests']) is int and 0<=tool_usage['web_search']['num_requests']<=2)
+        tool_metadata_ok=tool_usage_allowed(tool_usage,grounded=True)
         if (isinstance(model,str) and re.fullmatch(r'gpt-6-luna(?:-\d{4}-\d{2}-\d{2})?',model)
             and tool_metadata_ok and 1<=len(calls)<=2 and all(item.get('status')=='completed' for item in calls)
             and all(item.get('type') in ('message','reasoning','web_search_call') for item in response.get('output',[]))):
             proof={'version':'completed-usage-upper-v1','status':'completed','model':model,'phase':'web',
                 'search_requests':2,'tools_verified':True,'usage':usage}
     elif (isinstance(model,str) and re.fullmatch(r'gpt-6\.1-sol(?:-\d{4}-\d{2}-\d{2})?',model)
-          and tool_usage in (None,{}) and not any(item.get('type') not in ('message','reasoning') for item in response.get('output',[]))):
+          and tool_usage_allowed(tool_usage,grounded=False) and not any(item.get('type') not in ('message','reasoning') for item in response.get('output',[]))):
         proof={'version':'completed-usage-upper-v1','status':'completed','model':model,'phase':'extract',
             'search_requests':0,'tools_verified':True,'usage':usage}
     if proof is None:
