@@ -1,0 +1,21 @@
+{
+  "action": "enrich_native_contact",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:24:22.653219+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "14145d825fba4c12870a45c06253b2f2e09a306e",
+  "request_id": "bmc-grounded-contact-az-20261105T062320Z",
+  "request_sha256": "13c75ae95474d71904d7f7754e9986c0c0668c45b2f711fa07abaafa96afe1e0",
+  "started_at": "2026-11-05T06:24:21.032341+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"bmc-grounded-contact-az-20261105T062320Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"OMbL3tEy5FcQxxBVrQP85KCcx9uUXFxMPrKxZ7UBBms1SoCA7aOFGYZRtoAA0UOq66oZsLHg9ZwollbbImqvk1db/Bs1QPSBpEIiUK1hFDUuYXyYH3EYjDHqK/m+GyXRinjOqThq4oO+7ZLpDsZxokJCtGYQSlBmLJ9guOREbTXXjKqNGo+AZ0TEyX/wquRHH1Kacdz9srR+JvRjg5Qvi5/LoiGXySmIhixB03DXXtjuTuiyY50Xu73GujIaAdV1dKpKSXhvK2PK6m2R2/k1biMUJoEMnhiUu7WXC58RdVm68x7fCGInU77WWmwx0vZoYbwh5yz32cpIAioBr+JvKTldCZy4VxXsJLf7UxEk8cxiOtijYZdLOBSuQSchHmeqs+d9AeawViIKT3AyoAww/33NsmAyTXlO/1f6hHlQQTN63fTwkdpAHckko5yVoVS0+q5Q7lxx06v8c+ByaEp8Jy4iLOaqztxPGF2rpDSoTYR3av8JjGji+22RLnglQJ7a\", \"nonce\": \"llX42ysFax2Ed1Tt\", \"ciphertext\": \"4o/Y9rGVomf0UE3YluQ6z1FCsQhVHJtu/BdCWWk7c3yLd3O93yxRvQ+J20tJT+36Z6KlUvAgCSo9Nw+snjM1pq0krCzN5pZyH4TO6IbaD6QWSMk8vMNI3TO00sBmVoLQyPQFmcHzbXmnXeic1l1kN4TnN8i+i/mV2/mv8jlG1yZ0EqFZ+1OHP85/IYbCIWZfOstCo52Zw9pUcKziYIZ4cqxSbcRDei3g3LMRrNNoCg3ertZa7u5A5d+a1sIJPtH1j3jnH6F+XBatiYnLy3yx0fL/REP7xeNQSGU1im5WpHH1Jp1hmot6mopf/ywhzDiilF6AgtgozGdbj/l3YAWikeoYO4k8IJi4ZwbdkVphNHARL20P4AV6rj9Fo+BzzSfAJmYBA6e01DeU0oJYJArsmo8zNbqbV+NCWMvQrUDe3/pCBzRYdLEjNUlw3PF+THlCpSF7uFE/Lw05qNwTMdUrPsvPSceBznOSRQ+dnwg1zrPfPS3UPOkRzNM4u/wkDR1y5v8M4wTYuEdWy6b6TzsGYBORHHLx0Pe2D34klyfsq6Q3ZuwC/mGnVbcSS3NCWVpmtOivJt5+W600p4K/QVNx+l9Wf3BCnUcUwLQlfLlrw8vrbhzjrDRuacrAwu8h3juf9wj5K49U8oqx029T3BRLDK8OrVUzsxdrB0T02kzvV3XyBinEcG+MM/sXaUdBzbFiZBSpVDe82RTPUCWlsZ4hCi7PMFVVAxTPXkbuUfHHo30jf3cLxe9zIdSp3t7FRy2+VuYF9IjRrUDY3mXNXz2H8gnVE5/9QfmUhyLaDU2NbRodbP24hggP2af4BldRn2uaJsiFFMBlPPFehYA8YyelWcLXQj7jW0gJF++UJxtb2Trp0jUsxQbxKj9AqLKBnInNvFx8oYXAarxXG05SVMfrTcf6eVR2FNOUc6aeg0CAAPUkcthutXDm3U4e9zYp0Dpc3RzrXLFLmRhaAvWaDoLdqjFyKJx+56mlZfMfgi/oM+zI\"}",
+  "version": 1
+}
