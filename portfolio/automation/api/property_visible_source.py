@@ -146,7 +146,9 @@ def auto_property_visible_valid(row,secret,*,now=None):
         if not dt(p['checked_at'])<=now<dt(p['expires_at']) or dt(p['expires_at'])-dt(p['checked_at'])!=timedelta(days=7):return False
         if not safe(p['source_url']) or p['source_domain']!=host(p['source_url']) or not address_ok(p['physical_address']):return False
         for k in ('business_name','source_url','side','market','category_key','public_phone','public_email','snippet'):
-            if row.get(k)!=p[k]:return False
+            observed=row.get(k)
+            if k in ('public_phone','public_email') and observed is None:observed=''
+            if observed!=p[k]:return False
         if 'physical_address' in row and row['physical_address']!=p['physical_address']:return False
         if not row.get('official_site') or p['http_status']!=200 or not re.fullmatch('[0-9a-f]{64}',p['content_sha256']):return False
         if not(p['public_phone'] or p['public_email']) or (p['public_phone'] and not re.fullmatch('[0-9]{10}',p['public_phone'])) or (p['public_email'] and not EMAIL.fullmatch(p['public_email'])):return False
