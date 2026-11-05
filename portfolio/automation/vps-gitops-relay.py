@@ -78,7 +78,7 @@ EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
-API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_export", "api_research_import"}
+API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_reconcile", "api_research_export", "api_research_import"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS | API_RESEARCH_ACTIONS
 
 API_ACTIONS = {
@@ -726,6 +726,9 @@ def execute(req: dict) -> dict:
         elif action == "api_research_status":
             if args:raise RelayError('API status takes no arguments')
             command=['python3','./api_research_pilot.py','--status'];timeout=30
+        elif action == "api_research_reconcile":
+            if args:raise RelayError('Fixed audited pilot reconciliation takes no arguments')
+            command=['python3','./api_research_pilot.py','--reconcile-20261105'];timeout=30
         elif action == "api_research_run":
             if args:raise RelayError('The bounded Phoenix pilot takes no arguments')
             command=['python3','./api_research_pilot.py','--run-grounded','--request-id',req['request_id']];timeout=900

@@ -96,6 +96,96 @@ class Tests(unittest.TestCase):
         self.assertEqual(sum(value is not None for value in values),3)
         self.assertEqual(self.ledger.status()['reserved_usd'],9)
 
+    def costproof(self,usage,phase='web'):
+        return {'version':'completed-usage-upper-v1','status':'completed','model':'gpt-6-luna' if phase=='web' else 'gpt-6.1-sol',
+            'phase':phase,'search_requests':2 if phase=='web' else 0,'tools_verified':True,'usage':usage}
+    def test_settlement_is_atomic_audited_immutable_and_survives_restart(self):
+        self.setup();usage={'input_tokens':1000,'output_tokens':500};proof=self.costproof(usage)
+        self.ledger.begin('synthetic-settle');call=self.ledger.reserve('synthetic-settle',phase='web')
+        upper=p.usage_upper_micro(usage,proof);self.assertEqual(upper,31500)
+        self.ledger.complete(call,usage,settled_upper_micro=upper,cost_proof=proof)
+        self.assertEqual(self.ledger.status()['committed_upper_usd'],0.0315)
+        audit=self.ledger.db.execute('select reserved_before,upper_micro from cost_settlements').fetchone()
+        self.assertEqual(audit,(3000000,31500))
+        self.ledger.db.close();self.ledger=p.Ledger(self.root);self.addCleanup(self.ledger.db.close)
+        self.ledger.complete(call,usage,settled_upper_micro=upper,cost_proof=proof)
+        with self.assertRaises(p.Held):self.ledger.complete(call,usage,settled_upper_micro=1,cost_proof=proof)
+        import sqlite3
+        for sql in ('update cost_settlements set upper_micro=1','delete from cost_settlements'):
+            with self.assertRaises(sqlite3.IntegrityError):self.ledger.db.execute(sql)
+        self.assertEqual(self.ledger.status()['reserved_usd'],0.0315)
+    def test_bad_settlements_and_legacy_completion_never_free_reservations(self):
+        self.setup();usage={'input_tokens':1000,'output_tokens':500};proof=self.costproof(usage)
+        self.ledger.begin('synthetic-bad-settle');call=self.ledger.reserve('synthetic-bad-settle',phase='web')
+        for value in (True,False,0,-1,3.5,3000001,1):
+            with self.assertRaises(p.Held):self.ledger.complete(call,usage,settled_upper_micro=value,cost_proof=proof)
+        bad=dict(proof,model='unknown-expensive-model')
+        with self.assertRaises(p.Held):self.ledger.complete(call,usage,settled_upper_micro=31500,cost_proof=bad)
+        self.assertEqual(self.ledger.status()['reserved_usd'],3)
+        self.ledger.complete(call,usage)
+        with self.assertRaises(p.Held):self.ledger.complete(call,usage,settled_upper_micro=31500,cost_proof=proof)
+        self.assertEqual(self.ledger.status()['reserved_usd'],3)
+        self.assertEqual(self.ledger.db.execute('select count(*) from cost_settlements').fetchone()[0],0)
+    def test_concurrent_settlement_and_new_reservations_preserve_cap(self):
+        self.setup();usage={'input_tokens':1000,'output_tokens':500};proof=self.costproof(usage)
+        self.ledger.begin('synthetic-concurrent-settle');call=self.ledger.reserve('synthetic-concurrent-settle',phase='web')
+        upper=p.usage_upper_micro(usage,proof)
+        from concurrent.futures import ThreadPoolExecutor
+        def settle(index):
+            ledger=p.Ledger(self.root)
+            try:ledger.complete(call,usage,settled_upper_micro=upper,cost_proof=proof)
+            finally:ledger.db.close()
+        with ThreadPoolExecutor(max_workers=4) as executor:list(executor.map(settle,range(8)))
+        def reserve(index):
+            ledger=p.Ledger(self.root)
+            try:return ledger.reserve('synthetic-post-settle-'+str(index))
+            except p.Held:return None
+            finally:ledger.db.close()
+        with ThreadPoolExecutor(max_workers=4) as executor:values=list(executor.map(reserve,range(8)))
+        self.assertEqual(sum(value is not None for value in values),3)
+        self.assertEqual(self.ledger.status()['reserved_usd'],9.0315)
+        self.assertEqual(self.ledger.status()['pending_reserved_usd'],9)
+        self.assertEqual(self.ledger.db.execute('select count(*) from cost_settlements').fetchone()[0],1)
+
+    def reconciliation_fixture(self):
+        specs=[('synthetic-legacy','extract',1080),('synthetic-grounded','web',21190),('synthetic-grounded','extract',10124)]
+        for mission in ('synthetic-legacy','synthetic-grounded'):
+            self.ledger.begin(mission);self.ledger.finish(mission,'research_partial')
+        for mission,phase,incoming in specs:
+            call=self.ledger.reserve(mission,phase=phase);self.ledger.complete(call,{'input_tokens':incoming,'output_tokens':100})
+        rows=self.ledger.db.execute('select id,mission,amount,state,usage from reservations order by id').fetchall()
+        manifest=[dict(id=row[0],mission=row[1],amount=row[2],state=row[3],usage=json.loads(row[4])) for row in rows]
+        return hashlib.sha256(p.canonical(manifest).encode()).hexdigest()
+    def test_exact_one_time_reconciliation_preserves_rows_and_restores_bounded_capacity(self):
+        self.setup();digest=self.reconciliation_fixture()
+        before=self.ledger.db.execute('select * from reservations order by id').fetchall()
+        with patch.object(p,'RECONCILIATION_MANIFEST_SHA256',digest):result=self.ledger.reconcile_20261105()
+        self.assertEqual(result['status'],'pilot_usage_reconciled');self.assertEqual(self.ledger.status()['reserved_usd'],1)
+        self.assertEqual(self.ledger.status()['original_reservation_amount_usd'],9)
+        self.assertEqual(self.ledger.status()['reconciliation_credit_usd'],8)
+        self.assertEqual(self.ledger.db.execute('select * from reservations order by id').fetchall(),before)
+        self.ledger.db.close();self.ledger=p.Ledger(self.root);self.addCleanup(self.ledger.db.close)
+        self.ledger.begin('synthetic-new-after-reconciliation');self.ledger.reserve('synthetic-new-after-reconciliation')
+        self.assertEqual(self.ledger.status()['reserved_usd'],4)
+        self.assertEqual(self.ledger.reconcile_20261105()['status'],'pilot_usage_already_reconciled')
+        self.assertEqual(self.ledger.status()['reserved_usd'],4)
+        import sqlite3
+        with self.assertRaises(sqlite3.IntegrityError):self.ledger.db.execute('delete from budget_reconciliations')
+        self.ledger.db.execute("update reservations set amount=1 where id='synthetic-legacy-extract'")
+        with self.assertRaises(p.Held):self.ledger.status()
+    def test_reconciliation_refuses_unknown_pending_extra_usage_or_prior_adjustment(self):
+        for mode in ('wrong_hash','pending','extra','usage','mission'):
+            self.setup();digest=self.reconciliation_fixture()
+            if mode=='wrong_hash':digest='0'*64
+            elif mode=='pending':self.ledger.db.execute("update reservations set state='reserved' where id='synthetic-legacy-extract'")
+            elif mode=='extra':
+                self.ledger.db.execute("insert into reservations values('synthetic-extra-web','synthetic-extra',3000000,'reserved',null,'2026-11-05')")
+            elif mode=='usage':self.ledger.db.execute("update reservations set usage='{}' where id='synthetic-legacy-extract'")
+            else:self.ledger.db.execute("update missions set state='running' where id='synthetic-legacy'")
+            with patch.object(p,'RECONCILIATION_MANIFEST_SHA256',digest):
+                with self.assertRaises(p.Held):self.ledger.reconcile_20261105()
+            self.assertEqual(self.ledger.db.execute('select count(*) from budget_reconciliations').fetchone()[0],0)
+
     def test_input_bound_private_permissions_and_no_redirect_api_transport(self):
         self.setup()
         with self.assertRaises(p.Held):p.build_request([{'snippet':'x'*80001}])

@@ -47,7 +47,7 @@ class Tests(unittest.TestCase):
         def fetch(url):self.fetches.append(url);return self.receipt(self.document(True),url)
         result=g.run_grounded(self.ledger,'synthetic-grounded-native',self.config,api=api,fetch=fetch)
         self.assertEqual(result['verified_count'],1);self.assertEqual(len(self.calls),1);self.assertEqual(self.fetches,[self.url])
-        self.assertEqual(self.ledger.status()['reserved_usd'],3)
+        self.assertEqual(self.ledger.status()['reserved_usd'],0.0315)
         report=json.loads(Path(result['private_report']).read_text());self.assertEqual(report['verified'][0]['verification_kind'],'native_v1')
         self.assertFalse(result['offer_ready']);self.assertIsNone(result['qualified_reserve_count'])
     def test_visible_actual_html_extraction_real_v3_and_existing_three_dollar_reservation(self):
@@ -66,7 +66,7 @@ class Tests(unittest.TestCase):
             return self.response({'records':[fields]})
         def fetch(url):self.fetches.append(url);return self.receipt(self.document(),url)
         result=g.run_grounded(self.ledger,'synthetic-grounded-visible',self.config,api=api,fetch=fetch)
-        self.assertEqual(len(self.calls),2);self.assertEqual(self.ledger.status()['reserved_usd'],9)
+        self.assertEqual(len(self.calls),2);self.assertEqual(self.ledger.status()['reserved_usd'],3.059)
         self.assertEqual(result['verified_count'],1)
         report=json.loads(Path(result['private_report']).read_text());entry=report['verified'][0]
         self.assertEqual(entry['verification_kind'],'visible_property_v3')
@@ -74,6 +74,9 @@ class Tests(unittest.TestCase):
         self.assertTrue(auto_property_visible_valid(entry['record'],self.config['BMC_ADMIN_KEY']))
         self.assertNotIn(self.name,json.dumps(result));self.assertFalse(result['offer_ready'])
         before=len(self.calls)
+        # Completed known fixed-price requests settle conservatively, while a
+        # new real call is prohibited here by giving an exhausted lower cap.
+        self.ledger.db.execute('update config set cap=1000000 where id=1')
         with self.assertRaises(p.Held):g.run_grounded(self.ledger,'synthetic-no-more-budget',self.config,api=api,fetch=fetch)
         self.assertEqual(len(self.calls),before)
     def test_visible_contacts_only_from_fresh_observed_page_and_forged_quote_refused(self):
@@ -89,9 +92,13 @@ class Tests(unittest.TestCase):
             result=g.run_grounded(self.ledger,'synthetic-grounded-contact',self.config,api=api,fetch=fetch)
             self.assertEqual(result['verified_count'],0 if forged else 1)
             self.assertEqual(self.fetches,[self.url,self.url+'contact'])
-            self.assertEqual(self.ledger.status()['reserved_usd'],6)
+            self.assertEqual(self.ledger.status()['reserved_usd'],0.059)
+            report=json.loads(Path(result['private_report']).read_text());self.assertEqual(report['visible_model_record_count'],1)
+            self.assertIn('response_model',report['extraction_accounting_diagnostic'])
+            self.assertEqual(report['visible_verification_rejected_count'],1 if forged else 0)
+            if forged:self.assertEqual(report['held'][0]['candidate_index'],0);self.assertEqual(report['held'][0]['source_url'],self.url)
 
-    def test_valid_completed_model_usage_settles_but_missing_tool_billing_does_not(self):
+    def test_valid_completed_fixed_request_settles_missing_optional_tool_billing_with_max_fees(self):
         self.setup()
         response=self.discovery();response['model']='gpt-6-luna';response['tool_usage']={'web_search':{'num_requests':1}}
         def api(*args):return response
@@ -101,7 +108,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.ledger.db.execute('select reserved_before from cost_settlements').fetchone()[0],3000000)
         response=dict(response);response.pop('tool_usage')
         g.run_grounded(self.ledger,'synthetic-grounded-unsettled',self.config,api=api,fetch=lambda url:self.receipt(self.document(True),url))
-        self.assertEqual(self.ledger.status()['reserved_usd'],3.0315)
+        self.assertEqual(self.ledger.status()['reserved_usd'],0.063)
     def test_sol_settlement_requires_complete_known_toolfree_usage(self):
         self.setup();usage={'input_tokens':1000,'output_tokens':500}
         self.ledger.begin('synthetic-sol-settle');call=self.ledger.reserve('synthetic-sol-settle')
@@ -145,4 +152,40 @@ class Tests(unittest.TestCase):
         response=self.discovery();response['output'].append({'type':'function_call'})
         with self.assertRaises(p.Held):g.source_candidates(response)
 
+    def test_balanced_long_actual_blocks_preserve_literal_identity_role_address_contact_windows(self):
+        self.setup()
+        from property_visible_source import visible_property_blocks
+        html='<main><h1>'+self.name+'</h1>'+''.join('<p>'+self.name+' '+('marketing '*90)+'</p>' for _ in range(5))+'<p>We provide property management for commercial properties.</p></main><footer><p>'+('office details '*55)+'123 Main Street, Phoenix, AZ 85004 '+('more details '*55)+'</p><p>602-555-0123</p></footer>'
+        observed=visible_property_blocks(html);page,diag=g.balanced_evidence_page(observed,self.name)
+        self.assertTrue(all(diag['evidence_text_shown'].values()),diag)
+        self.assertLessEqual(diag['selected_text_bytes'],2400)
+        actual=[x['text'] for x in observed['contact_blocks']]
+        self.assertTrue(all(any(window in original for original in actual) for window in page['blocks']))
+        self.assertTrue(any('123 Main Street, Phoenix, AZ 85004' in window for window in page['blocks']))
+        self.assertTrue(any('602-555-0123' in window for window in page['blocks']))
+    def test_fifteen_bounded_candidates_and_failed_primary_role_are_explicit_without_relaxation(self):
+        self.setup();failed=[]
+        bad={'source':{'url':'https://sales.example/','business_name':'Synthetic Sales Company'},'receipts':(self.receipt('<main><h1>Synthetic Sales Company</h1><p>We sell office software.</p></main>','https://sales.example/'),)}
+        failed.append(bad)
+        for i in range(15):
+            name='Synthetic Property Management '+str(i);url=f'https://manager{i}.example/'
+            html=self.document().replace(self.name,name)+''.join('<p>'+name+' '+('marketing '*90)+'</p>' for _ in range(4))
+            failed.append({'source':{'url':url,'business_name':name},'receipts':(self.receipt(html,url),)})
+        diagnostics=[];request,chosen=g.visible_request(failed,diagnostics)
+        self.assertEqual(len(chosen),15);self.assertLessEqual(len(p.canonical(request).encode()),80000)
+        self.assertEqual(diagnostics[0]['status'],'primary_scope_rejected');self.assertIn('gate_reason',diagnostics[0])
+        entries=json.loads(request['input']);self.assertEqual([e['candidate_index'] for e in entries],list(range(15)))
+        self.assertTrue(all(e['verified_primary_role_excerpt'] for e in entries))
+    def test_missing_optional_model_uses_fixed_request_but_unknown_returned_metadata_stays_held(self):
+        for field,value in (('model','unknown-paid-model'),('service_tier','priority'),('tool_usage',{'unknown_tool':{}})):
+            self.setup();self.ledger.begin('synthetic-unknown-meta');call=self.ledger.reserve('synthetic-unknown-meta',phase='web')
+            response=self.discovery();response[field]=value
+            self.assertEqual(g.complete_usage(self.ledger,call,response,response['usage'],grounded=True),'full_reservation_retained')
+            self.assertEqual(self.ledger.status()['reserved_usd'],3)
+            diagnostic=g.accounting_diagnostic(response,grounded=True);self.assertTrue(diagnostic['retention_reason_codes'])
+        self.setup();self.ledger.begin('synthetic-fixed-request');call=self.ledger.reserve('synthetic-fixed-request',phase='web');response=self.discovery()
+        self.assertEqual(g.complete_usage(self.ledger,call,response,response['usage'],grounded=True),'conservative_usage_upper_settled')
+        self.assertEqual(self.ledger.status()['reserved_usd'],0.0315)
+        proof=json.loads(self.ledger.db.execute('select proof from cost_settlements').fetchone()[0]);self.assertEqual(proof['model'],'gpt-6-luna');self.assertEqual(proof['search_requests'],2)
+        diagnostic=g.accounting_diagnostic(response,grounded=True);self.assertIn('fixed_requested_model_basis',diagnostic['conservative_basis_codes']);self.assertIn('maximum_two_search_fees',diagnostic['conservative_basis_codes'])
 if __name__=='__main__':unittest.main()

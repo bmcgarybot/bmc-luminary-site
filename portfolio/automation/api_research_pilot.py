@@ -34,6 +34,17 @@ SOURCE_REASONS={'untrusted_source','structured_identity_location_or_contact_unpr
  'property_identity_unproven','property_pilot_scope_required','property_source_size_invalid',
  'property_country_unproven','property_non_us_country','property_role_declined',
  'property_exact_visible_identity_unproven','property_visible_operator_role_unproven'}
+# Operator-verified signed-in usage evidence, 2026-11-05 05:54 UTC.
+# Digest binds exact three completed call IDs + original amount/state/full usage;
+# no operational IDs or contacts are embedded in this public source file.
+RECONCILIATION_ID='owner-usage-20261105'
+RECONCILIATION_MANIFEST_SHA256='50c08561c769ae6f312283109dfb019b9cac136a84f9399ba42bbe454a2ae706'
+RECONCILIATION_UPPER_MICRO=1_000_000
+RECONCILIATION_EVIDENCE={'source':'https://platform.openai.com/usage','observed_at':'2026-11-05T05:54:00+00:00',
+ 'organization':'Personal','project':'Default','window':'Last 7 days','displayed_usd':'0.04',
+ 'request_count':4,'input_tokens':32414,'setup_input_tokens':20,
+ 'authority':'operator_verified_signed_in_usage_during_owner_authorized_repair',
+ 'accounting_kind':'conservative_aggregate_upper_not_final_invoice'}
 class Held(ValueError):pass
 
 def now():return datetime.now(timezone.utc).isoformat()
@@ -108,11 +119,54 @@ class Ledger:
         self.db.execute('create table if not exists cost_settlements(call_id text primary key,reserved_before integer not null,upper_micro integer not null,usage text not null,model text not null,proof text not null,created text not null)')
         self.db.execute("create trigger if not exists cost_settlements_no_update before update on cost_settlements begin select raise(abort,'immutable_cost_settlement'); end")
         self.db.execute("create trigger if not exists cost_settlements_no_delete before delete on cost_settlements begin select raise(abort,'immutable_cost_settlement'); end")
+        self.db.execute('create table if not exists budget_reconciliations(id text primary key,before_micro integer not null,upper_micro integer not null,manifest text not null,proof_sha256 text not null,created text not null)')
+        self.db.execute("create trigger if not exists budget_reconciliations_no_update before update on budget_reconciliations begin select raise(abort,'immutable_budget_reconciliation'); end")
+        self.db.execute("create trigger if not exists budget_reconciliations_no_delete before delete on budget_reconciliations begin select raise(abort,'immutable_budget_reconciliation'); end")
+    def reconciliation_credit(self):
+        credit=0
+        for before,upper,manifest,proof_hash in self.db.execute('select before_micro,upper_micro,manifest,proof_sha256 from budget_reconciliations'):
+            if hashlib.sha256(manifest.encode()).hexdigest()!=proof_hash:raise Held('reconciliation_audit_changed')
+            saved=json.loads(manifest)
+            for entry in saved['reservations']:
+                current=self.db.execute('select id,mission,amount,state,usage,created from reservations where id=?',(entry['id'],)).fetchone()
+                if current is None or dict(zip(('id','mission','amount','state','usage','created'),current))!=entry:raise Held('reconciled_reservation_changed')
+            if not 0<upper<=before:raise Held('reconciliation_audit_changed')
+            credit+=before-upper
+        return credit
+    def reconcile_20261105(self):
+        """One exact operator-audited aggregate, never an arbitrary balance reset."""
+        self.db.execute('begin immediate')
+        try:
+            prior=self.db.execute('select upper_micro from budget_reconciliations where id=?',(RECONCILIATION_ID,)).fetchone()
+            if prior:
+                self.reconciliation_credit()
+                self.db.execute('commit')
+                return {'status':'pilot_usage_already_reconciled','aggregate_upper_usd':prior[0]/1e6,'history_reset':False,'outreach_sent':0}
+            rows=self.db.execute('select id,mission,amount,state,usage,created from reservations order by id').fetchall()
+            if len(rows)!=3 or any(row[2]!=RESERVE_MICRO or row[3]!='completed' or row[4] is None for row in rows):raise Held('exact_completed_reconciliation_set_required')
+            if self.db.execute('select count(*) from cost_settlements').fetchone()[0] or self.db.execute('select count(*) from budget_reconciliations').fetchone()[0]:raise Held('prior_accounting_adjustment_present')
+            snapshots=[dict(zip(('id','mission','amount','state','usage','created'),row)) for row in rows]
+            manifest=[{key:(json.loads(entry[key]) if key=='usage' else entry[key]) for key in ('id','mission','amount','state','usage')} for entry in snapshots]
+            if hashlib.sha256(canonical(manifest).encode()).hexdigest()!=RECONCILIATION_MANIFEST_SHA256:raise Held('reconciliation_manifest_mismatch')
+            missions=self.db.execute('select id,state from missions').fetchall()
+            if len(missions)!=2 or {row[0] for row in missions}!={row[1] for row in rows} or any(row[1] not in ('research_partial','research_complete') for row in missions):raise Held('reconciliation_missions_mismatch')
+            inputs=sum(entry['usage']['input_tokens'] for entry in manifest)
+            if inputs+RECONCILIATION_EVIDENCE['setup_input_tokens']!=RECONCILIATION_EVIDENCE['input_tokens'] or len(rows)+1!=RECONCILIATION_EVIDENCE['request_count']:raise Held('reconciliation_usage_mismatch')
+            proof=canonical({'reservations':snapshots,'owner_usage_evidence':RECONCILIATION_EVIDENCE,
+                'exact_completed_manifest_sha256':RECONCILIATION_MANIFEST_SHA256,'aggregate_upper_micro':RECONCILIATION_UPPER_MICRO})
+            self.db.execute('insert into budget_reconciliations values(?,?,?,?,?,?)',(RECONCILIATION_ID,sum(row[2] for row in rows),RECONCILIATION_UPPER_MICRO,proof,hashlib.sha256(proof.encode()).hexdigest(),now()))
+            self.db.execute('commit')
+            return {'status':'pilot_usage_reconciled','aggregate_upper_usd':RECONCILIATION_UPPER_MICRO/1e6,'history_reset':False,'outreach_sent':0}
+        except Exception:self.db.execute('rollback');raise
     def status(self):
-        spent=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
+        original_commitments=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
+        credit=self.reconciliation_credit();spent=original_commitments-credit
+        if spent<0:raise Held('invalid_reconciled_commitments')
         cap=min(CAP_MICRO,self.db.execute('select cap from config where id=1').fetchone()[0])
         return {'model':MODEL,'cap_usd':cap/1e6,'reserved_usd':spent/1e6,'available_usd':max(0,cap-spent)/1e6,
-            'committed_upper_usd':spent/1e6,'budget_accounting':'conservative_committed_upper_not_invoice',
+            'committed_upper_usd':spent/1e6,'original_reservation_amount_usd':original_commitments/1e6,
+            'reconciliation_credit_usd':credit/1e6,
+            'retained_completed_calls':self.db.execute("select count(*) from reservations r where state='completed' and not exists(select 1 from cost_settlements s where s.call_id=r.id)").fetchone()[0],'budget_accounting':'conservative_committed_upper_not_invoice',
             'pending_reserved_usd':self.db.execute("select coalesce(sum(amount),0) from reservations where state='reserved'").fetchone()[0]/1e6,
             'settled_upper_usd':self.db.execute('select coalesce(sum(upper_micro),0) from cost_settlements').fetchone()[0]/1e6,
             'missions':self.db.execute('select count(*) from missions').fetchone()[0],
@@ -325,13 +379,14 @@ def run_pilot(ledger,request_id,config,*,search=search_native,api=responses_http
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     modes=parser.add_mutually_exclusive_group(required=True)
-    for mode in ('status','configure','run','run-grounded'):modes.add_argument('--'+mode,action='store_true')
+    for mode in ('status','configure','run','run-grounded','reconcile-20261105'):modes.add_argument('--'+mode,action='store_true')
     parser.add_argument('--request-id')
     args=parser.parse_args();os.umask(0o077)
     root=Path.home()/'.local/state/bmc-api-research'
     try:
         ledger=Ledger(root)
         if args.status:result={'status':'pilot_status',**ledger.status()}
+        elif args.reconcile_20261105:result={**ledger.reconcile_20261105(),'budget':ledger.status()}
         elif args.configure:result={'status':'pilot_configured','private_root':str(root),**ledger.status()}
         else:
             if not sys.platform.startswith('linux'):raise Held('vps_linux_execution_required')

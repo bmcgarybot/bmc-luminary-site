@@ -10,10 +10,12 @@ class Tests(unittest.TestCase):
    result=ns['execute']({'request_id':'pilot-test-20261104','action':action,'args':args or {},'allow_external_actions':action=='api_research_run'})
   return result,calls
  def test_prepare_status_and_run_use_fixed_commands(self):
-  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_run','--run-grounded')]:
+  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
    with self.subTest(action=action):
     result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],10)
     self.assertLessEqual(calls[0][1]['timeout'],900)
+ def test_reconciliation_rejects_arbitrary_credits(self):
+  with self.assertRaises(ns['RelayError']):self.execute('api_research_reconcile',{'amount':0})
  def test_key_only_accepts_encrypted_fixed_rsa_payload(self):
   for payload in ({'OPENAI_API_KEY':'sk-synthetic'},{'ciphertext':'short'},{'ciphertext':'a'*684,'extra':1},{'ciphertext':'a'*683}):
    with self.subTest(payload=payload),self.assertRaises(ns['RelayError']):self.execute('api_research_configure',payload)
