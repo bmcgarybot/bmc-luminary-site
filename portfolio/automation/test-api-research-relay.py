@@ -10,7 +10,7 @@ class Tests(unittest.TestCase):
    result=ns['execute']({'request_id':'pilot-test-20261104','action':action,'args':args or {},'allow_external_actions':action in ('api_research_run','api_research_worker_start')})
   return result,calls
  def test_prepare_status_and_run_use_fixed_commands(self):
-  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_worker_status','--status'),('api_research_worker_start','--install'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
+  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_worker_status','--status'),('api_research_worker_start','--enable'),('api_research_worker_stop','--disable'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
    with self.subTest(action=action):
     result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],10)
     self.assertLessEqual(calls[0][1]['timeout'],900)
