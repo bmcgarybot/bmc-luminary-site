@@ -81,9 +81,12 @@ def install(app, require_admin, markets, secret):
                     and j.status='needs_review') select candidate_id,side,market,category_key,category_label,
                     business_name,source_url,public_email,public_phone,snippet,evidence,error_code
                     from ranked where pos<=2 order by market,pos""", list(markets))
+                ads=await conn.fetch("""select observation_id,market,service_key,source_url,title,evidence->'public_ad_check' as public_ad_check
+                    from local_channel_observations where evidence->'public_ad_check'->>'status'='advertised_service_contact'
+                    order by last_seen_at desc limit 50""")
         records = [reviewed_row(row, secret) for row in native]
         held_records = [dict(reviewed_row(row, secret), review_reason=row['error_code']) for row in held]
         payload = dict(observed_at=datetime.now(timezone.utc).isoformat(), markets=list(markets),
-                       native_records=records, held_review_queue=held_records,
+                       native_records=records, held_review_queue=held_records,public_contractor_ads=[dict(row) for row in ads],
                        scope='Research evidence only; no provider acceptance, demand or release authorization')
         return seal_export(payload, request_id)

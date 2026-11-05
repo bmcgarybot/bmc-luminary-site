@@ -132,6 +132,7 @@ jobs:
           python3 portfolio/automation/test-official-domain-recheck.py
           python3 portfolio/automation/test-official-source-policy-recheck.py
           python3 portfolio/automation/test-research-policy.py
+          python3 portfolio/automation/test-public-contractor-ads.py
           python3 portfolio/automation/test-census-research-queue.py
           python3 portfolio/automation/test-census-queue-relay.py
           python3 portfolio/automation/test-census-research-api.py

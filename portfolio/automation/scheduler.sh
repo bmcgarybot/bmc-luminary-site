@@ -19,6 +19,7 @@ while true; do
   post /api/process-official-research 240
   # Revisit public channels across old and new territories every cycle.
   post /api/process-local-demand-signals 240
+  post /api/process-public-contractor-ads 150
   wait "$census_pid" || true
 
   if [ $((i % 3)) -eq 0 ]; then
