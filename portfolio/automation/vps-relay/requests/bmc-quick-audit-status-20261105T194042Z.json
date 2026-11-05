@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-quick-audit-status-20261105T194042Z",
+  "action": "api_research_worker_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T19:40:42.622072+00:00",
+  "expires_at": "2026-11-05T20:40:42.622072+00:00"
+}
