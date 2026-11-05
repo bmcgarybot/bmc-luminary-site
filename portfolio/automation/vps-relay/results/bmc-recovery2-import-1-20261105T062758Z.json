@@ -1,0 +1,24 @@
+{
+  "action": "api_research_import",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:28:56.287077+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "74b2437092620da37ec68a35377d8b71bd5abe46",
+  "request_id": "bmc-recovery2-import-1-20261105T062758Z",
+  "request_sha256": "3af30a2335032445ddf7028fe3b9b6b59b6577ddfef89b7a29ae86157bf9f967",
+  "started_at": "2026-11-05T06:28:52.774814+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"duplicates\": 0, \"existing_unchanged\": 0, \"held_history\": 0, \"inserted\": 3, \"invalid\": 0, \"ok\": true, \"outreach_sent\": 0, \"provider_accepted\": false, \"records_received\": 3, \"validated\": 3}\n",
+  "version": 1
+}
