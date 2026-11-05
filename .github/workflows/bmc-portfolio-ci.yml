@@ -31,7 +31,7 @@ jobs:
               "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","census_research_review","census_queue_status","census_queue_export","reply_review_export","historical_growth_review","authorize_historical_reentry","queue_census_research","census_queue_step","official_research_step","prepare_scoped_journey", "authorize_scoped_batch","enrich_native_contact","research_promote_census","refresh_uncontacted_vendor",
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
-              "api_research_prepare","api_research_configure","api_research_status","api_research_worker_status","api_research_worker_start","api_research_worker_stop","api_research_worker_resume","api_research_reconcile","api_research_settle","api_research_export","api_research_import","api_research_run",
+              "api_research_prepare","api_research_configure","api_research_status","api_research_worker_status","api_research_worker_start","api_research_worker_stop","api_research_worker_resume","api_research_budget_50","api_research_reconcile","api_research_settle","api_research_export","api_research_import","api_research_run",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_scoped_launch_enable","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
@@ -82,6 +82,7 @@ jobs:
           python3 portfolio/automation/test-api-research-relay-worker.py
           python3 portfolio/automation/test-research-queue-watchdog.py
           python3 portfolio/automation/test-api-research-pilot.py
+          python3 portfolio/automation/test-owner-research-budget.py
           python3 portfolio/automation/test-api-grounded-research.py
           python3 portfolio/automation/test-api-pilot-import.py
           python3 portfolio/automation/test-property-visible-source.py

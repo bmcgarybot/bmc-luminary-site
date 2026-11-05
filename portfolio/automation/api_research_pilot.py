@@ -114,6 +114,9 @@ class Ledger:
         self.db.execute('pragma synchronous=FULL')
         self.db.execute('create table if not exists config(id integer primary key check(id=1),cap integer not null)')
         self.db.execute('insert or ignore into config values(1,?)',(min(CAP_MICRO,int(budget)),))
+        self.db.execute('create table if not exists owner_budget_authorizations(id text primary key,total_micro integer not null,created text not null)')
+        self.db.execute("create trigger if not exists owner_budget_no_update before update on owner_budget_authorizations begin select raise(abort,'immutable_owner_budget'); end")
+        self.db.execute("create trigger if not exists owner_budget_no_delete before delete on owner_budget_authorizations begin select raise(abort,'immutable_owner_budget'); end")
         self.db.execute('create table if not exists missions(id text primary key,state text not null,created text not null,report text)')
         self.db.execute('create table if not exists reservations(id text primary key,mission text not null,amount integer not null,state text not null,usage text,created text not null)')
         self.db.execute('create table if not exists cost_settlements(call_id text primary key,reserved_before integer not null,upper_micro integer not null,usage text not null,model text not null,proof text not null,created text not null)')
@@ -210,11 +213,18 @@ class Ledger:
             self.db.execute('insert into budget_reconciliations values(?,?,?,?,?,?)',(audit_id,before,upper,proof,hashlib.sha256(proof.encode()).hexdigest(),now()))
             self.db.execute('commit');return {'status':'completed_grounded_settled','aggregate_upper_usd':upper/1e6,'history_reset':False,'outreach_sent':0}
         except Exception:self.db.execute('rollback');raise
+    def authorize_budget_50(self):
+        self.db.execute('insert or ignore into owner_budget_authorizations values(?,?,?)',('owner-20261105-research-50',50_000_000,now()))
+        return {'status':'owner_budget_authorized','total_cap_usd':50,'history_reset':False,'budget':self.status()}
     def status(self):
         original_commitments=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
         credit=self.reconciliation_credit();spent=original_commitments-credit
         if spent<0:raise Held('invalid_reconciled_commitments')
         cap=min(CAP_MICRO,self.db.execute('select cap from config where id=1').fetchone()[0])
+        grant=self.db.execute('select total_micro from owner_budget_authorizations where id=?',('owner-20261105-research-50',)).fetchone()
+        if grant:
+            if grant[0]!=50_000_000:raise Held('owner_budget_authorization_invalid')
+            cap=grant[0]
         return {'model':MODEL,'cap_usd':cap/1e6,'reserved_usd':spent/1e6,'available_usd':max(0,cap-spent)/1e6,
             'committed_upper_usd':spent/1e6,'original_reservation_amount_usd':original_commitments/1e6,
             'reconciliation_credit_usd':credit/1e6,
@@ -431,13 +441,14 @@ def run_pilot(ledger,request_id,config,*,search=search_native,api=responses_http
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     modes=parser.add_mutually_exclusive_group(required=True)
-    for mode in ('status','configure','run','run-grounded','reconcile-20261105','settle-completed'):modes.add_argument('--'+mode,action='store_true')
+    for mode in ('status','configure','run','run-grounded','reconcile-20261105','settle-completed','authorize-budget-50'):modes.add_argument('--'+mode,action='store_true')
     parser.add_argument('--request-id')
     args=parser.parse_args();os.umask(0o077)
     root=Path.home()/'.local/state/bmc-api-research'
     try:
         ledger=Ledger(root)
         if args.status:result={'status':'pilot_status',**ledger.status()}
+        elif args.authorize_budget_50:result=ledger.authorize_budget_50()
         elif args.reconcile_20261105:result={**ledger.reconcile_20261105(),'budget':ledger.status()}
         elif args.settle_completed:result={**ledger.settle_completed_grounded(args.request_id),'budget':ledger.status()}
         elif args.configure:result={'status':'pilot_configured','private_root':str(root),**ledger.status()}
