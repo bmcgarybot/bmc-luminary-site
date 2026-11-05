@@ -4984,8 +4984,17 @@ def growth_outreach_message(row,step,owner_preview=False):
     return service_key,subject,body,html_body,landing
 
 
+@app.post("/api/admin/check-scoped-launch")
+async def check_scoped_launch(payload:dict,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from scoped_launch import check_batch
+    try:
+        async with app.state.pool.acquire() as conn:
+            return await check_batch(conn,payload,ADMIN_KEY,GROWTH_WAVES)
+    except ValueError as exc:raise HTTPException(409,str(exc))
+
 @app.post("/api/process-growth-outreach")
-async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
+async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None),payload:dict|None=None):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
     if OWNER_LAUNCH_HOLD:
         return {"ok":True,"enabled":False,"sent":0,"blocked":True,
@@ -5003,6 +5012,12 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
     sent=0
     async with app.state.pool.acquire() as conn:
       dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
+      if payload is not None:
+        from scoped_launch import target_ids
+        try:requested=target_ids(payload)
+        except ValueError as exc:raise HTTPException(422,str(exc))
+        if any(t not in dispatch_scopes for t in requested):raise HTTPException(409,'approved_scoped_dispatch_required')
+        dispatch_scopes={t:dispatch_scopes[t] for t in requested}
       critical=await conn.fetchval("""select count(*) from exceptions
         where status='open' and severity='critical' and type like 'growth_%'""")
       if int(critical or 0)>0:
@@ -5026,6 +5041,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         order by case when o.status='queued' then 0 else 1 end,g.fit_score desc,coalesce(o.next_followup_at,o.created_at) asc
         limit $1""",allowance,list(dispatch_scopes),list(dispatch_scopes.values()))
       for row in rows:
+        if payload is not None and row['status']!='queued':continue
         if (target_dispatch_wave(dict(row),ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))!=row['wave'] or row['target_id'] not in dispatch_scopes):continue
         step=1 if row["status"]=="queued" else 2
         try:

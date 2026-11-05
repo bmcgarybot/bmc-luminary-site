@@ -61,12 +61,12 @@ class Tests(unittest.TestCase):
             request='synthetic-prior-manual-'+str(index);self.ledger.begin(request);self.ledger.finish(request,'research_partial')
         result=self.once();self.assertEqual(result['stop_reason'],'lifetime_job_limit');self.assertTrue(result['needs_help'])
         self.assertEqual(result['lifetime_attempts'],40);self.assertEqual(self.research_calls,[])
-    def test_real_budget_guard_requires_six_available_and_preserves_uncertain_reserve(self):
+    def test_real_budget_guard_requires_next_phase_and_preserves_uncertain_reserve(self):
         self.setup()
-        for index in range(2):
+        for index in range(3):
             request='synthetic-uncertain-'+str(index);self.ledger.begin(request);self.ledger.reserve(request)
-        result=self.once();self.assertEqual(result['stop_reason'],'insufficient_six_dollar_reserve');self.assertTrue(result['needs_help'])
-        self.assertEqual(self.ledger.status()['reserved_usd'],6);self.assertEqual(self.research_calls,[])
+        result=self.once();self.assertEqual(result['stop_reason'],'insufficient_next_phase_reserve');self.assertTrue(result['needs_help'])
+        self.assertEqual(self.ledger.status()['reserved_usd'],9);self.assertEqual(self.research_calls,[])
     def test_crash_and_import_uncertainty_never_retry_or_create_new_job(self):
         self.setup();queue=w.Queue(self.root);self.addCleanup(queue.db.close)
         prior=queue.claim(self.ledger);self.assertIsNotNone(prior)
@@ -116,5 +116,16 @@ class Tests(unittest.TestCase):
         request=q.claim(self.ledger);q.finish(request,'research_uncertain',reason='uncertain')
         with self.assertRaisesRegex(w.Held,'source_fix_recovery_not_eligible'):q.recover_source_fix(self.ledger)
         self.assertEqual(q.db.execute('select count(*) from source_recoveries').fetchone()[0],0)
+
+    def test_completed_bad_search_answer_recovery_keeps_full_cost_and_old_job(self):
+        self.setup();q=w.Queue(self.root);self.addCleanup(q.db.close)
+        rid=q.claim(self.ledger);self.ledger.begin(rid);self.ledger.reserve(rid,phase='web')
+        p.write_private(p.private_dir(self.root/rid)/'report-private.json',{'request_id':rid,
+            'gate_reason':'grounded_tool_count_unproven','discovery_accounting_diagnostic':{'response_status':'completed'}})
+        q.finish(rid,'research_uncertain',reason='research_incomplete_no_retry')
+        before=q.rows();q.recover_source_fix(self.ledger)
+        self.assertEqual(q.rows(),before);self.assertEqual(self.ledger.status()['pending_reserved_usd'],3)
+        self.assertIsNone(q.diagnostic(self.ledger)['stop_reason'])
+        self.assertNotEqual(q.claim(self.ledger),rid)
 
 if __name__=='__main__':unittest.main()

@@ -72,6 +72,12 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(pairs[pressure['target_id']],'growth-pressure-1');self.assertEqual(pairs[cleaning['target_id']],'growth-cleaning-1')
         paid=next(args for query,args in queries if 'select f.offer_id' in query)
         self.assertEqual(set(paid[0]),set(pairs));ns['send_mail_once'].assert_not_awaited()
+        queries.clear()
+        await ns['process_growth_outreach'](SECRET,{'target_ids':[pressure['target_id']]})
+        exact=next(args for query,args in queries if 'join unnest' in query)
+        self.assertEqual(exact[1],[pressure['target_id']]);self.assertEqual(exact[2],['growth-pressure-1'])
+        self.assertNotIn(legacy[0],exact[1]);ns['send_mail_once'].assert_not_awaited()
+
 
     async def test_actual_paid_inviter_rechecks_revoked_token_before_any_send(self):
         source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())

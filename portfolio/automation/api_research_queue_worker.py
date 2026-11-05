@@ -11,8 +11,8 @@ from datetime import datetime,timezone
 from pathlib import Path
 import api_research_pilot as pilot
 
-SCOPE='Phoenix/property_management';MAX_JOBS=40;MIN_AVAILABLE_MICRO=6_000_000
-SOURCE_FIX_REVISION='coverage-and-visible-address-v2'
+SCOPE='Phoenix/property_management';MAX_JOBS=40;MIN_AVAILABLE_MICRO=3_000_000
+SOURCE_FIX_REVISION='completed-answer-and-phase-budget-v3'
 AUTOMATION=Path(__file__).resolve().parent
 class Held(ValueError):pass
 
@@ -63,9 +63,20 @@ class Queue:
             if prior:
                 self.db.execute('commit');return {'status':'source_fix_already_recorded','after_job':prior[0],'history_reset':False}
             diagnostic=self.diagnostic(ledger)
-            if diagnostic['stop_reason']!='consecutive_no_progress' or ledger.status()['uncertain_calls'] or ledger.status()['available_usd']<6 or self.lifetime_count(ledger)>=MAX_JOBS:raise Held('source_fix_recovery_not_eligible')
+            eligible=diagnostic['stop_reason']=='consecutive_no_progress' and not ledger.status()['uncertain_calls']
+            if diagnostic['stop_reason']=='research_incomplete_no_retry':
+                # One known completed answer failed source parsing. Never retry that
+                # request or free its $3 reservation; allow a distinct next mission.
+                row=self.rows()[-1]
+                path=ledger.root/row[1]/'report-private.json'
+                if path.is_file() and not path.is_symlink() and path.stat().st_size<850000:
+                    report=json.loads(path.read_text())
+                    eligible=(report.get('request_id')==row[1] and report.get('gate_reason')=='grounded_tool_count_unproven'
+                        and report.get('discovery_accounting_diagnostic',{}).get('response_status')=='completed'
+                        and ledger.status()['uncertain_calls']==1)
+            if not eligible or ledger.status()['available_usd']<3 or self.lifetime_count(ledger)>=MAX_JOBS:raise Held('source_fix_recovery_not_eligible')
             last=self.rows()[-1][0]
-            self.db.execute('insert into source_recoveries values(?,?,?,?)',(SOURCE_FIX_REVISION,last,'deployed_rotation_and_visible_address_fix',now()))
+            self.db.execute('insert into source_recoveries values(?,?,?,?)',(SOURCE_FIX_REVISION,last,'deployed_completed_answer_and_phase_budget_fix',now()))
             self.db.execute('commit');return {'status':'source_fix_recovery_recorded','after_job':last,'history_reset':False}
         except Exception:self.db.execute('rollback');raise
     def rows(self):return self.db.execute('select job_no,request_id,state,verified,inserted,stop_reason from jobs order by job_no').fetchall()
@@ -78,8 +89,9 @@ class Queue:
         external=sum(row[0] not in ours for row in ledger.db.execute('select id from missions'))
         return len(ours)+external
     def diagnostic(self,ledger):
-        rows=self.rows();unresolved=[row for row in rows if row[2]=='running'];failed=[row for row in rows if row[2] not in ('running','completed','no_progress')]
+        rows=self.rows();unresolved=[row for row in rows if row[2]=='running']
         recovery_after=self.db.execute('select coalesce(max(after_job),0) from source_recoveries').fetchone()[0]
+        failed=[row for row in rows if row[0]>recovery_after and row[2] not in ('running','completed','no_progress')]
         streak=0
         for row in reversed(rows):
             if row[0]<=recovery_after or row[2]!='no_progress':break
@@ -89,12 +101,12 @@ class Queue:
         if not stop and streak>=3:stop='consecutive_no_progress'
         if not stop and self.lifetime_count(ledger)>=MAX_JOBS:stop='lifetime_job_limit'
         budget=ledger.status()
-        if not stop and round(budget['available_usd']*1e6)<MIN_AVAILABLE_MICRO:stop='insufficient_six_dollar_reserve'
+        if not stop and round(budget['available_usd']*1e6)<MIN_AVAILABLE_MICRO:stop='insufficient_next_phase_reserve'
         return {'status':'research_queue_status','scope':SCOPE,'lifetime_job_limit':MAX_JOBS,
             'lifetime_attempts':self.lifetime_count(ledger),'queue_jobs':len(rows),'completed_jobs':sum(row[2]=='completed' for row in rows),
             'verified_sources':sum(row[3] or 0 for row in rows),'inserted_inventory':sum(row[4] or 0 for row in rows),
             'stop_reason':stop,'consecutive_no_progress':streak,'source_recovery_after_job':recovery_after,'last_job_reason':rows[-1][5] if rows else None,
-            'worker_active':live,'needs_help':bool(failed or streak>=3 or stop in ('insufficient_six_dollar_reserve','lifetime_job_limit','orphaned_running_job')),'budget':budget,'outreach_sent':0,'customer_actions':False}
+            'worker_active':live,'needs_help':bool(failed or streak>=3 or stop in ('insufficient_next_phase_reserve','lifetime_job_limit','orphaned_running_job')),'budget':budget,'outreach_sent':0,'customer_actions':False}
     def claim(self,ledger):
         self.db.execute('begin immediate')
         try:

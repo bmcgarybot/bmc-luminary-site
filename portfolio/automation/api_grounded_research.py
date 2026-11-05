@@ -331,8 +331,13 @@ def run_grounded(ledger,request_id,config,*,api=pilot.responses_https,fetch=None
         coverage=prior_coverage(ledger)
         response=api(discovery_request(coverage,coverage['prior_grounded_missions']),config['OPENAI_API_KEY'])
         report['discovery_accounting_diagnostic']=accounting_diagnostic(response,grounded=True)
+        # Cost evidence is independent of whether the answer contains usable sources.
+        # Keep diagnostics before source parsing so a poor answer cannot lose its usage.
+        report['grounded_usage']=response.get('usage')
+        report['discovery_output_types']=[item.get('type') for item in response.get('output',[])][:100]
+        report['openai_web_search_calls']=sum(item.get('type')=='web_search_call' for item in response.get('output',[]))
+        report['web_budget_status']=complete_usage(ledger,web_id,response,response.get('usage'),grounded=True)
         sources,usage,rejected,urls=source_candidates(response)
-        report['web_budget_status']=complete_usage(ledger,web_id,response,usage,grounded=True)
         excluded={pilot.company_key(name) for name in coverage['names']}
         sources=[source for source in sources if pilot.company_key(source['business_name']) not in excluded and source['url'] not in coverage['urls']]
         report['coverage']={'prior_grounded_missions':coverage['prior_grounded_missions'],'focus':FOCI[coverage['prior_grounded_missions']%len(FOCI)],'already_verified_name_count':len(excluded)}
@@ -393,6 +398,10 @@ def run_grounded(ledger,request_id,config,*,api=pilot.responses_https,fetch=None
         report['status']='research_complete' if len(report['verified'])>=25 else 'research_partial'
     except Exception as exc:
         report['status']='research_held';report['gate_reason']=str(exc) if isinstance(exc,pilot.Held) else 'grounded_request_uncertain_or_invalid'
+        # A completed billed answer without usable search evidence is zero progress,
+        # not an uncertain transmission. Keep its full cost if metadata cannot settle.
+        if report['gate_reason']=='grounded_tool_count_unproven' and report.get('web_budget_status') in ('full_reservation_retained','conservative_usage_upper_settled'):
+            report['status']='research_partial'
     report.update(completed_at=pilot.now(),native_primary_verified_count=len(report['verified']),verified_count=len(report['verified']),budget=ledger.status())
     path=directory/'report-private.json';pilot.write_private(path,report);ledger.finish(request_id,report['status'],path)
     return {'status':report['status'],'request_id':request_id,'native_primary_verified_count':len(report['verified']),
