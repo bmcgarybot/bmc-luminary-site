@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-two-phx-pause-research-20261105T143226Z", "action": "api_research_worker_stop", "args": {}, "allow_external_actions": false, "created_at": "2026-11-05T14:32:26.731251+00:00", "expires_at": "2026-11-05T15:32:26.731251+00:00"}
