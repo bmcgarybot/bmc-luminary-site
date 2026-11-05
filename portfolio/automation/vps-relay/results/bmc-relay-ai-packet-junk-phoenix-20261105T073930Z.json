@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T07:40:27.785368+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "git_commit_before": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ced37d780b05b84b6e58df2afc78a8a869a5620d",
+  "request_id": "bmc-relay-ai-packet-junk-phoenix-20261105T073930Z",
+  "request_sha256": "1892584838e5690c5802e5610e4edd671cfee74182934b88f3e1ed698eac8836",
+  "started_at": "2026-11-05T07:40:27.314961+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-relay-ai-packet-junk-phoenix-20261105T073930Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"Z/trsdgN1DdWDzKLF2wV6gtHqVQ7bojSErnZjnIfXHt9MKQHWQqUTWIOWHyuOsPxrUxwFhSa2WwAm6iq4zt3REtn8DR1ztWFR6ciLUz7V5km3VOLfom9VKro/z71AUtTbFQdr5ojg78EmOtnWx8j8k3rVQpaeJGiwsKZVkK4dcYMqs3ENG1M6HAs3X7W1D1d0B0oYpXu9BeavYQGD18Yc2ULR9MGbfKog/5cBGsEBqRRjaHzg0aJLDW4WQv7jEwfzW1vqCBvXWDNdj9/ug/CxgBbS88iUYlQl61y37EXjpkplGeIc3aMQSrGqEcIUNG8SMYLiP1XGQlohlwysJx9g49qb6GRn0v5XPZvX6HZutf+TMjOeEZNqfPJp4qQP/ZwJhkqMsTGc6fVWw+wBsemJgyKsJf1MhcWFPYo0SygonJA1C0VuDL7mjV21+mM88ANgP/wz9LFZTA2cltZ32DpuqMYkrIE116ljD6Sx6Tsph8SR9/rSRTuB1JSd6hYJtdC\",\"nonce\":\"I01naliDncV2wLBD\",\"ciphertext\":\"AlNCjb/MP1AgZ6PTiba8YMdnp383JK3rChSXw6yAJXW6gkGd1moKgsNHdslglCYXDVL+Yj4cphlWOjT0DrqqUHMbU2ncQuErFNNVJ+dAiKNSnAaCDD4UKc58luoo5U+zA1aWw/qlzu7lyKPvIZR/AfN5v6BqL98B8Jom6pu5Hw/MmXUxW4Ku0Ne4/LQt9Dyzb0ZkSJlrWu+uZ9Jlcm0Q4a19qt2WM+J8Ai0dGOdloM9v+vZHfbqXmyyi1ENJ+jIfDDhK778RX2zbcDyrL+Ho92NJ1T+29G23UpaOTIgPXhlse9xP4gsr34X29sdZbLQuYSI4GJqZBLM401ONfEPfSRRRUS5yi4qHH3Z3L2ptosXcBxLU550n/7/bNWmfr74chiFrl1rm0VTbd/mp51D7hP65GE74qBIEnZ6UHu+oHDQ+6ksDTDK4Guv3H4WfsNOUsrkZFJmue3R7KKHSRF521dVxFUgf2V7euKLt+jWs665/Zh4=\"}",
+  "version": 1
+}
