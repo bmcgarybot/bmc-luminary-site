@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc99-budget-activate-20261105T171644Z",
+  "action": "api_research_budget_50",
+  "args": {},
+  "allow_external_actions": true,
+  "created_at": "2026-11-05T17:16:44.119189+00:00",
+  "expires_at": "2026-11-05T18:16:44.119189+00:00"
+}
