@@ -1,0 +1,21 @@
+{
+  "action": "enrich_native_contact",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:25:32.453286+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "f3994c4f3b7b29f919ec4b789fa8fcf3b3d6f56f",
+  "request_id": "bmc-grounded-contact-onestop-20261105T062432Z",
+  "request_sha256": "30d8c5178618e09f190ae0c92963a97c48d78ee4dfe652c53dc86da3c719f37c",
+  "started_at": "2026-11-05T06:25:31.780411+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"bmc-grounded-contact-onestop-20261105T062432Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"If2LeMkhPwtOoZfdDIpnsbDAekeQyJ7twWi9BXc2t5CfcJpjHSCIaCgOwmrJHS4qmHI39DMYhRqM3MnMAXYDsBFP1CLx97h7uZKyPVuCzl8a7gsrdKRt8Xlz09IBJYXKWbS+4W2SxNMciQecBk1EppRul9rqVeIWrXI49Z8rQnYIGDPPKxDAt3QVPAWin5Yc2W+iAoXfYFblRmijRAIEEVeMfXLIf6Zv34cv2+iZwA/9Wx8OlUaEEZiMwcr/CZ4TPI20QnkCLf+CDi2Gd0JA4A9/VBmXFBdw+GcrHF6Kheri1JjxRdZvUErYrdss0s0Euduiok5J5WbDxR5YKFaTO8bf9y8LjPZz3NmNP4T2Bor+rzH9R5IQ23/wTyy8425hHZUmF/1u8n0scQiIYjPaFEOEUw8eJidgjmrB42os/Gyi0KDFNAgoJMKlkPpRwCzNPAamdthsXNYkvTEt4ZuufibGHTUqSKPQwivrCuxw1X8ttg/3dYweybmWrxEX50eq\", \"nonce\": \"koMsa7Te2bjip3UN\", \"ciphertext\": \"72X/9HbSKAMKzi1zyvUTZdwcvTyuNVWl5rjVgfG02grX9Yq1F8k45dagKo95+o5vkXfQv/73nmGvfmEC0To65kv/Cf4SJVsMkFc68Ttuc3l4AF62TXOORIsBsvSs1pMggnWaSzOwZADEBWHt1RYvvQ8PDYcB7VMB+PRIMNla74gUggiMfhviEcIQvJSDt03JQa68z3k3W2g8YncEmOCb0QPQ/0ZOhW609BGMs1b4EBSyuRJ4osbNSgGA0oc/sdgSH9e959995ZoXF6inLB1Q98tlfZv+s2Fhaiy12zKx0jyD6AbR+xjHKEpVQ9aVuspzJKNdXenMzWU1aM+eCeLhvlE1Hu6IVI381xADp3/E1waHllM=\"}",
+  "version": 1
+}
