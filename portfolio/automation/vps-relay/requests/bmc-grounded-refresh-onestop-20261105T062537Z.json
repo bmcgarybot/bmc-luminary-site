@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-grounded-refresh-onestop-20261105T062537Z", "action": "refresh_uncontacted_vendor", "args": {"candidate_id": "f92e1f24-013d-4a07-b987-cad990f8f57f"}, "allow_external_actions": false, "created_at": "2026-11-05T06:25:37.195567+00:00", "expires_at": "2026-11-05T07:25:37.195567+00:00"}
