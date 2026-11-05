@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "bmc103-proof-report-20261105T185830Z",
+  "action": "api_research_export",
+  "args": {
+    "source_request_id": "bmc-catalogue-20261105T185701-d347d0d6"
+  },
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T18:58:30.376241+00:00",
+  "expires_at": "2026-11-05T19:58:30.376241+00:00"
+}
