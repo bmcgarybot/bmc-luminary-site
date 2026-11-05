@@ -78,7 +78,7 @@ EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
-API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_export"}
+API_RESEARCH_ACTIONS = {"api_research_prepare", "api_research_configure", "api_research_status", "api_research_export", "api_research_import"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS | API_RESEARCH_ACTIONS
 
 API_ACTIONS = {
@@ -728,7 +728,7 @@ def execute(req: dict) -> dict:
             command=['python3','./api_research_pilot.py','--status'];timeout=30
         elif action == "api_research_run":
             if args:raise RelayError('The bounded Phoenix pilot takes no arguments')
-            command=['python3','./api_research_pilot.py','--run','--request-id',req['request_id']];timeout=900
+            command=['python3','./api_research_pilot.py','--run-grounded','--request-id',req['request_id']];timeout=900
         else:
             source_id=args.get('source_request_id','')
             if set(args)!={'source_request_id'} or not isinstance(source_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',source_id):
@@ -737,12 +737,19 @@ def execute(req: dict) -> dict:
             path=report_path(source_id)
             if path.is_symlink() or not path.is_file() or path.stat().st_size>850000:raise RelayError('Bounded private pilot report unavailable')
             payload={'status':'api_pilot_private_report','report':json.loads(path.read_text())}
-            encryption='import sys,json;from owner_research_export import seal_export;print(json.dumps(seal_export(json.load(sys.stdin),sys.argv[1])))'
-            cp=subprocess.run(['docker','compose','--env-file',ENV_FILE,'exec','-T','ops_api','python','-c',encryption,req['request_id']],cwd=AUTOMATION,
-                input=json.dumps(payload),text=True,capture_output=True,timeout=45)
-            if cp.returncode:raise RelayError('Private pilot export unavailable')
-            stdout=cp.stdout;stderr='';exit_code=0
-            command=None
+            if action == 'api_research_import':
+                command_code='import asyncio;from api_pilot_import import main;asyncio.run(main())'
+                cp=subprocess.run(['docker','compose','--env-file',ENV_FILE,'exec','-T','-e','BMC_API_PILOT_IMPORT=1','ops_api','python','-c',command_code],cwd=AUTOMATION,
+                    input=json.dumps(payload['report']),text=True,capture_output=True,timeout=90)
+                if cp.returncode:raise RelayError('Verified buyer evidence import refused; customer state unchanged')
+                stdout=cp.stdout;stderr='';exit_code=0;command=None
+            else:
+                encryption='import sys,json;from owner_research_export import seal_export;print(json.dumps(seal_export(json.load(sys.stdin),sys.argv[1])))'
+                cp=subprocess.run(['docker','compose','--env-file',ENV_FILE,'exec','-T','ops_api','python','-c',encryption,req['request_id']],cwd=AUTOMATION,
+                    input=json.dumps(payload),text=True,capture_output=True,timeout=45)
+                if cp.returncode:raise RelayError('Private pilot export unavailable')
+                stdout=cp.stdout;stderr='';exit_code=0
+                command=None
         if command:
             cp=run(command,timeout=timeout)
             if cp.returncode:raise RelayError('API pilot action failed; inspect private VPS status, no secret published')
