@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T07:39:22.789079+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "git_commit_before": "c0eaf7e694dda3bf42e641d3a74992c318b02565",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "f371d0971603a41ea2b642becfaa585d95e59622",
+  "request_id": "bmc-relay-ai-packet-harris-20261105T073825Z",
+  "request_sha256": "8aec233e4acad2bed00231b7cfa174a5b3b6cca116803d87ff1d609b5429aeb7",
+  "started_at": "2026-11-05T07:39:22.232947+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-relay-ai-packet-harris-20261105T073825Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"YmhfEBFZjRpRSNroj5BHqv8vLpC5bebflEr+076LvZB+GzRwkKmBlbt3qQMp0t3VmqKE1DltvHf8OADyJJsBugGG1ius+WF6rUEHscYTg8Olu63Ge0Jcy1Ggn3ITnHUoHUhaiPFBekuA3MHeTC2vv9G5G/H7d2GJGiJ7JaU9EX5aAWGssOjXU99sCf2SIikE5dF0Nwh/rsOxesnRJxV/R3GdDhgjWG1hTCXGhsPJvLjfplZZEiCOx1D9gIluEPwW2VBwJjT4+X4ALQ7kEzbns+anxKGYve9T00A6DM+B/Hz8UNWPsAoSfAG/BVmZogUpe6exXABOX4jk4yNSPyYivpMHvihmwROwK/FQTn+Bb9JdgFB1OVPop/tikPtK8UDQaZXQqH76P5DVnc9WBslJoo/T7eWRiNw23EJAEMT3Zidf6l8ZJVdqEoeWCuxVNn+kJ++wHMs3i125DzsKdC6G54Y/TaFiP9bI6SE1fvUAn7mbztZhrAeVIYX1ki04WeAx\",\"nonce\":\"F5CkrXghUFEi5W5W\",\"ciphertext\":\"dSrcf1pT9o8NcrrAsNLeLcfy8wNTjs2xYLBXDfyC49Vymeb1XExwQx8ZEn629b0PgqABc/duenhtejjigMzVRabTdJLvTmWYWrdwa1WjPiK47LIQDdf3JWfeDYdv/6xdOeSTlRED0EEv7COWqzu2N1FEQG7nOVZrdSYMsAdBiTaQ8quubBlQvIuiZRb6mz/UXGN3K5anJ/gCnwWkx3NtBawRnSoBDPXUmaNLLbYtaINT/9uCSa4ViG5qyRW6qYsKUeehatRUCn1Rj91rOAdxAQGK42B6PK97mGOQ1Zz9PgKu/B5RkEGnaeaOPA5ER0T65cSPwNRVLhH6N29yOQzSVe6TWLqIETtdCNg+v7VFBpQOvvw9G3jB4pdzYPwNrwuNn6pax1ajm3PgvyjRQBMCqKLqt4MESsy3s3OG3qveoM4BL8V86xE6jsVdg3ifslvEMpvWBlIMRW3RBiGIOpsRfh36vpe685KeEhXRbgXC\"}",
+  "version": 1
+}
