@@ -1,0 +1,24 @@
+{
+  "action": "api_research_prepare",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T04:45:41.984520+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "git_commit_before": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "178bd44d9917fccfc72378e901d73e7d2a255870",
+  "request_id": "bmc-api-prepare-20261105T044435Z",
+  "request_sha256": "9a5452a900a1588d91362901f913d79f47926822aac165700663f77d4643e8e4",
+  "started_at": "2026-11-05T04:45:41.244567+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"public_key_pem\": \"-----BEGIN PUBLIC KEY-----\\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA3NZQakhqmEFK+Pb/KpO3\\nYVwZ30IHo7tWdkfwNLVi4HwGaZ5xtDRb8PbmNscGRVahXGzsKGjcgBjp6Hcgtunx\\nHBLRlvV+tltTl18RcrsMNLt4/Bex+cJtEs568v06/bZYnrj0D9CV8Q91Cmx/eGUM\\nbCKJ3LOOUq+iTZYcOA9ohCZ2RpXwO+vt+bDDVsosWsJdTzoOPBM9WS/BFpcN5Oq7\\ncVUevsHjvQGNJUAjt055FEMgu11WYsTOJ7fRVE+Z0SAfyG55PdtEkmha2e7i9DJi\\n2U5w4Vg61aFm3P7LJSgfrM3PHGbt5BXEKG337wEWw/t+S7lFdIKZftZG5toHWOMH\\nC0LIA8i1xK+zPAyssLw3dijCsPTtI5IWThkVVkE4BzJ3NgW5uIhsG2Y8QzaIGz5N\\nCCYdMyXxqsw+YvBJma1qQAneyoTyebEKWRyuG6bqJbbIY9dR5FZYyVL78x9ZI6Le\\nizFQ4LHAs8FoIhgr1tsNIFHYXsKxcTykzHIQ0oC1S6tt5uykLfqCVt5TyVr6oxBg\\nqkvdL4gO4/nsqfI2OBa5yUNVEiAkubmPDm6bxCL3hNXzaMGNgA2b2p1CRSu5LV++\\nd0WpSR6bhymH99Zxa4mOgHjUNuoJjKmXWHxlDOPmS7ZxLgc9/puDKEyCwFRuSKZt\\nOv48ZI2kGLfgTD9y9/+uAwECAwEAAQ==\\n-----END PUBLIC KEY-----\\n\", \"rsa_bits\": 4096, \"transport\": \"RSA-OAEP-SHA256\", \"max_plaintext_bytes\": 400}\n",
+  "version": 1
+}
