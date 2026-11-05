@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:28:51.049184+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "7b17acd49dc5f044c57a7dd2c9848fb768a5d591",
+  "request_id": "bmc-grounded-packet-onestop-20261105T062748Z",
+  "request_sha256": "f15fde48ceb5223ee9c52d6174e6f9ed23ab6721e877bb416a173521cfb307a5",
+  "started_at": "2026-11-05T06:28:51.035385+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-grounded-packet-onestop-20261105T062748Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"bD4NeKh7IygWzESwZEzE/8ippsQSq7a/93XWJWhtGqps8cUXEz72qB285kTp4MFOz5Mw0fxVy0WtRiRQQvbh12oHpf5/B1ozlgE/07mj0fJG9EzQ0T5qzpMyA2N5CIrPA0t2sjzIlGBdaPIU7RAjEVGWwKVjTle5MGxh9/dsxtUngZvVZqgc9NAwuVBgQ+14Qvlk/z2hC61yn6cnpejj7OCvgzt8abdVNglQiuRi0V/9ZMymMcGDYIC1Fx6DqbUyFnLEhYlawmt/k4tqor05eZ8rOYGZEEC7kvN3gRu31dOQx3aETQl/WqTB1lK+7qAHcojVP2nZBi48adgLRmfeV4UEchMOdHgEhVUQP8d/FWIgTUp7jAnS5nB7XyfjI80uzvBd4tmVEZ75WE6oy4xaUV7K5pY+4cR5TzwJDkQjz3uQl0+J0RToZ5+nxTH31BxAdTXtRzt6KBEuZHZ281O1AnpEPJnKg82jB7TtXunyUHSzMFyeP+EoKl/ieD8TEl5R\",\"nonce\":\"B4xUZSoaZe7EQ/bA\",\"ciphertext\":\"0sJAAXn+tWUOCPr/yahOVqWkGwFEuguCdxG7MKVIyd0mioy3sFPsd4e/UEwQn2k/waOY06pTrzOI7jsyv8BnvWRLTkulPyKZEHdggYgF3XTlJY2WrxeuJjyvuYYLYbxyx4joWGFraRqbbfJbKl1gQytkOmpVSRTbvmyLvOLkrK/Qod+gbJ4brqpg6A5Qgr6Unbk1h5G2ZhCs02OXXOzT1hsuOHuuAYMOlYW6TUjVxEdhB+nNnvxiAEck1xnFg4i5BmyRNY2ws9M9aEkgsxgxPtj6rRZuiJvVMhoiF9kxX1vkDWByJijCiV+QZUaIlEkMtW4Bh4QNRrhazz7JfWwNCfoWFlsqqA==\"}",
+  "version": 1
+}
