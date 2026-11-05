@@ -1,0 +1,24 @@
+{
+  "action": "api_research_configure",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T04:46:51.600252+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "git_commit_before": "2c4d7678735096722bdcefaa2df7e12ac72da669",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "5de9e7c288b152336d00d27c6a5a4de047aaa7d7",
+  "request_id": "bmc-api-configure-20261105T044551Z",
+  "request_sha256": "91326d0ce2cea4914c1172a5f640b6b1bc5feef7e0d4c9c7efbd10eef4e7c45a",
+  "started_at": "2026-11-05T04:46:51.493231+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"key_present\": true, \"pilot_budget_usd\": 10.0, \"billing_attested\": true}\n",
+  "version": 1
+}
