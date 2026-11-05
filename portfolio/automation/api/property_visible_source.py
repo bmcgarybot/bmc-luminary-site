@@ -44,19 +44,25 @@ class Visible(HTMLParser):
         hidden=prior.get('hidden',False) or t in {'script','style','noscript','template'} or 'hidden' in a or 'inert' in a or a.get('aria-hidden')=='true' or bool(re.search(r'display:none|visibility:hidden|opacity:0(?:;|$)',style))
         excluded=prior.get('excluded',False) or t in {'aside','blockquote','q','form','nav'} or bool(re.search(r'testimonial|review|webdesign|directory|listing.card',str(a),re.I))
         main=prior.get('main',True) and t not in {'footer','header','nav'}
-        n={'tag':t,'hidden':hidden,'excluded':excluded,'main':main,'text':[],'href':a.get('href','')}
+        semantic=t=='address' or (t=='a' and bool(re.match(r'https://(?:maps\.app\.goo\.gl/|(?:www\.)?google\.[^/]+/maps)',a.get('href','')))) or a.get('itemprop')=='address'
+        n={'tag':t,'hidden':hidden,'excluded':excluded,'main':main,'text':[],'href':a.get('href',''),'semantic':semantic}
         if t not in self.VOID:self.stack.append(n)
     def handle_data(self,s):
-        if not self.stack or self.stack[-1]['hidden']:return
+        if not self.stack or self.stack[-1]['hidden'] or self.stack[-1]['excluded']:return
+        added=set()
         for n in reversed(self.stack):
-            n['text'].append(s)
+            n['text'].append(s);added.add(id(n))
             if n['tag'] in self.BLOCK:break
+        # Visible descendants in ONE semantic address/link remain one DOM text
+        # block. Never join different links, unrelated containers or hidden text.
+        for n in self.stack:
+            if n['semantic'] and id(n) not in added:n['text'].append(s)
     def handle_endtag(self,t):
         i=next((i for i in range(len(self.stack)-1,-1,-1) if self.stack[i]['tag']==t),None)
         if i is None:return
         n=self.stack[i];text=' '.join(' '.join(n['text']).split())
         if not n['hidden'] and not n['excluded']:
-            if t in self.BLOCK and text:self.blocks.append({'tag':t,'text':text,'main':n['main']})
+            if (t in self.BLOCK or n['semantic']) and text:self.blocks.append({'tag':t,'text':text,'main':n['main']})
             if t=='a' and n['href'].startswith(('mailto:','tel:')) and not any(re.search('design|powered by', ' '.join(x['text']),re.I) for x in self.stack[:i]):self.links.append({'href':n['href'],'text':text})
         del self.stack[i:]
 
@@ -90,6 +96,9 @@ def findquote(pages,text,main=False):
             if norm(text) in norm(b['text']):return i,b['text']
     raise ValueError('quote_not_visible')
 
+def role_quote_valid(quote,published_role,business_name):
+    return bool(ROLE.search(quote) or (published_role=='apartment_community' and legal(quote)==legal(business_name) and re.search(r'\bapartments\s*$',quote,re.I)))
+
 def verify_property_visible_source(candidate,primary_receipt,extracted,secret,*,contact_receipt=None,receipt_is_trusted,now=None):
     now=now or datetime.now(timezone.utc)
     if candidate.get('side')!='buyer' or candidate.get('market')!='Phoenix' or candidate.get('category_key')!='property_management':raise ValueError('scope_invalid')
@@ -108,7 +117,7 @@ def verify_property_visible_source(candidate,primary_receipt,extracted,secret,*,
             if any(norm(c).rstrip('/').rsplit('/',1)[-1] not in {'us','usa','united states','united states of america'} for c in country_values(v)):raise ValueError('foreign_country')
     pages=[visible_property_blocks(r.document) for r in rs]
     iq,ib=findquote(pages[:1],x['identity_quote'],True);rq,rb=findquote(pages[:1],x['role_quote'],True)
-    if dense(x['business_name']) not in dense(x['identity_quote']) or not ROLE.search(x['role_quote']) or norm(x['role_quote']) not in norm(role['role_excerpt']):raise ValueError('identity_or_role_unbound')
+    if dense(x['business_name']) not in dense(x['identity_quote']) or not role_quote_valid(x['role_quote'],role['published_role'],x['business_name']) or norm(x['role_quote']) not in norm(role['role_excerpt']):raise ValueError('identity_or_role_unbound')
     ai,ab=findquote(pages,x['address_quote']);ci,cb=findquote(pages,x['contact_quote'])
     if not address_ok(x['physical_address']) or dense(x['physical_address']) not in dense(x['address_quote']) or dense(x['physical_address']) not in dense(ab):raise ValueError('physical_address_unproven')
     if ai and not any(dense(x['business_name']) in dense(b['text']) for b in pages[ai]['contact_blocks']):raise ValueError('contact_identity_unproven')
@@ -151,5 +160,5 @@ def auto_property_visible_valid(row,secret,*,now=None):
         if set(qs)!={'identity','role','address','contact'} or any(type(v)!=int or not 0<=v<len(rs) for v in qs.values()) or qs['identity']!=0 or qs['role']!=0:return False
         if any(not isinstance(p[k],str) or not 0<len(p[k])<=1500 for k in ('identity_quote','role_quote','address_quote','contact_quote')):return False
         if dense(p['business_name']) not in dense(p['identity_quote']):return False
-        return bool(ROLE.search(p['role_quote']) and dense(p['physical_address']) in dense(p['address_quote']) and p['published_role'] in {'property_management','apartment_community'})
+        return bool(role_quote_valid(p['role_quote'],p['published_role'],p['business_name']) and dense(p['physical_address']) in dense(p['address_quote']) and p['published_role'] in {'property_management','apartment_community'})
     except (KeyError,ValueError,TypeError,AttributeError,OverflowError):return False

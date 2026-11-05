@@ -12,6 +12,7 @@ from pathlib import Path
 import api_research_pilot as pilot
 
 SCOPE='Phoenix/property_management';MAX_JOBS=40;MIN_AVAILABLE_MICRO=6_000_000
+SOURCE_FIX_REVISION='coverage-and-visible-address-v2'
 AUTOMATION=Path(__file__).resolve().parent
 class Held(ValueError):pass
 
@@ -52,6 +53,21 @@ class Queue:
         self.db.execute('create table if not exists jobs(job_no integer primary key,request_id text unique not null,state text not null,created text not null,finished text,verified integer,inserted integer,report_path text,stop_reason text)')
         self.db.execute("create trigger if not exists jobs_no_delete before delete on jobs begin select raise(abort,'research_job_history_immutable'); end")
         self.db.execute("create trigger if not exists jobs_finished_immutable before update on jobs when old.state<>'running' begin select raise(abort,'research_job_history_immutable'); end")
+        self.db.execute('create table if not exists source_recoveries(revision text primary key,after_job integer not null,reason text not null,created text not null)')
+        self.db.execute("create trigger if not exists source_recovery_no_update before update on source_recoveries begin select raise(abort,'research_recovery_immutable'); end")
+        self.db.execute("create trigger if not exists source_recovery_no_delete before delete on source_recoveries begin select raise(abort,'research_recovery_immutable'); end")
+    def recover_source_fix(self,ledger):
+        self.db.execute('begin immediate')
+        try:
+            prior=self.db.execute('select after_job from source_recoveries where revision=?',(SOURCE_FIX_REVISION,)).fetchone()
+            if prior:
+                self.db.execute('commit');return {'status':'source_fix_already_recorded','after_job':prior[0],'history_reset':False}
+            diagnostic=self.diagnostic(ledger)
+            if diagnostic['stop_reason']!='consecutive_no_progress' or ledger.status()['uncertain_calls'] or ledger.status()['available_usd']<6 or self.lifetime_count(ledger)>=MAX_JOBS:raise Held('source_fix_recovery_not_eligible')
+            last=self.rows()[-1][0]
+            self.db.execute('insert into source_recoveries values(?,?,?,?)',(SOURCE_FIX_REVISION,last,'deployed_rotation_and_visible_address_fix',now()))
+            self.db.execute('commit');return {'status':'source_fix_recovery_recorded','after_job':last,'history_reset':False}
+        except Exception:self.db.execute('rollback');raise
     def rows(self):return self.db.execute('select job_no,request_id,state,verified,inserted,stop_reason from jobs order by job_no').fetchall()
     def finish(self,request_id,state,*,verified=0,inserted=0,path=None,reason=None):
         changed=self.db.execute("update jobs set state=?,finished=?,verified=?,inserted=?,report_path=?,stop_reason=? where request_id=? and state='running'",
@@ -63,9 +79,10 @@ class Queue:
         return len(ours)+external
     def diagnostic(self,ledger):
         rows=self.rows();unresolved=[row for row in rows if row[2]=='running'];failed=[row for row in rows if row[2] not in ('running','completed','no_progress')]
+        recovery_after=self.db.execute('select coalesce(max(after_job),0) from source_recoveries').fetchone()[0]
         streak=0
         for row in reversed(rows):
-            if row[2]!='no_progress':break
+            if row[0]<=recovery_after or row[2]!='no_progress':break
             streak+=1
         live=worker_active(self.root) if unresolved else False
         stop=failed[-1][5] if failed else (('running_or_unresolved_job' if live else 'orphaned_running_job') if unresolved else None)
@@ -76,7 +93,7 @@ class Queue:
         return {'status':'research_queue_status','scope':SCOPE,'lifetime_job_limit':MAX_JOBS,
             'lifetime_attempts':self.lifetime_count(ledger),'queue_jobs':len(rows),'completed_jobs':sum(row[2]=='completed' for row in rows),
             'verified_sources':sum(row[3] or 0 for row in rows),'inserted_inventory':sum(row[4] or 0 for row in rows),
-            'stop_reason':stop,'consecutive_no_progress':streak,'last_job_reason':rows[-1][5] if rows else None,
+            'stop_reason':stop,'consecutive_no_progress':streak,'source_recovery_after_job':recovery_after,'last_job_reason':rows[-1][5] if rows else None,
             'worker_active':live,'needs_help':bool(failed or streak>=3 or stop in ('insufficient_six_dollar_reserve','lifetime_job_limit','orphaned_running_job')),'budget':budget,'outreach_sent':0,'customer_actions':False}
     def claim(self,ledger):
         self.db.execute('begin immediate')

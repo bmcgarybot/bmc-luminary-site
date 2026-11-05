@@ -34,4 +34,17 @@ class Tests(unittest.TestCase):
   result=r.run_due(p,run=fail,clock=lambda:5);self.assertEqual(result['status'],'relay_research_needs_help')
   self.assertNotIn('PRIVATE DATA',json.dumps(r.read_state(p)));self.assertEqual(r.read_state(p)['next_run_after'],305)
   with patch.object(r,'timer_active',return_value=False),self.assertRaises(r.pilot.Held):r.enable(p)
+ def test_source_fix_resume_records_history_without_running_research(self):
+  p=self.setup()
+  with patch.object(r,'timer_active',return_value=True):
+   r.enable(p);ledger=r.pilot.Ledger(p);queue=r.worker.Queue(p)
+   for i in range(3):
+    request=queue.claim(ledger);queue.finish(request,'no_progress',reason='no_verified_sources')
+   before=queue.db.execute('select * from jobs').fetchall()
+   result=r.resume_source_fix(p)
+   self.assertEqual(result['recovery']['status'],'source_fix_recovery_recorded')
+   self.assertEqual(result['queue']['queue_jobs'],3);self.assertIsNone(result['queue']['stop_reason'])
+   self.assertEqual(queue.db.execute('select * from jobs').fetchall(),before)
+   ledger.db.close();queue.db.close()
+
 if __name__=='__main__':unittest.main()

@@ -104,7 +104,8 @@ def validate_property_source(candidate,document):
     for tag,text in page.blocks:
         if tag=='title':continue
         low=text.lower().replace('’',"'")
-        role=bool(re.search(r'\bproperty management\b|\b(?:(?:apartment|multifamily) (?:community|communities|complex|complexes|homes)|residential communit(?:y|ies))\b|\bapartments for rent\b',low))
+        named_community=tag in ('h1','h2','h3','h4') and bool(re.search(r'\bapartments\s*$',text,re.I)) and name_identity(tag,text,expected)
+        role=named_community or bool(re.search(r'\bproperty management\b|\b(?:(?:apartment|multifamily) (?:community|communities|complex|complexes|homes)|residential communit(?:y|ies))\b|\bapartments for rent\b',low))
         if not role:continue
         if re.search(r"\bproperty management(?: services)?\b[^.!?;]{0,35}\b(?:not (?:available|offered|provided)|unavailable|discontinued)\b|\b(?:do not|does not|don't|doesn't|no longer|not currently|not presently|never)\b[^.!?;]{0,65}\b(?:offer|provide|perform|manage|handle|specializ|property management)\b|\bno property management\b",low):
             raise ValueError('property_role_declined')
@@ -114,7 +115,7 @@ def validate_property_source(candidate,document):
         management=bool(re.search(r'\b(?:we|our|provides?|offers?|specializ\w*|deliver\w*)\b[^.!?;]{0,100}\bproperty management\b',low)
             or (tag in ('h1','h2','h3','h4') and re.search(r'\bproperty management(?: services)?\b',low)
                 and not re.search(r'\b(?:what is|how to|guide|article|news|tips)\b',low)))
-        community=bool(re.search(r'\b(?:(?:apartment|multifamily) (?:community|communities|complex|complexes|homes)|residential communit(?:y|ies))\b|\bapartments for rent\b',low)
+        community=named_community or bool(re.search(r'\b(?:(?:apartment|multifamily) (?:community|communities|complex|complexes|homes)|residential communit(?:y|ies))\b|\bapartments for rent\b',low)
             and (tag in ('h1','h2','h3','h4') or re.search(r'\b(?:we|our|welcome|offers?|is|are|live|located|rent|leasing)\b',low)))
         if management or community:roles.append(('property_management' if management else 'apartment_community',text))
     if not roles:raise ValueError('property_visible_operator_role_unproven')
