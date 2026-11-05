@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """No-network regression checks for historical result indexing and pending work."""
+import json
 import pathlib
 import runpy
 import tempfile
@@ -58,5 +59,22 @@ class Tests(unittest.TestCase):
                            "github_request":lambda *args:{"truncated":True,"tree":[]}}):
             for fn in ("list_remote_result_ids","list_requests"):
                 with self.subTest(fn=fn),self.assertRaises(NS["RelayError"]):G[fn]()
+
+    def test_cached_success_survives_upload_failure_and_is_retried_without_execution(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=pathlib.Path(d);results=root/'results';results.mkdir()
+            receipt={'request_id':'saved-success','status':'success','stdout':'actual action receipt'}
+            path=results/'saved-success.json';path.write_text(json.dumps(receipt));before=path.read_bytes();uploads=[]
+            def upload(*args):
+                uploads.append(args)
+                if len(uploads)==1:raise NS['RelayError']('GitHub HTTP 502')
+            with patch.dict(G,STATE_DIR=root,LOCAL_RESULTS=results,list_remote_result_ids=lambda:set(),
+                list_requests=lambda:[{'name':'saved-success.json'}],remote_result_exists=lambda rid:False,
+                upload_json=upload,execute_request=lambda req:self.fail('Executed action must never rerun'),
+                run_due_research_refreshes=lambda:{}):
+                first=G['process_once']();self.assertEqual(len(first['errors']),1)
+                self.assertEqual(path.read_bytes(),before)
+                second=G['process_once']();self.assertEqual(second['uploaded_cached'],1)
+                self.assertEqual(path.read_bytes(),before);self.assertEqual(len(uploads),2)
 
 if __name__=="__main__":unittest.main()

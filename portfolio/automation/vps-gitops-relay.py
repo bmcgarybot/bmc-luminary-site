@@ -1377,9 +1377,14 @@ def process_once() -> dict:
                 stats["skipped_remote_result"] += 1
                 continue
             if local_result_file(fallback_id).exists():
-                if upload_cached_if_needed(fallback_id):
-                    known_results.add(fallback_id)
-                    stats["uploaded_cached"] += 1
+                # Publication failure must never replace an executed action's
+                # durable receipt with a new rejection or rerun that action.
+                try:
+                    if upload_cached_if_needed(fallback_id):
+                        known_results.add(fallback_id)
+                        stats["uploaded_cached"] += 1
+                except Exception as exc:
+                    stats["errors"].append({"request_id":fallback_id,"upload_error":redact(str(exc))})
                 continue
 
             req = load_request(item)
