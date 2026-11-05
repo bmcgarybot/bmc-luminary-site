@@ -76,6 +76,9 @@ def install(app,require_admin):
             public_ads=await conn.fetch("""select market,coalesce(evidence->'public_ad_check'->>'status','unchecked') status,count(*) records
                 from local_channel_observations where observation_kind='contractor_advertisement'
                 group by market,coalesce(evidence->'public_ad_check'->>'status','unchecked') order by market,status""")
+            preparation=await conn.fetch("""select payload->>'market' market,payload->>'service_key' service_key,
+                payload->>'status' status,payload->>'reason' reason,count(*) attempts,max(created_at) latest
+                from events where event_type='autonomous_scoped_preparation' group by 1,2,3,4 order by 1,2,3,4""")
             lanes=await conn.fetch('select * from local_demand_scan_state')
             worker=await conn.fetchrow("select * from channel_worker_metadata where worker_key='local_channels'")
         now=datetime.now(timezone.utc).timestamp();counts=Counter();issues=[]
@@ -93,7 +96,7 @@ def install(app,require_admin):
                 issues.append({'source':row['source_key'],'market':row['market'],'group':row['group_key'],
                     'reason':reason,'last_error':row['last_error']})
         return {'ok':True,'policy':POLICY,'coverage':[dict(x) for x in coverage],
-                'observations':[dict(x) for x in observations],'public_contractor_ads':[dict(x) for x in public_ads],
+                'observations':[dict(x) for x in observations],'public_contractor_ads':[dict(x) for x in public_ads],'autonomous_preparation':[dict(x) for x in preparation],
                 'worker':dict(worker) if worker else None,'health_counts':dict(counts),'help_needed':issues,
                 'worker_metadata_missing':worker is None,
                 'note':'Configured channels and scanned lanes are not verified businesses or confirmed demand'}

@@ -105,8 +105,14 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                             target['target_id'],VERSION,[recipient['market']],ids,json.dumps(sample),recipient['business_name'],service)
                     if not hold_required(): raise ValueError('owner_hold_changed')
                     return capsule
-        except (ValueError,KeyError,TypeError):
-            raise HTTPException(409,'scoped_journey_requires_review')
+        except (ValueError,KeyError,TypeError) as exc:
+            error=HTTPException(409,'scoped_journey_requires_review')
+            reason=str(exc)
+            # Internal worker gets a bounded static diagnostic; public HTTP
+            # response remains unchanged and does not expose research details.
+            error.preparation_reason=reason if (re.fullmatch(r'[a-z_]{3,90}',reason) or reason in (
+                'Qualified sample reserve is incomplete','The promised quantity is incomplete')) else 'compiler_failed'
+            raise error
     @app.post('/api/admin/approve-scoped-journey')
     async def approve_scope(request_id: str, target_id: str, expected_profile_signature: str,
                             approve: bool=False, x_bmc_admin_key: str | None=Header(default=None)):

@@ -8271,7 +8271,7 @@ install_held_packet_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHOR
 install_research_policy(app,require_admin)
 
 from scoped_journey_api import install as install_scoped_journey_api
-install_scoped_journey_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
+prepare_scoped_journey = install_scoped_journey_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
     lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
     dict(qualify=growth_qualified_territory_candidates, select_sample=growth_select_representative_sample,
          public_rows=growth_sample_public_rows, csv_bytes=growth_csv_bytes,
@@ -8316,3 +8316,7 @@ install_campaign_reentry(app,require_admin,ADMIN_KEY)
 
 from public_contractor_ads import install as install_public_contractor_ads
 install_public_contractor_ads(app,require_admin)
+
+from autonomous_preparation import install as install_autonomous_preparation
+install_autonomous_preparation(app, require_admin, prepare_scoped_journey, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
+    lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)))

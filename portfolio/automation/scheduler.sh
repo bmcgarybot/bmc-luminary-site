@@ -21,6 +21,8 @@ while true; do
   post /api/process-local-demand-signals 240
   post /api/process-public-contractor-ads 150
   wait "$census_pid" || true
+  # One existing compiler job; failures recorded and skipped for 24 hours.
+  post /api/process-autonomous-preparation 240
 
   if [ $((i % 3)) -eq 0 ]; then
     post /api/agent-cycle
