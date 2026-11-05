@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-source-fix-packet-harris-20261105T140252Z", "action": "private_held_packet", "args": {"candidate_id": "03f2d033-347c-4dae-804d-cf1587dd0244", "pack_count": 25}, "allow_external_actions": false, "created_at": "2026-11-05T14:02:52.895330+00:00", "expires_at": "2026-11-05T15:02:52.895330+00:00"}
