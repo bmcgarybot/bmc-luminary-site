@@ -83,6 +83,7 @@ jobs:
           python3 portfolio/automation/test-research-queue-watchdog.py
           python3 portfolio/automation/test-api-research-pilot.py
           python3 portfolio/automation/test-owner-research-budget.py
+          python3 portfolio/automation/test-api-catalogue.py
           python3 portfolio/automation/test-api-grounded-research.py
           python3 portfolio/automation/test-api-pilot-import.py
           python3 portfolio/automation/test-property-visible-source.py
