@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc104-3-20261105T185405Z",
+  "action": "operator_snapshot",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T18:54:05.413085+00:00",
+  "expires_at": "2026-11-05T19:54:05.413085+00:00"
+}
