@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T06:29:54.649279+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "git_commit_before": "5195c7cf93b8b79b07eca5fae8a0dd4b5e7a7cb6",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "f8ea5d27eb5b76a723bebbdc243f62ebb2fc225b",
+  "request_id": "bmc-recovery2-packet-harris-1-20261105T062902Z",
+  "request_sha256": "0f501305f41632f18447420322822e48c566ebf669cc869cf82da6c845e77976",
+  "started_at": "2026-11-05T06:29:54.041206+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-recovery2-packet-harris-1-20261105T062902Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"D2GA1wMm+J0a5izmDacOw7JdDuBt84ZCfBpAIZ3pZc2dHDNq0daXtCQZQD0r2lC0TwUhZCvrGAeFMUS2+Bo4VKdjrDcVMoyXGZmcEA8tE6DsR3cAOJleSUT80IjXnH0RdOUXlYYaPRImudoeXzzIyikn1faCt4UyChx+E2gHp3WeTuxabCfkBQBloqRAa8zlPZp1emZ/WuvktPC/N1h8QQoAXZVlbWvrd9FQaahQtoU/CBNdFVebbHLWPURkbFZF0m715xpYBViXv5hPrKPx9GcSiLhh0Mnvvo10q1tPWkNwT/HksO2207WiJ6EVFNDqh3xBeU5/H4YxTKDpnmI3Xs9RkLRJAukTIxVjbXx2LvZ2gAIS3pO0mxzvDQTczfAsutNyGR5FKHl/8lN3yhji9t9UOpgooZTsEJMrnbv8/YWKT2urismf+hToigzQFlBdXCo5TBKMpg/7dRudQBArEViakGSm2POKF5hMquGR1UNEnI3nnxHRMLVeHXDH6jk2\",\"nonce\":\"lWQ0AbxlxPMMVCVr\",\"ciphertext\":\"WPymqikIHhuWmpUBBomrxlaJ5hOnXc2OK7IE9b3CFGdPK5V2tiN1lujt1dMBkp7Okb8EDbxO8/xZ2Jwy/fsVhOlUNRf1TBIttG/WMQL2TVKL9B8qtXgDqbQ2AuO5Spp8IPSAkiEgu83aU2V9BGRnd1JbF8vEAoQUqRYvdbVYEmJIJuD129eYY9StRAD7vpAMdGdn+dE7k7gawapmNv483tepLS1wMaP6XafIzge4lpD4Y6RnX2o2MvlCgcuBKTd7w4HRFbmywAXnxv/i24CVBVexjd5GxWlW8ajDDkOiGMu2SuYeThftwqqeiZ7JVqHgvNATo2Pr90/OQMvGoYZR3yabqMLmjcn8RYZR8GgQcDUYs/wgeWKONfxvF9TB/HJIUmSvAkAA1KI96UCHOAmgCoWUp8818S5UYn7LpRzYcfVmuTI3dHWpdXUAqwHpQQMJw93VRgEVpTR21eijQtttkbGGbyjneyzv6kNaiwvf\"}",
+  "version": 1
+}
