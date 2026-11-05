@@ -123,11 +123,13 @@ class Ledger:
         self.db.execute("create trigger if not exists budget_reconciliations_no_update before update on budget_reconciliations begin select raise(abort,'immutable_budget_reconciliation'); end")
         self.db.execute("create trigger if not exists budget_reconciliations_no_delete before delete on budget_reconciliations begin select raise(abort,'immutable_budget_reconciliation'); end")
     def reconciliation_credit(self):
-        credit=0
+        credit=0;covered=set()
         for before,upper,manifest,proof_hash in self.db.execute('select before_micro,upper_micro,manifest,proof_sha256 from budget_reconciliations'):
             if hashlib.sha256(manifest.encode()).hexdigest()!=proof_hash:raise Held('reconciliation_audit_changed')
             saved=json.loads(manifest)
             for entry in saved['reservations']:
+                if entry['id'] in covered:raise Held('overlapping_budget_reconciliations')
+                covered.add(entry['id'])
                 current=self.db.execute('select id,mission,amount,state,usage,created from reservations where id=?',(entry['id'],)).fetchone()
                 if current is None or dict(zip(('id','mission','amount','state','usage','created'),current))!=entry:raise Held('reconciled_reservation_changed')
             if not 0<upper<=before:raise Held('reconciliation_audit_changed')
@@ -157,6 +159,56 @@ class Ledger:
             self.db.execute('insert into budget_reconciliations values(?,?,?,?,?,?)',(RECONCILIATION_ID,sum(row[2] for row in rows),RECONCILIATION_UPPER_MICRO,proof,hashlib.sha256(proof.encode()).hexdigest(),now()))
             self.db.execute('commit')
             return {'status':'pilot_usage_reconciled','aggregate_upper_usd':RECONCILIATION_UPPER_MICRO/1e6,'history_reset':False,'outreach_sent':0}
+        except Exception:self.db.execute('rollback');raise
+    def settle_completed_grounded(self,request_id):
+        """Compute an immutable aggregate credit from one exact private completed pair."""
+        valid_id(request_id);path=self.root/request_id/'report-private.json'
+        if (path.is_symlink() or path.parent.is_symlink() or not path.is_file() or path.stat().st_size>850000
+            or path.stat().st_mode&0o077 or path.resolve().parent.parent!=self.root.resolve()):raise Held('settlement_private_report_required')
+        raw=path.read_bytes();report=json.loads(raw)
+        if (report.get('request_id')!=request_id or report.get('mode')!='grounded_recovery'
+            or report.get('status') not in ('research_partial','research_complete') or report.get('api_calls')!=2):raise Held('settlement_completed_report_required')
+        from api_grounded_research import tool_usage_allowed
+        costs=[]
+        for phase,usage_key,diagnostic_key,pattern in (
+            ('web','grounded_usage','discovery_accounting_diagnostic',r'gpt-6-luna(?:-\d{4}-\d{2}-\d{2})?'),
+            ('extract','visible_extraction_usage','extraction_accounting_diagnostic',r'gpt-6\.1-sol(?:-\d{4}-\d{2}-\d{2})?')):
+            diagnostic=report.get(diagnostic_key);usage=report.get(usage_key)
+            if (not isinstance(diagnostic,dict) or diagnostic.get('response_status')!='completed'
+                or diagnostic.get('response_service_tier')!='default' or diagnostic.get('tool_usage_truncated') is not False
+                or not isinstance(diagnostic.get('response_model'),str) or not re.fullmatch(pattern,diagnostic['response_model'])
+                or not isinstance(diagnostic.get('tool_usage_json'),str) or len(diagnostic['tool_usage_json'])>8192):raise Held('settlement_accounting_metadata_unproven')
+            tools=json.loads(diagnostic['tool_usage_json'])
+            if not isinstance(tools,dict) or 'web_search' not in tools or not tool_usage_allowed(tools,grounded=phase=='web'):raise Held('settlement_tool_charges_unproven')
+            proof={'version':'completed-usage-upper-v1','status':'completed','model':diagnostic['response_model'],'phase':phase,
+                'search_requests':2 if phase=='web' else 0,'tools_verified':True,'usage':usage}
+            costs.append({'call_id':request_id+'-'+phase,'upper_micro':usage_upper_micro(usage,proof),'cost_proof':proof})
+        audit_id='completed-grounded:'+request_id;report_hash=hashlib.sha256(raw).hexdigest()
+        self.db.execute('begin immediate')
+        try:
+            self.reconciliation_credit()
+            prior=self.db.execute('select upper_micro,manifest from budget_reconciliations where id=?',(audit_id,)).fetchone()
+            if prior:
+                if json.loads(prior[1]).get('report_sha256')!=report_hash:raise Held('settlement_report_changed')
+                self.db.execute('commit');return {'status':'completed_grounded_already_settled','aggregate_upper_usd':prior[0]/1e6,'history_reset':False,'outreach_sent':0}
+            mission=self.db.execute('select state,report from missions where id=?',(request_id,)).fetchone()
+            if mission is None or mission[0] not in ('research_partial','research_complete') or mission[1]!=str(path):raise Held('settlement_mission_binding_unproven')
+            rows=self.db.execute('select id,mission,amount,state,usage,created from reservations where mission=? order by id',(request_id,)).fetchall()
+            by_id={row[0]:row for row in rows}
+            if len(rows)!=2 or set(by_id)!={cost['call_id'] for cost in costs}:raise Held('settlement_exact_completed_pair_required')
+            covered={entry['id'] for (saved,) in self.db.execute('select manifest from budget_reconciliations') for entry in json.loads(saved)['reservations']}
+            for cost in costs:
+                row=by_id[cost['call_id']]
+                if (row[2]!=RESERVE_MICRO or row[3]!='completed' or row[4] is None
+                    or json.loads(row[4])!=cost['cost_proof']['usage']):raise Held('settlement_reservation_usage_mismatch')
+                if row[0] in covered or self.db.execute('select 1 from cost_settlements where call_id=?',(row[0],)).fetchone():raise Held('settlement_overlapping_adjustment')
+            snapshots=[dict(zip(('id','mission','amount','state','usage','created'),row)) for row in rows]
+            upper=sum(cost['upper_micro'] for cost in costs);before=sum(row[2] for row in rows)
+            if not 0<upper<=before:raise Held('settlement_aggregate_invalid')
+            proof=canonical({'reservations':snapshots,'report_path':str(path),'report_sha256':report_hash,
+                'billing_basis':'exact_completed_private_report_usage_upper','phase_cost_proofs':costs,'aggregate_upper_micro':upper})
+            self.db.execute('insert into budget_reconciliations values(?,?,?,?,?,?)',(audit_id,before,upper,proof,hashlib.sha256(proof.encode()).hexdigest(),now()))
+            self.db.execute('commit');return {'status':'completed_grounded_settled','aggregate_upper_usd':upper/1e6,'history_reset':False,'outreach_sent':0}
         except Exception:self.db.execute('rollback');raise
     def status(self):
         original_commitments=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
@@ -379,7 +431,7 @@ def run_pilot(ledger,request_id,config,*,search=search_native,api=responses_http
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     modes=parser.add_mutually_exclusive_group(required=True)
-    for mode in ('status','configure','run','run-grounded','reconcile-20261105'):modes.add_argument('--'+mode,action='store_true')
+    for mode in ('status','configure','run','run-grounded','reconcile-20261105','settle-completed'):modes.add_argument('--'+mode,action='store_true')
     parser.add_argument('--request-id')
     args=parser.parse_args();os.umask(0o077)
     root=Path.home()/'.local/state/bmc-api-research'
@@ -387,6 +439,7 @@ def main():
         ledger=Ledger(root)
         if args.status:result={'status':'pilot_status',**ledger.status()}
         elif args.reconcile_20261105:result={**ledger.reconcile_20261105(),'budget':ledger.status()}
+        elif args.settle_completed:result={**ledger.settle_completed_grounded(args.request_id),'budget':ledger.status()}
         elif args.configure:result={'status':'pilot_configured','private_root':str(root),**ledger.status()}
         else:
             if not sys.platform.startswith('linux'):raise Held('vps_linux_execution_required')

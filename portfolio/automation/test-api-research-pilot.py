@@ -186,6 +186,46 @@ class Tests(unittest.TestCase):
                 with self.assertRaises(p.Held):self.ledger.reconcile_20261105()
             self.assertEqual(self.ledger.db.execute('select count(*) from budget_reconciliations').fetchone()[0],0)
 
+    def completed_pair_fixture(self,request='synthetic-completed-pair'):
+        import api_grounded_research as g
+        self.ledger.begin(request);directory=p.private_dir(self.root/request)
+        report={'request_id':request,'mode':'grounded_recovery','status':'research_partial','api_calls':2}
+        for phase,usage_key,diagnostic_key,model in (('web','grounded_usage','discovery_accounting_diagnostic','gpt-6-luna'),('extract','visible_extraction_usage','extraction_accounting_diagnostic','gpt-6.1-sol')):
+            usage={'input_tokens':1000,'output_tokens':500};call=self.ledger.reserve(request,phase=phase);self.ledger.complete(call,usage)
+            report[usage_key]=usage;report[diagnostic_key]={'response_status':'completed','response_service_tier':'default','response_model':model,'tool_usage_truncated':False,
+                'tool_usage_json':p.canonical({'image_gen':g.ZERO_IMAGE_USAGE,'web_search':{'num_requests':2 if phase=='web' else 0}})}
+        path=directory/'report-private.json';p.write_private(path,report);self.ledger.finish(request,'research_partial',path)
+        return request,path,report
+    def test_completed_pair_settlement_preserves_prior_aggregate_and_unrelated_uncertainty(self):
+        self.setup();digest=self.reconciliation_fixture()
+        with patch.object(p,'RECONCILIATION_MANIFEST_SHA256',digest):self.ledger.reconcile_20261105()
+        request,path,report=self.completed_pair_fixture()
+        self.ledger.begin('synthetic-unrelated-uncertain');self.ledger.reserve('synthetic-unrelated-uncertain')
+        before=self.ledger.db.execute('select * from reservations order by id').fetchall()
+        result=self.ledger.settle_completed_grounded(request)
+        self.assertEqual(result['aggregate_upper_usd'],0.059)
+        self.assertEqual(self.ledger.status()['reserved_usd'],4.059);self.assertEqual(self.ledger.status()['pending_reserved_usd'],3)
+        self.assertEqual(self.ledger.db.execute('select * from reservations order by id').fetchall(),before)
+        self.assertEqual(self.ledger.db.execute('select count(*) from budget_reconciliations').fetchone()[0],2)
+        self.assertEqual(self.ledger.settle_completed_grounded(request)['status'],'completed_grounded_already_settled')
+        self.ledger.db.close();self.ledger=p.Ledger(self.root);self.addCleanup(self.ledger.db.close)
+        self.assertEqual(self.ledger.status()['reserved_usd'],4.059)
+    def test_completed_pair_refuses_bad_metadata_mismatch_pending_and_report_permissions(self):
+        for mode in ('nonzero','unknown','partial','usage','pending','permissions'):
+            self.setup();request,path,report=self.completed_pair_fixture()
+            diagnostic=report['discovery_accounting_diagnostic']
+            if mode=='nonzero':
+                tools=json.loads(diagnostic['tool_usage_json']);tools['image_gen']['output_tokens']=1;diagnostic['tool_usage_json']=p.canonical(tools)
+            elif mode=='unknown':diagnostic['response_model']='unknown-model'
+            elif mode=='partial':diagnostic['response_status']='incomplete'
+            elif mode=='usage':report['grounded_usage']['input_tokens']=999
+            elif mode=='pending':self.ledger.db.execute("update reservations set state='reserved' where id=?",(request+'-web',))
+            else:path.chmod(0o644)
+            path.write_text(p.canonical(report))
+            with self.assertRaises(p.Held):self.ledger.settle_completed_grounded(request)
+            self.assertEqual(self.ledger.status()['reserved_usd'],6)
+            self.assertEqual(self.ledger.db.execute('select count(*) from budget_reconciliations').fetchone()[0],0)
+
     def test_input_bound_private_permissions_and_no_redirect_api_transport(self):
         self.setup()
         with self.assertRaises(p.Held):p.build_request([{'snippet':'x'*80001}])

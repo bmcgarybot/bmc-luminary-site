@@ -33,6 +33,17 @@ async def main():
         assert first['inserted']==1,first
         saved=await conn.fetchrow('select candidate_id,to_jsonb(t)::text snapshot from market_inventory_candidates t where source_url=$1 and business_name=$2',url,name)
         assert saved and str(saved['candidate_id'])!=cid
+        loaded=dict(await conn.fetchrow('select * from market_inventory_candidates where candidate_id=$1',saved['candidate_id']))
+        assert isinstance(loaded['evidence'],str),'Fixture must exercise default asyncpg JSONB text representation'
+        before_loaded=copy.deepcopy(loaded)
+        assert auto_evidence_valid(loaded,secret),'Real persisted V3 row must pass canonical native verifier'
+        assert loaded==before_loaded,'Verifier must not mutate database row'
+        for field,value in [('source_url','https://other-ci.example.test/'),('public_phone','6025550199')]:
+            changed=copy.deepcopy(loaded);changed[field]=value
+            assert not auto_evidence_valid(changed,secret)
+        changed=copy.deepcopy(loaded);e=json.loads(changed['evidence']);e['vps_verification']['signature']='0'*64;changed['evidence']=json.dumps(e)
+        assert not auto_evidence_valid(changed,secret)
+
         again=await import_report(conn,{'verified':[entry]},secret)
         assert again['existing_unchanged']==1 and again['inserted']==0,again
         snapshot=await conn.fetchval('select to_jsonb(t)::text from market_inventory_candidates t where candidate_id=$1',saved['candidate_id'])

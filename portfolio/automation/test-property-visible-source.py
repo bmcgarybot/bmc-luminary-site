@@ -14,6 +14,15 @@ def rec(html=HTML,url=C['source_url'],when=NOW):
 def verify(html=HTML,x=None,c=None,**kw):
     r=rec(html);return verify_property_visible_source(c or C,r,x or X,SECRET,receipt_is_trusted=lambda v:v is r,now=NOW,**kw)
 class Tests(unittest.TestCase):
+    def test_native_dispatch_database_jsonb_text(self):
+        from official_research import auto_evidence_valid
+        row=verify();row['evidence']=json.dumps(row['evidence']);original=copy.deepcopy(row)
+        self.assertTrue(auto_evidence_valid(row,SECRET));self.assertEqual(row,original)
+        for field,value in [('source_url','https://other.test/'),('public_phone','6025550199')]:
+            bad=copy.deepcopy(row);bad[field]=value
+            self.assertFalse(auto_evidence_valid(bad,SECRET))
+        bad=copy.deepcopy(row);e=json.loads(bad['evidence']);e['vps_verification']['signature']='0'*64;bad['evidence']=json.dumps(e)
+        self.assertFalse(auto_evidence_valid(bad,SECRET))
     def test_valid_visible_without_schema(self):
         r=verify();self.assertTrue(auto_property_visible_valid(r,SECRET,now=NOW));self.assertFalse(r['confirmed_demand'])
     def test_tamper_every_row_binding(self):
@@ -55,8 +64,18 @@ class Tests(unittest.TestCase):
     def test_cross_block_address_and_email_hidden(self):
         with self.assertRaises(ValueError):verify(HTML.replace(X['address_quote'],'123 North Main Street</address><address>Phoenix, AZ 85004'))
         with self.assertRaises(ValueError):verify(HTML.replace('hello@example.test','<span hidden>hello@example.test</span>'))
-    def test_multientity_and_negative_quote(self):
-        with self.assertRaises(ValueError):verify(HTML+'<address>456 South Other Street, Phoenix, AZ 85005</address>')
+    def test_multiple_company_offices_selected_exact_address(self):
+        second='456 South Other Street, Phoenix, AZ 85005'
+        document=HTML+'<h2>Example Property LLC second office</h2><address>'+second+'</address>'
+        first=verify(document)
+        self.assertTrue(auto_property_visible_valid(first,SECRET,now=NOW))
+        chosen=verify(document,x={**X,'physical_address':second,'address_quote':second})
+        self.assertEqual(chosen['physical_address'],second)
+        self.assertTrue(auto_property_visible_valid(chosen,SECRET,now=NOW))
+        for physical,quote in [('999 Invented Street, Phoenix, AZ 85004','999 Invented Street, Phoenix, AZ 85004'),(second,X['address_quote']),('456 South Other Street, Scottsdale, AZ 85251','456 South Other Street, Scottsdale, AZ 85251')]:
+            with self.subTest(physical=physical,quote=quote),self.assertRaises(ValueError):
+                verify(document+'<address>456 South Other Street, Scottsdale, AZ 85251</address>',x={**X,'physical_address':physical,'address_quote':quote})
+    def test_negative_quote_still_rejected(self):
         negative='We do not provide property management services.'
         with self.assertRaises(ValueError):verify(HTML+'<p>'+negative+'</p>',x={**X,'role_quote':negative})
     def test_publisher_contact_not_business(self):

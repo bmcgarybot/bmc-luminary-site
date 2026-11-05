@@ -126,4 +126,47 @@ class QuotedIntentTests(unittest.TestCase):
     def test_new_purchase_question_does_require_owner_input(self):
         self.assertTrue(r.needs_input('positive','Yes, I am interested in the smaller pack.','Re: Five commercial prospects'))
 
+class ProviderReplyTests(unittest.IsolatedAsyncioTestCase):
+ def setUp(self):Tests.setUp(self)
+ async def test_contacted_provider_question_and_positive_reply_are_private_dedup_owner_reviews(self):
+  original=self.conn.fetchrow;lookups=[]
+  async def lookup(sql,*args):
+   if 'from vendors' in sql:
+    lookups.append(sql)
+    return {'target_id':'synthetic-provider'} if args==('provider@example.test','synthetic-provider') else None
+   return await original(sql,*args)
+  self.conn.fetchrow=lookup
+  out=await self.rec(self.conn,'provider-question','provider@example.test','Which towns do you cover?','other','Scope question','synthetic-provider')
+  self.assertEqual(out['owner_alert'],'submitted');self.assertEqual(self.conn.events[0]['recipient_entity_type'],'vendor')
+  insert=next((sql,args) for sql,args in self.conn.calls if 'insert into events' in sql)
+  self.assertEqual(insert[1][2],'vendor');self.assertIn("o.campaign='vendor_recruitment'",lookups[0]);self.assertIn('o.sent_at is not null',lookups[0]);self.assertIn('v.vendor_id=$2',lookups[0])
+  self.assertTrue((await self.rec(self.conn,'provider-question','provider@example.test','Same question','other','','synthetic-provider'))['duplicate'])
+  await self.rec(self.conn,'provider-positive','provider@example.test','Yes, interested.','positive','','synthetic-provider')
+  self.assertEqual(self.send.await_count,2);self.assertTrue(all(call.args[1]=='owner@example.com' for call in self.send.await_args_list))
+  automated=await self.rec(self.conn,'provider-auto','provider@example.test','Automatic reply: out of office','positive','','synthetic-provider')
+  self.assertFalse(automated['recorded']);self.assertEqual(self.send.await_count,2)
+  self.assertFalse(any('update vendors' in sql or 'lead_matches' in sql for sql,_ in self.conn.calls))
+ async def test_unknown_uncontacted_or_unbound_provider_cannot_alert_or_auto_approve(self):
+  original=self.conn.fetchrow
+  async def lookup(sql,*args):return None if 'from vendors' in sql else await original(sql,*args)
+  self.conn.fetchrow=lookup
+  for target in ('uncontacted-provider',None):
+   out=await self.rec(self.conn,'uncontacted'+str(target),'provider@example.test','I am interested','positive','',target)
+   self.assertFalse(out['recorded'])
+  self.send.assert_not_awaited();self.assertEqual(self.conn.events,[])
+ async def test_provider_reply_export_uses_existing_encryption_and_sent_provider_scan_scope(self):
+  self.conn.events.append(dict(inbound_key='synthetic',inbound_digest='a'*64,sender='provider@example.test',subject='Scope',classification='other',body='Question?',needs_owner_input=True,recipient_entity_type='vendor'))
+  original=self.conn.fetch
+  async def fetch(sql):
+   if 'from vendors' in sql:
+    self.assertIn("o.campaign='vendor_recruitment'",sql);self.assertIn('o.sent_at is not null',sql)
+    return [{'target_id':'synthetic-provider','public_email':'provider@example.test'}]
+   return await original(sql)
+  self.conn.fetch=fetch
+  with patch('reply_review.scan_known_replies',return_value={'status':'readonly_scan_complete','records':[]}) as scan,patch('owner_research_export.seal_export',return_value={'ciphertext':'sealed'}) as seal:
+   app=App(self.conn);r.install(app,lambda key:None,'secret',CONFIG,self.send)
+   self.assertEqual(await app.routes['/api/admin/reply-review-export']('request_123','admin'),{'ciphertext':'sealed'})
+   self.assertEqual(seal.call_args.args[0]['stored_reviews'][0]['payload']['recipient_entity_type'],'vendor')
+   self.assertEqual(scan.call_args.args[1],[{'target_id':'synthetic-provider','public_email':'provider@example.test'}])
+  self.send.assert_not_awaited();self.assertIn({'readonly':True,'isolation':'repeatable_read'},self.conn.transactions)
 if __name__=='__main__':unittest.main()

@@ -70,6 +70,25 @@ def container_flags_match(env):
     rc,out,_=run(["docker","inspect","--format",template,"bmc-ops_api-1"])
     return rc==0 and sorted(out.splitlines())==sorted(expected)
 
+def research_queue_check():
+    """Observe only an existing research queue; never start jobs or API work."""
+    queue=pathlib.Path.home()/'.local/state/bmc-api-research/research-queue.sqlite3'
+    if not queue.exists():return None
+    name='Phoenix research queue'
+    if queue.is_symlink() or not queue.is_file():return {'name':name,'ok':False,'detail':'unsafe_queue_state'}
+    rc,out,_=run(['/usr/bin/python3',str(ROOT/'api_research_queue_worker.py'),'--status'],timeout=10)
+    if rc or len(out.encode())>50000:return {'name':name,'ok':False,'detail':'queue_status_unavailable'}
+    try:
+        value=json.loads(out);reason=value.get('stop_reason')
+        if (value.get('scope')!='Phoenix/property_management' or type(value.get('needs_help')) is not bool
+            or (reason is not None and (not isinstance(reason,str) or not re.fullmatch('[a-z_]{3,80}',reason)))):
+            raise ValueError('invalid_status')
+    except (ValueError,TypeError,AttributeError):return {'name':name,'ok':False,'detail':'queue_status_invalid'}
+    terminal=reason in ('insufficient_six_dollar_reserve','lifetime_job_limit')
+    needs_help=value['needs_help'] or terminal
+    detail=(reason or 'queue_help_required') if needs_help else ('research_job_in_progress' if reason=='running_or_unresolved_job' else 'bounded_research_ready')
+    return {'name':name,'ok':not needs_help,'detail':detail}
+
 def collect(env,state):
     probes={
       "api":("http://127.0.0.1:8000/health",None,None),
@@ -156,6 +175,8 @@ def collect(env,state):
         except Exception:add("Phoenix owner sample journey",False,"probe unavailable; no customer action attempted")
     code,tasks=readings["agent"]
     add("Internal operator agent",code==200 and isinstance(tasks,dict),"HTTP "+str(code))
+    queue_check=research_queue_check()
+    if queue_check is not None:checks.append(queue_check)
     return checks,metrics,growth,safe
 
 def alert_audit(message_id,status):

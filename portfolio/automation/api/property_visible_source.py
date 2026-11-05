@@ -112,13 +112,9 @@ def verify_property_visible_source(candidate,primary_receipt,extracted,secret,*,
     ai,ab=findquote(pages,x['address_quote']);ci,cb=findquote(pages,x['contact_quote'])
     if not address_ok(x['physical_address']) or dense(x['physical_address']) not in dense(x['address_quote']) or dense(x['physical_address']) not in dense(ab):raise ValueError('physical_address_unproven')
     if ai and not any(dense(x['business_name']) in dense(b['text']) for b in pages[ai]['contact_blocks']):raise ValueError('contact_identity_unproven')
-    # Ambiguous multiple physical premises are held rather than selecting a model's favourite.
-    addresses=set()
-    for page in pages:
-        for block in page['contact_blocks']:
-            for match in re.finditer(r'\b\d+[A-Za-z]?\s+[^.!?;<>]{2,100}?\bPhoenix\s*,?\s+(?:AZ|Arizona)\s+\d{5}(?:-\d{4})?',block['text'],re.I):
-                addresses.add(dense(match.group()))
-    if len(addresses)>1:raise ValueError('multiple_physical_addresses')
+    # A company can publish several offices. The chosen address above must
+    # itself occur contiguously in an observed quote on the verified same-host
+    # company page; unrelated addresses elsewhere do not negate that proof.
     if re.search(r'powered by|designed by|web\s*design',cb,re.I):raise ValueError('publisher_contact_ambiguous')
     ph=phone(x['public_phone']);em=x['public_email'].lower()
     if (ph and len(ph)!=10) or (em and not EMAIL.fullmatch(em)) or not(ph or em):raise ValueError('contact_invalid')

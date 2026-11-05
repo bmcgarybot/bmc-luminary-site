@@ -7,15 +7,26 @@ class Tests(unittest.TestCase):
   calls=[]
   def run(cmd,**kw):calls.append((cmd,kw));return subprocess.CompletedProcess(cmd,0,'{"ok":true}','')
   with patch.dict(g,{'run':run,'current_sha':lambda:'a'*40,'current_branch':lambda:'master','assert_outreach_off':lambda:self.fail('Research pilot must not alter campaign gates'),'redact':lambda x:x}):
-   result=ns['execute']({'request_id':'pilot-test-20261104','action':action,'args':args or {},'allow_external_actions':action=='api_research_run'})
+   result=ns['execute']({'request_id':'pilot-test-20261104','action':action,'args':args or {},'allow_external_actions':action in ('api_research_run','api_research_worker_start')})
   return result,calls
  def test_prepare_status_and_run_use_fixed_commands(self):
-  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
+  for action,flag in [('api_research_prepare','--prepare'),('api_research_status','--status'),('api_research_worker_status','--status'),('api_research_worker_start','--install'),('api_research_reconcile','--reconcile-20261105'),('api_research_run','--run-grounded')]:
    with self.subTest(action=action):
     result,calls=self.execute(action);self.assertEqual(len(calls),1);self.assertIn(flag,calls[0][0]);self.assertFalse(result['metadata']['customer_actions']);self.assertEqual(result['metadata']['pilot_budget_ceiling_usd'],10)
     self.assertLessEqual(calls[0][1]['timeout'],900)
  def test_reconciliation_rejects_arbitrary_credits(self):
   with self.assertRaises(ns['RelayError']):self.execute('api_research_reconcile',{'amount':0})
+ def test_worker_requires_external_authorization_and_fixed_arguments(self):
+  from datetime import datetime,timezone
+  q={'request_id':'worker-test-20261105','version':1,'action':'api_research_worker_start','args':{},'created_at':datetime.now(timezone.utc).isoformat(),'allow_external_actions':False}
+  with self.assertRaises(ns['RelayError']):ns['validate_request'](q)
+  for action in ('api_research_worker_start','api_research_worker_status'):
+   with self.assertRaises(ns['RelayError']):self.execute(action,{'command':'arbitrary'})
+ def test_completed_settlement_only_accepts_existing_id(self):
+  _,calls=self.execute('api_research_settle',{'source_request_id':'known-mission-20261105'})
+  self.assertEqual(calls[0][0][-3:],['--settle-completed','--request-id','known-mission-20261105'])
+  for args in ({'source_request_id':'../../secrets'},{'source_request_id':'known-mission-20261105','amount':0}):
+   with self.assertRaises(ns['RelayError']):self.execute('api_research_settle',args)
  def test_key_only_accepts_encrypted_fixed_rsa_payload(self):
   for payload in ({'OPENAI_API_KEY':'sk-synthetic'},{'ciphertext':'short'},{'ciphertext':'a'*684,'extra':1},{'ciphertext':'a'*683}):
    with self.subTest(payload=payload),self.assertRaises(ns['RelayError']):self.execute('api_research_configure',payload)

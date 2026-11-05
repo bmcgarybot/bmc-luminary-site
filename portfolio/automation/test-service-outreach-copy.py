@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Production copy and sender paths with synthetic rows and captured mail only."""
-import ast
+import ast,hashlib,sys,uuid
 from datetime import datetime,timedelta,timezone
 import html
 import json
@@ -11,6 +11,8 @@ from types import SimpleNamespace
 import unittest
 
 HERE=Path(__file__).resolve().parent
+sys.path.insert(0,str(HERE/'api'))
+import official_research as research
 coverage=runpy.run_path(str(HERE/'service-template-coverage.py'))
 SOURCE=ast.parse((HERE/'api/app.py').read_text())
 
@@ -22,6 +24,13 @@ class Connection:
     async def fetchval(self,*args):return 0
     async def fetch(self,*args):
         if 'join buyers' in args[0]:return []
+        if 'from market_inventory_candidates' in args[0]:
+            row=dict(candidate_id=uuid.uuid4(),business_name='Fixture Co',side='vendor',market='Phoenix',category_key='landscaping',status='discovered',closed_at=None)
+            entity={'@type':'LocalBusiness','name':'Fixture Co','url':'https://provider-fixture.example/','description':research.VENDOR_TERMS['landscaping'][0],
+                'email':'fixture@example.invalid','telephone':'6025550100','address':{'streetAddress':'123 Fixture Street','addressLocality':'Phoenix','addressRegion':'AZ','postalCode':'85004'}}
+            document='<script type="application/ld+json">'+json.dumps(entity)+'</script>'
+            row.update(research.parse_record(row,entity['url'],document,hashlib.sha256(document.encode()).hexdigest(),'fixture'))
+            return [row]
         return [dict(entity_id='fixture',outreach_id='fixture',sequence_step=0,status='queued',
         business_name='Fixture Co',public_email='fixture@example.invalid',association_signal='',market='Phoenix',
         public_phone='',website='',source_url='',

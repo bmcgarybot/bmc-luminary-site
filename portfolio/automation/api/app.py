@@ -1707,10 +1707,17 @@ async def handle_vendor_response(conn,p):
     row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.phone,l.customer_name,l.business_name,
       l.preferred_contact,l.scope,l.urgency,l.raw_payload
       from lead_matches lm join leads l on l.lead_id=lm.lead_id
-      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3""",lead_id,vendor_id,token)
+      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3
+        and (lm.status<>'offered' or lm.expires_at is null or lm.expires_at>clock_timestamp())
+      for update of lm""",lead_id,vendor_id,token)
     if not row: raise HTTPException(409,"Offer is invalid or expired")
 
     current_status=clean(row["status"])
+    expires=row.get('expires_at')
+    if current_status=='offered' and expires is not None:
+        if not isinstance(expires,datetime):raise HTTPException(409,"Offer is invalid or expired")
+        if expires.tzinfo is None:expires=expires.replace(tzinfo=timezone.utc)
+        if expires<=datetime.now(timezone.utc):raise HTTPException(409,"Offer is invalid or expired")
     customer_name=clean(row["customer_name"]) or "Customer"
     customer_email=clean(row["email"])
     customer_phone=clean(row["phone"])
@@ -1735,7 +1742,9 @@ async def handle_vendor_response(conn,p):
         vendor=await conn.fetchrow("""select vendor_id,business_name,public_email,public_phone,website
           from vendors where vendor_id=$1""",vendor_id)
         if not vendor: raise HTTPException(409,"Provider record is unavailable")
-        await conn.execute("update lead_matches set status='accepted',responded_at=now() where match_id=$1",row["match_id"])
+        accepted=await conn.fetchval("""update lead_matches set status='accepted',responded_at=now()
+          where match_id=$1 and status='offered' and (expires_at is null or expires_at>clock_timestamp()) returning match_id""",row["match_id"])
+        if not accepted:raise HTTPException(409,"Offer is expired or no longer available")
         await conn.execute("update leads set status='provider_accepted',updated_at=now() where lead_id=$1",row["lead_id"])
         await event(conn,"lead",row["lead_id"],"provider_accepted",{"vendor_id":vendor_id},vendor_id)
 
@@ -4673,6 +4682,10 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         limit $1""",allowance,OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
+        from provider_source_gate import provider_source_gate
+        if not await provider_source_gate(conn,dict(row),ADMIN_KEY):
+            await provider_outreach_review(conn,row,step,"current native recipient/service/market source proof unavailable")
+            continue
         try:
             subject,body,html_body=provider_outreach_message(row,step)
         except ValueError:
