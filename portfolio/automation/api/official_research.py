@@ -16,7 +16,7 @@ BUYER_TYPES={
  'hotels_motels':('Hotel','Motel','Resort','LodgingBusiness'),
  'insurance_professional':('InsuranceAgency','AccountingService','Attorney','LegalService','FinancialService','ProfessionalService'),
  'medical_centers':('Hospital','MedicalClinic','Physician','MedicalBusiness'),
- 'pharmacies':('Pharmacy',),'pharmacy':('Pharmacy',),'property_management':('RealEstateAgent',),
+ 'pharmacies':('Pharmacy',),'pharmacy':('Pharmacy',),'property_management':('RealEstateAgent','ApartmentComplex'),
  'public_facilities':('GovernmentOffice','CivicStructure','Library'),
  'restaurants':('Restaurant','CafeOrCoffeeShop','FoodEstablishment'),
  'retail':('Store','FurnitureStore','ClothingStore','JewelryStore','BookStore','ShoppingCenter'),

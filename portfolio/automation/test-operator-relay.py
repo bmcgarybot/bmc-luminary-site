@@ -155,9 +155,9 @@ class CohortScopeTests(unittest.TestCase):
             elif bad=='target_ids':a[bad]=cohort['target_ids'][:-1]
             elif bad=='release_owner_hold':a[bad]=False
             with patch.dict(G,{'app_env':lambda:dict(env),'current_sha':lambda:SHA,'current_branch':lambda:'master',
-                'set_env_values':lambda values:changes.append(values),
-                'run':lambda *a,**k:self.fail('No restart/send command permitted'),
-                'admin_post':lambda path,**k:({'ok':True,'approved_queued':2,'sent':0} if path=='/api/admin/authorize-reviewed-phoenix-launch' else self.fail('No send API permitted'))}):
+                'set_env_values':lambda values:(changes.append(values),env.update(values)),
+                'run':lambda cmd,**kw:subprocess.CompletedProcess(cmd,0,'',''),
+                'admin_post':lambda path,**k:({'ok':True,'approved_queued':2,'sent':0} if path=='/api/admin/authorize-reviewed-phoenix-launch' else {'owner_launch_hold_active':False,'outreach_switches':{key:False for key in ('OUTREACH_ENABLED','BUYER_OUTREACH_ENABLED','GROWTH_OUTREACH_ENABLED')}})}):
                 if bad:
                     with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_owner_preview_approve',args=a))
                     self.assertEqual(changes,[])
