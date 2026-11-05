@@ -1,0 +1,24 @@
+{
+  "action": "api_research_worker_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T16:37:14.781971+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2e49b805035dee650f2c5390f4b9dc52f05b9915",
+  "git_commit_before": "2e49b805035dee650f2c5390f4b9dc52f05b9915",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "838bdf39cf6586c24644e01d0a1b25d12d316b0c",
+  "request_id": "bmc98-2-20261105T163258Z",
+  "request_sha256": "99fd3100879bae580b22f96b0972174df81e1b97fc86817cf1534235b935ea46",
+  "started_at": "2026-11-05T16:37:14.659900+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"relay_research_status\",\"driver\":\"existing_vps_relay_timer\",\"driver_enabled\":true,\"timer_active\":true,\"driver_ready\":true,\"scope\":\"Phoenix/property_management\",\"cadence_seconds\":300,\"last_driver_failure\":null,\"queue\":{\"status\":\"research_queue_status\",\"scope\":\"Phoenix/property_management\",\"lifetime_job_limit\":40,\"lifetime_attempts\":23,\"queue_jobs\":20,\"completed_jobs\":13,\"verified_sources\":25,\"inserted_inventory\":22,\"stop_reason\":null,\"consecutive_no_progress\":0,\"source_recovery_after_job\":16,\"last_job_reason\":null,\"worker_active\":false,\"needs_help\":false,\"budget\":{\"model\":\"gpt-6.1-sol\",\"cap_usd\":10.0,\"reserved_usd\":5.464365,\"available_usd\":4.535635,\"committed_upper_usd\":5.464365,\"original_reservation_amount_usd\":19.385617,\"reconciliation_credit_usd\":13.921252,\"retained_completed_calls\":5,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":3.0,\"settled_upper_usd\":1.385617,\"missions\":23,\"uncertain_calls\":1,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0},\"outreach_sent\":0,\"customer_actions\":false},\"outreach_sent\":0,\"customer_actions\":false}\n",
+  "version": 1
+}
