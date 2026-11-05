@@ -1,0 +1,24 @@
+{
+  "action": "api_research_import",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T05:46:13.497401+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "git_commit_before": "23983ccaefb47f8015a60729c0a35733d7545ebe",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 10
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ed2a364b419e65fddfddda5f5c8661382edc5120",
+  "request_id": "bmc-grounded-import-1-20261105T054513Z",
+  "request_sha256": "259965fdca3cde8c663cab374544206ab144de132dc6d88fc692866eecbd5481",
+  "started_at": "2026-11-05T05:46:11.080909+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"duplicates\": 0, \"existing_unchanged\": 0, \"held_history\": 0, \"inserted\": 2, \"invalid\": 0, \"ok\": true, \"outreach_sent\": 0, \"provider_accepted\": false, \"records_received\": 2, \"validated\": 2}\n",
+  "version": 1
+}
