@@ -113,4 +113,13 @@ class Tests(unittest.TestCase):
         self.assertTrue(auto_property_visible_valid(row,SECRET,now=NOW))
         with self.assertRaises(ValueError):verify(html.replace('<h1>'+name+'</h1>','<h1>Near '+name+'</h1>'),x=x,c=c)
 
+    def test_database_null_for_absent_contact_does_not_invalidate_other_route(self):
+        from official_research import auto_evidence_valid
+        for missing in ('public_email','public_phone'):
+            x={**X,missing:''};row=verify(x=x);row[missing]=None;row['evidence']=json.dumps(row['evidence'])
+            self.assertTrue(auto_evidence_valid(row,SECRET))
+            nonempty='public_phone' if missing=='public_email' else 'public_email'
+            bad=copy.deepcopy(row);bad[nonempty]=None
+            self.assertFalse(auto_evidence_valid(bad,SECRET))
+
 if __name__=='__main__':unittest.main()

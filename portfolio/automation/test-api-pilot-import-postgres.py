@@ -51,10 +51,31 @@ async def main():
         bad=copy.deepcopy(entry);bad['record']['evidence']['vps_verification']['signature']='0'*64
         rejected=await import_report(conn,{'verified':[bad]},secret)
         assert rejected['invalid']==1 and rejected['inserted']==0,rejected
-        assert await conn.fetchval('select count(*) from market_inventory_candidates')==count+1
+        # Import actual one-route records: INSERT uses NULLIF for empty contacts.
+        # Default asyncpg JSONB text and NULL must survive the real consumer.
+        for index,missing in enumerate(('public_email','public_phone')):
+            single_url=url+'/'+missing;single_name=name+' '+missing
+            single_email='' if missing=='public_email' else tag+'single@ci-visible.example.test'
+            single_phone='6025550112' if missing=='public_email' else ''
+            single_contact='Call '+single_phone if single_phone else 'Email '+single_email
+            single_doc='<h1>'+single_name+'</h1><p>'+role+'</p><address>'+address+'</address><p>'+single_contact+'</p>'
+            single_raw=single_doc.encode();single_id=str(uuid.uuid5(uuid.NAMESPACE_URL,single_url))
+            single_candidate={**candidate,'candidate_id':single_id,'business_name':single_name,'source_url':single_url}
+            single_receipt=FetchedPageReceipt(single_url,single_url,single_raw,hashlib.sha256(single_raw).hexdigest(),now.isoformat(),200,'text/html',())
+            single_x={**extracted,'business_name':single_name,'source_url':single_url,'identity_quote':single_name,'public_phone':single_phone,'public_email':single_email,'contact_quote':single_contact}
+            single={**single_candidate,**verify_property_visible_source(single_candidate,single_receipt,single_x,secret,receipt_is_trusted=lambda v:v is single_receipt,now=now)}
+            single_meta={**meta,'requested_url':single_url,'final_url':single_url,'content_sha256':single_receipt.content_sha256,'html_file':single_id+'-0.html'}
+            summary=await import_report(conn,{'verified':[{'record':single,'receipt':single_meta,'contact_receipts':[]}]},secret)
+            assert summary['inserted']==1,summary
+            persisted=dict(await conn.fetchrow('select * from market_inventory_candidates where source_url=$1',single_url))
+            assert persisted[missing] is None and isinstance(persisted['evidence'],str)
+            assert auto_evidence_valid(persisted,secret),'NULL contact representation rejected a real one-route row'
+            present='public_phone' if missing=='public_email' else 'public_email'
+            tampered={**persisted,present:None};assert not auto_evidence_valid(tampered,secret)
+        assert await conn.fetchval('select count(*) from market_inventory_candidates')==count+3
     finally:
         await tx.rollback()
-        assert await conn.fetchval('select count(*) from market_inventory_candidates where source_url=$1',url)==0
+        assert await conn.fetchval('select count(*) from market_inventory_candidates where source_url like $1',url+'%')==0
         assert await conn.fetchval('select count(*) from buyers where buyer_id=$1','ci-pilot-'+tag)==0
         await conn.close()
     print('PASS: actual V3 insert, inert membership, duplicate identity/content preservation, bad MAC hold, all fixtures rolled back')
