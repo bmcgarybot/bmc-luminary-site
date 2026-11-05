@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-host-ai-start-20261105T070532Z", "action": "api_research_worker_start", "args": {}, "allow_external_actions": true, "created_at": "2026-11-05T07:05:32.275879+00:00", "expires_at": "2026-11-05T08:05:32.275879+00:00"}
