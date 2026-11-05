@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "bmc102-0-20261105T175844Z",
+  "action": "growth_launch_disable",
+  "args": {
+    "hold_for_preparation": true
+  },
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T17:58:44.929914+00:00",
+  "expires_at": "2026-11-05T18:58:44.929914+00:00"
+}
