@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-autonomy-audit-preparation-20261105T164837Z",
+  "action": "preparation_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-05T16:48:37.910940+00:00",
+  "expires_at": "2026-11-05T17:48:37.910940+00:00"
+}
