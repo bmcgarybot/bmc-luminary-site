@@ -1,0 +1,27 @@
+{
+  "action": "growth_launch_disable",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-05T17:12:55.669763+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "2e49b805035dee650f2c5390f4b9dc52f05b9915",
+  "git_commit_before": "2e49b805035dee650f2c5390f4b9dc52f05b9915",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_after": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "6db1bbede1e6b147c119b812fa0d6ed4fc46abfe",
+  "request_id": "bmc99-0-20261105T171148Z",
+  "request_sha256": "a1e193e1f13605349ac2c01613330640adfb230de0b6ed69cc7edcc9eefd34a5",
+  "started_at": "2026-11-05T17:12:43.748728+00:00",
+  "status": "success",
+  "stderr": " Container bmc-n8n-1 Running \n Container bmc-postgres-1 Running \n Container bmc-ops_api-1 Recreate \n Container bmc-ops_api-1 Recreated \n Container bmc-scheduler-1 Recreate \n Container bmc-webhook_proxy-1 Recreate \n Container bmc-webhook_proxy-1 Recreated \n Container bmc-scheduler-1 Recreated \n Container bmc-postgres-1 Waiting \n Container bmc-postgres-1 Waiting \n Container bmc-postgres-1 Healthy \n Container bmc-postgres-1 Healthy \n Container bmc-ops_api-1 Starting \n Container bmc-ops_api-1 Started \n Container bmc-scheduler-1 Starting \n Container bmc-webhook_proxy-1 Starting \n Container bmc-scheduler-1 Started \n Container bmc-webhook_proxy-1 Started \n",
+  "stdout": "",
+  "version": 1
+}
