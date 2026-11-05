@@ -1,0 +1,1 @@
+{"version": 1, "request_id": "bmc-host-preflight-snapshot-20261105T065537Z", "action": "operator_snapshot", "args": {}, "allow_external_actions": false, "created_at": "2026-11-05T06:55:37.323735+00:00", "expires_at": "2026-11-05T07:55:37.323735+00:00"}
