@@ -1,0 +1,21 @@
+{
+  "action": "scheduler_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-06T19:50:11.477410+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "ede22970f0432484923e0b2a2c2f9058e62fe288",
+  "git_commit_before": "ede22970f0432484923e0b2a2c2f9058e62fe288",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "e05e83d870f07c3dbd9c58e0781fc62dd941d1ba",
+  "request_id": "rw-auto11-20261106T194646Z-04-scheduler_status",
+  "request_sha256": "ff5709c6541cddd3d28ee4c27c619326503c2e9d0f6c9d057c1f2df013a84144",
+  "started_at": "2026-11-06T19:50:11.364222+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "NAME              IMAGE                    COMMAND                  SERVICE     CREATED       STATUS       PORTS\nbmc-scheduler-1   curlimages/curl:8.11.1   \"/entrypoint.sh /bin\u2026\"   scheduler   2 hours ago   Up 2 hours   \n",
+  "version": 1
+}
