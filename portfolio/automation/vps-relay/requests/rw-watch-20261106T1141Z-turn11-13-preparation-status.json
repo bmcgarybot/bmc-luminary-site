@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261106T1141Z-turn11-13-preparation-status",
+  "action": "preparation_status",
+  "args": {},
+  "created_at": "2026-11-06T11:41:00.000Z",
+  "allow_external_actions": false
+}
