@@ -4852,8 +4852,23 @@ async def interest_first_preview(payload:dict|None=None,x_bmc_admin_key:str|None
     require_admin(x_bmc_admin_key)
     from interest_first import CANDIDATE_SQL,candidate_eligible
     limit=max(1,min(int((payload or {}).get('limit',3000)),5000))
-    async with app.state.pool.acquire() as conn:
+    try:
+      async with app.state.pool.acquire() as conn:
         rows=await conn.fetch(CANDIDATE_SQL,limit)
+    except Exception as exc:
+      # Aggregate schema diagnostics only; never return private recipient data,
+      # SQL payloads, exception text or contact information to the public relay.
+      code=getattr(exc,'sqlstate',None)
+      code=code if isinstance(code,str) and re.fullmatch(r'[A-Z0-9]{5}',code) else 'unknown'
+      cls=type(exc).__name__
+      cls=cls if re.fullmatch(r'[A-Za-z]{3,60}',cls) else 'UnknownError'
+      diagnostic=''
+      if code in ('42703','42P01','42702','42601'):
+        safe=re.search(r'(?:column|relation) [\"\']?([A-Za-z_][A-Za-z0-9_.]{0,75})[\"\']? (?:does not exist|is ambiguous)',str(exc))
+        if safe:diagnostic=safe.group(1)
+      return {'ok':False,'status':'candidate_query_unavailable','read_only':True,
+              'error_type':cls,'sqlstate':code,'schema_identifier':diagnostic,
+              'sent':0,'research_calls':0}
     good=[dict(x) for x in rows if candidate_eligible(dict(x))]
     from collections import Counter
     by_service=Counter(x['service_key'] for x in good)
