@@ -10,7 +10,7 @@ EMAIL_RE=re.compile(r"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$",re.I)
 BLOCKED_LOCAL={"noreply","no-reply","donotreply","do-not-reply","postmaster","abuse","mailer-daemon","privacy"}
 # Select existing, publicly recorded business mailboxes; no licence/website prerequisite.
 # A business with no verified public email can be researched, but not emailed.
-CANDIDATE_SQL="""
+CANDIDATE_SQL=r"""
 with candidates as (
  select 'vendor:'||v.vendor_id||':'||vs.service_key||':'||vm.market as source_id,
    v.business_name,v.public_email,vm.market,vs.service_key,s.display_name as service_name,
