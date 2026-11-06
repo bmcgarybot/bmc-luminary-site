@@ -7688,6 +7688,7 @@ def classify_reply_text(body):
     optout=["unsubscribe","remove me","stop emailing","stop email","do not contact","don't contact","no thanks","not interested","take me off"]
     positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me","send the 5","send the five","free five","free 5","sample"]
     if any(x in t for x in optout): return "opt_out"
+    if re.fullmatch(r"(?:five|5)(?:\s+(?:please|thanks|thank you))?[.!]*",t):return "positive"
     if any(x in t for x in positive): return "positive"
     return "other"
 
@@ -7742,7 +7743,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where not exists(select 1 from exceptions where type='inbound_delivery_failure' and summary=$1)""",
                       "Delivery-failure message recorded: "+inbound_fingerprint)
                 if not sender:continue
-                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required,o.wave
+                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required,o.wave,o.campaign
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
                      or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
@@ -7756,7 +7757,9 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                     classification="delivery_failure"
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,classification)
                 if callable(globals().get('record_owner_reply_review')):
-                    await record_owner_reply_review(conn,inbound_key,sender,body,classification,msg.get('Subject',''),str(row['entity_id']) if row else None)
+                    await record_owner_reply_review(conn,inbound_key,sender,body,
+                      'needs_review' if row and row['campaign']=='growth_interest_first' and classification=='positive' else classification,
+                      msg.get('Subject',''),str(row['entity_id']) if row else None)
                 if row:
                     await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
                       status=case when $2='opt_out' then 'suppressed' else 'replied' end,
@@ -7764,6 +7767,15 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where outreach_id=$1""",row["outreach_id"],classification)
                     await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
                     if row["entity_type"]=="growth_customer":
+                        if row['campaign']=='growth_interest_first' and classification=='positive':
+                            await event(conn,'growth_customer',row['entity_id'],'interest_first_free_five_requested',
+                                {'service_key':'pending_scope','inbound_digest':inbound_fingerprint})
+                            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                              select 'interest_first_sample_request','high',$1,
+                                'Recipient requested the free five. Ask for job type and service territory, research five relevant businesses from existing evidence first, and confirm delivery timing. Do not auto-send a generic legacy sample.'
+                              where not exists(select 1 from exceptions where type='interest_first_sample_request'
+                                and status='open' and summary=$1)""",
+                              'Five-prospect sample requested for target '+str(row['entity_id']))
                         target=await conn.fetchrow("select * from growth_outreach_targets where target_id=$1",row["entity_id"])
                         if target and classification=="positive":
                             await conn.execute("update growth_outreach_targets set status='engaged',updated_at=now() where target_id=$1",row["entity_id"])
@@ -7773,7 +7785,8 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                             # follow-up remains behind the same owner/campaign gates.
                             from scoped_dispatch import target_dispatch_wave
                             reply_wave=target_dispatch_wave(dict(target),ADMIN_KEY,GROWTH_OUTREACH_TARGET_IDS,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
-                            if (not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
+                            if (row['campaign']!='growth_interest_first'
+                                and not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
                                 and reply_wave is not None and row.get('wave')==reply_wave
                                 and not row.get("owner_review_required",True)
                                 and not await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",sender)):
