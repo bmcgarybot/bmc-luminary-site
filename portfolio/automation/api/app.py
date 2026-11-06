@@ -7758,7 +7758,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,classification)
                 if callable(globals().get('record_owner_reply_review')):
                     await record_owner_reply_review(conn,inbound_key,sender,body,
-                      'needs_review' if row and row['campaign']=='growth_interest_first' and classification=='positive' else classification,
+                      'needs_review' if row and row.get('campaign')=='growth_interest_first' and classification=='positive' else classification,
                       msg.get('Subject',''),str(row['entity_id']) if row else None)
                 if row:
                     await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
@@ -7767,7 +7767,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where outreach_id=$1""",row["outreach_id"],classification)
                     await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
                     if row["entity_type"]=="growth_customer":
-                        if row['campaign']=='growth_interest_first' and classification=='positive':
+                        if row.get('campaign')=='growth_interest_first' and classification=='positive':
                             await event(conn,'growth_customer',row['entity_id'],'interest_first_free_five_requested',
                                 {'service_key':'pending_scope','inbound_digest':inbound_fingerprint})
                             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
@@ -7785,7 +7785,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                             # follow-up remains behind the same owner/campaign gates.
                             from scoped_dispatch import target_dispatch_wave
                             reply_wave=target_dispatch_wave(dict(target),ADMIN_KEY,GROWTH_OUTREACH_TARGET_IDS,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
-                            if (row['campaign']!='growth_interest_first'
+                            if (row.get('campaign')!='growth_interest_first'
                                 and not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
                                 and reply_wave is not None and row.get('wave')==reply_wave
                                 and not row.get("owner_review_required",True)
