@@ -45,6 +45,12 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
 
+    async def test_interest_first_readonly_candidate_query_executes_on_real_schema(self):
+        from interest_first import CANDIDATE_SQL
+        async with self.pool.acquire() as conn:
+            rows=await conn.fetch(CANDIDATE_SQL,25)
+        self.assertEqual(rows,[])
+
     async def test_business_metrics_use_real_schema_and_distinguish_unknown_delivery(self):
         from ops_metrics import business_metrics
         async with self.pool.acquire() as conn:
