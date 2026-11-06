@@ -90,4 +90,22 @@ class Tests(unittest.TestCase):
   self.assertFalse(packets[0]['customer_ready'])
   self.assertTrue(packets[0]['outreach_held'])
   self.assertIn('suitability',packets[0]['remaining'][0])
+ def test_readonly_quality_summary_keeps_claims_separate(self):
+  def row(name,role,status='advertised_service_contact',key='auto_glass',missing=None):
+   return {'business_name':name,'record_role':role,'evidence_status':status,
+           'service_key':key,'source_url':'https://example.com/'+name.lower().replace(' ','-'),
+           'missing_checks':missing or []}
+  rows=[row('Installer','recipient'),row('Buyer A','prospect'),
+        row('Buyer A','prospect'),row('Buyer B','prospect'),
+        row('Buyer C','prospect'),row('Buyer D','prospect'),
+        row('Buyer E','prospect'),row('Buyer F','prospect','research_incomplete',missing=['public_contact']),
+        row('Installer','prospect'),row('Other industry','prospect',key='landscaping')]
+  result=c.catalogue_quality_summary(rows)
+  self.assertEqual(result['source_checked'],9)
+  self.assertEqual(result['research_incomplete'],1)
+  self.assertEqual(result['duplicate_source_checked_company_names'],2)
+  self.assertEqual(result['recipients_with_five_distinct_checked_same_category_candidates'],0)
+  self.assertEqual(result['top_missing_checks'][0],('public_contact',1))
+  self.assertFalse(result['buyer_fit_verified'])
+  self.assertEqual(result['customer_ready_offers'],0)
 if __name__=='__main__':unittest.main()
