@@ -32,7 +32,7 @@ jobs:
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "api_research_prepare","api_research_configure","api_research_status","api_research_worker_status","api_research_worker_start","api_research_worker_stop","api_research_worker_resume","api_research_budget_50","api_research_reconcile","api_research_settle","api_research_export","api_research_import","api_research_run",
-              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_scoped_launch_enable","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
+              "interest_first_preview","interest_first_stage","interest_first_send_batch","growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_scoped_launch_enable","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
@@ -84,6 +84,7 @@ jobs:
           python3 portfolio/automation/test-api-research-pilot.py
           python3 portfolio/automation/test-owner-research-budget.py
           python3 portfolio/automation/test-api-catalogue.py
+          python3 portfolio/automation/test-interest-first.py
           python3 portfolio/automation/test-api-grounded-research.py
           python3 portfolio/automation/test-api-pilot-import.py
           python3 portfolio/automation/test-property-visible-source.py

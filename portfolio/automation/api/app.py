@@ -58,6 +58,8 @@ BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
+INTEREST_FIRST_OUTREACH_ENABLED=os.getenv("INTEREST_FIRST_OUTREACH_ENABLED","false").strip().lower()=="true"
+INTEREST_FIRST_DAILY_LIMIT=max(1,min(250,env_int("INTEREST_FIRST_DAILY_LIMIT",100)))
 GROWTH_AUTO_APPROVE_REQUESTED_25=os.getenv("GROWTH_AUTO_APPROVE_REQUESTED_25","false").strip().lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
@@ -4843,6 +4845,128 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
 
 
+# DEMAND_FIRST_OUTREACH_V1
+# Separate campaign: do not pre-build free five, alter historical sends, or spend AI credits.
+@app.post("/api/admin/interest-first-preview")
+async def interest_first_preview(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CANDIDATE_SQL,candidate_eligible
+    limit=max(1,min(int((payload or {}).get('limit',3000)),5000))
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch(CANDIDATE_SQL,limit)
+    good=[dict(x) for x in rows if candidate_eligible(dict(x))]
+    from collections import Counter
+    by_service=Counter(x['service_key'] for x in good)
+    by_market=Counter(x['market'] for x in good)
+    return {'ok':True,'read_only':True,'possible_contactable_businesses':len(good),
+      'contactable_by_service':dict(by_service.most_common()),
+      'contactable_by_market':dict(by_market.most_common()),
+      'email_unverified_delivery':True,
+      'note':'This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.'}
+
+@app.post("/api/admin/interest-first-stage")
+async def interest_first_stage(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CANDIDATE_SQL,CAMPAIGN,WAVE,candidate_eligible
+    import uuid as interest_uuid
+    limit=max(1,min(int((payload or {}).get('limit',250)),1000))
+    staged=0;skipped=0;by_service={}
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        rows=await conn.fetch(CANDIDATE_SQL,limit)
+        for raw in rows:
+          row=dict(raw)
+          if not candidate_eligible(row):skipped+=1;continue
+          email_addr=row['public_email'].lower()
+          # Preserve previously reviewed, sent and scoped Growth records.
+          target=await conn.fetchval("""select target_id from growth_outreach_targets
+            where lower(public_email)=$1 and service_key=$2 limit 1""",email_addr,row['service_key'])
+          if not target:
+            target='interest:'+interest_uuid.uuid5(interest_uuid.NAMESPACE_URL,email_addr+'|'+row['service_key']).hex
+            inserted=await conn.fetchval("""insert into growth_outreach_targets
+              (target_id,business_name,public_email,market,service_key,source_url,source_kind,fit_score,source_data)
+              values($1,$2,$3,$4,$5,$6,'interest_first',65,$7::jsonb)
+              on conflict do nothing returning target_id""",target,row['business_name'],email_addr,
+              row['market'],row['service_key'],row['source_url'],
+              json.dumps({'source_ref':row['source_id'],'research_only':True,'message_kind':CAMPAIGN}))
+            if not inserted:
+              target=await conn.fetchval("""select target_id from growth_outreach_targets
+                where lower(public_email)=$1 and service_key=$2 limit 1""",email_addr,row['service_key'])
+          if not target:skipped+=1;continue
+          inserted=await conn.fetchval("""insert into outreach(
+            entity_type,entity_id,campaign,wave,channel,sequence_step,status,
+            next_followup_at,opt_out,owner_review_required,target_market,target_service_key)
+            select 'growth_customer',$1,$2,$3,'email',0,'queued',null,false,false,$4,$5
+            where not exists(select 1 from outreach o where o.entity_type='growth_customer'
+              and o.entity_id=$1 and o.campaign=$2)
+              and not exists(select 1 from outreach_suppressions z where lower(z.email)=$6)
+              and not exists(select 1 from outreach prior
+                left join growth_outreach_targets g on prior.entity_type='growth_customer' and g.target_id=prior.entity_id
+                left join vendors v on prior.entity_type='vendor' and v.vendor_id=prior.entity_id
+                left join buyers b on prior.entity_type='buyer' and b.buyer_id=prior.entity_id
+                where (prior.sent_at is not null or prior.opt_out=true)
+                  and lower(coalesce(g.public_email,v.public_email,b.public_email,''))=$6)
+            returning outreach_id""",target,CAMPAIGN,WAVE,row['market'],row['service_key'],email_addr)
+          if inserted:
+            staged+=1
+            by_service[row['service_key']]=by_service.get(row['service_key'],0)+1
+          else:skipped+=1
+    return {'ok':True,'staged':staged,'skipped':skipped,'by_service':by_service,
+        'sent':0,'paid_research_calls':0,'outreach_hold_unchanged':True,
+        'note':'Queued for one-time invitation only. Existing samples and campaigns remain unchanged.'}
+
+@app.post("/api/admin/interest-first-send-batch")
+async def interest_first_send_batch(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CAMPAIGN,WAVE,invitation,candidate_eligible
+    if OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED:
+        return {'ok':True,'sent':0,'blocked':True,'message':'Owner hold or separate interest-first send switch is OFF'}
+    if not BUSINESS_POSTAL_ADDRESS or 'CHANGE_ME' in BUSINESS_POSTAL_ADDRESS:
+        raise HTTPException(409,'Business postal address is required')
+    if not all((IMAP_ENABLED,IMAP_HOST,IMAP_USER,IMAP_PASSWORD)):
+        raise HTTPException(409,'Inbound opt-out/reply monitoring must be enabled')
+    limit=max(1,min(int((payload or {}).get('limit',50)),100))
+    sent=0;held=0
+    async with app.state.pool.acquire() as conn:
+      today=await conn.fetchval("""select count(*) from outreach where campaign=$1
+        and sent_at>=date_trunc('day',now())""",CAMPAIGN)
+      limit=min(limit,max(0,INTEREST_FIRST_DAILY_LIMIT-int(today or 0)))
+      rows=await conn.fetch("""select o.outreach_id,g.target_id,g.business_name,g.public_email,
+          g.market,g.service_key,s.display_name as service_name
+        from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
+        join services s on s.service_key=g.service_key
+        where o.entity_type='growth_customer' and o.campaign=$1 and o.wave=$2
+          and o.status='queued' and o.sent_at is null and o.opt_out=false
+          and o.owner_review_required=false
+          and g.status not in ('suppressed','bad_fit')
+          and not exists(select 1 from outreach_suppressions z where lower(z.email)=lower(g.public_email))
+          and not exists(select 1 from outreach prior
+            left join growth_outreach_targets pg on prior.entity_type='growth_customer' and pg.target_id=prior.entity_id
+            left join vendors pv on prior.entity_type='vendor' and pv.vendor_id=prior.entity_id
+            left join buyers pb on prior.entity_type='buyer' and pb.buyer_id=prior.entity_id
+            where (prior.sent_at is not null or prior.opt_out=true)
+              and prior.outreach_id<>o.outreach_id
+              and lower(coalesce(pg.public_email,pv.public_email,pb.public_email,''))=lower(g.public_email))
+        order by o.created_at,g.business_name limit $3""",CAMPAIGN,WAVE,limit)
+      for raw in rows:
+        row=dict(raw)
+        if not candidate_eligible(row):held+=1;continue
+        try:subject,body,html_body=invitation(row,BUSINESS_POSTAL_ADDRESS)
+        except ValueError:held+=1;continue
+        # Durable delivery key prevents replay or duplicate SMTP on worker crashes.
+        ok=await send_mail_once('interest-first:'+str(row['outreach_id'])+':1',
+          row['public_email'],subject,body,html_body)
+        if not ok:
+          await conn.execute("""update outreach set status='review',owner_review_required=true
+            where outreach_id=$1""",row['outreach_id'])
+          held+=1;continue
+        await conn.execute("""update outreach set status='sent',sequence_step=1,subject=$2,
+          body=$3,sent_at=now(),next_followup_at=null where outreach_id=$1 and status='queued'
+          and sent_at is null""",row['outreach_id'],subject,body)
+        sent+=1
+    return {'ok':True,'sent':sent,'held':held,'daily_limit':INTEREST_FIRST_DAILY_LIMIT,
+      'research_calls':0,'note':'This invitation does not promise existing five-prospect research. No followups scheduled.'}
+
 def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
     service_key=clean(row["service_key"])
     query={
@@ -7564,6 +7688,7 @@ def classify_reply_text(body):
     optout=["unsubscribe","remove me","stop emailing","stop email","do not contact","don't contact","no thanks","not interested","take me off"]
     positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me","send the 5","send the five","free five","free 5","sample"]
     if any(x in t for x in optout): return "opt_out"
+    if re.fullmatch(r"(?:five|5)(?:\s+(?:please|thanks|thank you))?[.!]*",t):return "positive"
     if any(x in t for x in positive): return "positive"
     return "other"
 
@@ -7618,7 +7743,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where not exists(select 1 from exceptions where type='inbound_delivery_failure' and summary=$1)""",
                       "Delivery-failure message recorded: "+inbound_fingerprint)
                 if not sender:continue
-                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required,o.wave
+                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required,o.wave,o.campaign
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
                      or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
@@ -7632,7 +7757,9 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                     classification="delivery_failure"
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,classification)
                 if callable(globals().get('record_owner_reply_review')):
-                    await record_owner_reply_review(conn,inbound_key,sender,body,classification,msg.get('Subject',''),str(row['entity_id']) if row else None)
+                    await record_owner_reply_review(conn,inbound_key,sender,body,
+                      'needs_review' if row and row.get('campaign')=='growth_interest_first' and classification=='positive' else classification,
+                      msg.get('Subject',''),str(row['entity_id']) if row else None)
                 if row:
                     await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
                       status=case when $2='opt_out' then 'suppressed' else 'replied' end,
@@ -7640,6 +7767,15 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where outreach_id=$1""",row["outreach_id"],classification)
                     await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
                     if row["entity_type"]=="growth_customer":
+                        if row.get('campaign')=='growth_interest_first' and classification=='positive':
+                            await event(conn,'growth_customer',row['entity_id'],'interest_first_free_five_requested',
+                                {'service_key':'pending_scope','inbound_digest':inbound_fingerprint})
+                            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                              select 'interest_first_sample_request','high',$1,
+                                'Recipient requested the free five. Ask for job type and service territory, research five relevant businesses from existing evidence first, and confirm delivery timing. Do not auto-send a generic legacy sample.'
+                              where not exists(select 1 from exceptions where type='interest_first_sample_request'
+                                and status='open' and summary=$1)""",
+                              'Five-prospect sample requested for target '+str(row['entity_id']))
                         target=await conn.fetchrow("select * from growth_outreach_targets where target_id=$1",row["entity_id"])
                         if target and classification=="positive":
                             await conn.execute("update growth_outreach_targets set status='engaged',updated_at=now() where target_id=$1",row["entity_id"])
@@ -7649,7 +7785,8 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                             # follow-up remains behind the same owner/campaign gates.
                             from scoped_dispatch import target_dispatch_wave
                             reply_wave=target_dispatch_wave(dict(target),ADMIN_KEY,GROWTH_OUTREACH_TARGET_IDS,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
-                            if (not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
+                            if (row.get('campaign')!='growth_interest_first'
+                                and not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
                                 and reply_wave is not None and row.get('wave')==reply_wave
                                 and not row.get("owner_review_required",True)
                                 and not await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",sender)):
