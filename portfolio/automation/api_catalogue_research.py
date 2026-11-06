@@ -128,6 +128,48 @@ def prepare_evidence_packets(records,limit=6):
                          'Bind to existing landing/purchase/fulfillment template']})
     return packets
 
+def catalogue_quality_summary(records):
+    """Aggregate stored evidence only. Does not infer buyer fit or offer readiness."""
+    from collections import Counter
+    counts=Counter();seen=set();duplicate_names=set()
+    checked_recipients=[];checked_prospects=[]
+    for item in records:
+        role=item.get('record_role')
+        if role in ('recipient','prospect'):counts['role_'+role]+=1
+        else:counts['role_unknown']+=1
+        if item.get('evidence_status')!='advertised_service_contact':
+            counts['research_incomplete']+=1
+            for reason in item.get('missing_checks',[]):
+                if isinstance(reason,str) and len(reason)<80:counts['missing_'+reason]+=1
+            continue
+        counts['source_checked']+=1
+        name=company_identity(item)
+        if name:
+            if name in seen:duplicate_names.add(name)
+            seen.add(name)
+        if role=='recipient':checked_recipients.append(item)
+        if role=='prospect':checked_prospects.append(item)
+    groups={}
+    for prospect in checked_prospects:groups.setdefault(prospect.get('service_key'),[]).append(prospect)
+    sample_counts=[]
+    for rec in checked_recipients:
+        same_name=company_identity(rec);names=set();urls=set()
+        for p in groups.get(rec.get('service_key'),[]):
+            name=company_identity(p);url=p.get('source_url')
+            if not name or name==same_name or name in names or not url or url==rec.get('source_url') or url in urls:continue
+            names.add(name);urls.add(url)
+        sample_counts.append(len(names))
+    return {'total_records':len(records),'source_checked':counts['source_checked'],
+            'research_incomplete':counts['research_incomplete'],
+            'role_counts':{key:counts[key] for key in ('role_recipient','role_prospect','role_unknown')},
+            'source_checked_recipient_count':len(checked_recipients),
+            'source_checked_prospect_count':len(checked_prospects),
+            'duplicate_source_checked_company_names':len(duplicate_names),
+            'recipients_with_five_distinct_checked_same_category_candidates':sum(n>=5 for n in sample_counts),
+            'recipients_with_zero_distinct_checked_same_category_candidates':sum(n==0 for n in sample_counts),
+            'top_missing_checks':sorted(((key.removeprefix('missing_'),n) for key,n in counts.items() if key.startswith('missing_')),key=lambda x:(-x[1],x[0]))[:10],
+            'buyer_fit_verified':False,'customer_ready_offers':0}
+
 def run_catalogue(ledger,request_id,config,*,api=pilot.responses_https,fetch=None):
     from official_research import fetch_page_receipt,allowed_url
     from public_contractor_ads import allowed_ad_url
