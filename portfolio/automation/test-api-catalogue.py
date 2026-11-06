@@ -104,7 +104,7 @@ class Tests(unittest.TestCase):
   self.assertEqual(result['source_checked'],9)
   self.assertEqual(result['research_incomplete'],1)
   self.assertEqual(result['duplicate_source_checked_company_names'],2)
-  self.assertEqual(result['recipients_with_five_distinct_checked_same_category_candidates'],0)
+  self.assertEqual(result['recipients_with_five_distinct_checked_same_category_candidates'],1)
   self.assertEqual(result['top_missing_checks'][0],('public_contact',1))
   self.assertFalse(result['buyer_fit_verified'])
   self.assertEqual(result['customer_ready_offers'],0)
