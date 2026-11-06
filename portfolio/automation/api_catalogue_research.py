@@ -100,6 +100,34 @@ def inspect(value,receipt):
         evidence_status='advertised_service_contact' if not missing else 'research_incomplete',missing_checks=missing,
         proposal_is_inference=True,offer_ready=False,accepted_provider=False,confirmed_demand=False)
 
+
+def company_identity(value):
+    """Conservative name key for keeping duplicate companies out of a sample."""
+    return ' '.join(str(value.get('business_name','')).casefold().split())
+
+def prepare_evidence_packets(records,limit=6):
+    """Draft only; passing source checks cannot prove buyer suitability."""
+    packets=[]
+    for recipient in records:
+        if len(packets)>=limit:break
+        if recipient.get('record_role')!='recipient' or recipient.get('evidence_status')!='advertised_service_contact':continue
+        company=company_identity(recipient)
+        if not company:continue
+        samples=[];seen={company};seen_urls={recipient.get('source_url')}
+        for prospect in records:
+            if prospect.get('record_role')!='prospect' or prospect.get('service_key')!=recipient.get('service_key'):continue
+            if prospect.get('evidence_status')!='advertised_service_contact':continue
+            name=company_identity(prospect);url=prospect.get('source_url')
+            if not name or name in seen or not url or url in seen_urls:continue
+            samples.append(prospect);seen.add(name);seen_urls.add(url)
+            if len(samples)>=5:break
+        packets.append({'recipient':recipient,'proposed_sample':samples,'sample_source_checked_count':len(samples),
+            'proposed_offer':recipient.get('proposed_offer',''),'customer_ready':False,'outreach_held':True,
+            'remaining':['Independently establish recipient/prospect buyer suitability and service territory',
+                         'Complete five distinct suitable sample prospects and paid quantity',
+                         'Bind to existing landing/purchase/fulfillment template']})
+    return packets
+
 def run_catalogue(ledger,request_id,config,*,api=pilot.responses_https,fetch=None):
     from official_research import fetch_page_receipt,allowed_url
     from public_contractor_ads import allowed_ad_url
@@ -145,14 +173,6 @@ def run_catalogue(ledger,request_id,config,*,api=pilot.responses_https,fetch=Non
         db.execute('update lanes set last_status=?,records=?,updated=? where service=?',(report['status'],count,pilot.now(),key))
     accumulated=[json.loads(row[0]) for row in db.execute('select record_json from source_records where service in ('+','.join('?' for _ in keys)+') order by service,url limit 100',keys)]
     db.commit();db.close()
-    report['preparation_packets']=[]
-    for recipient in accumulated:
-        if recipient.get('record_role')!='recipient':continue
-        prospects=[x for x in accumulated if x.get('record_role')=='prospect' and x['service_key']==recipient['service_key'] and x['source_url']!=recipient['source_url']]
-        if len(report['preparation_packets'])>=6:break
-        report['preparation_packets'].append({'recipient':recipient,'proposed_sample':prospects[:5],
-            'sample_source_checked_count':sum(x['evidence_status']=='advertised_service_contact' for x in prospects[:5]),
-            'proposed_offer':recipient['proposed_offer'],'customer_ready':False,'outreach_held':True,
-            'remaining':['Check recipient/prospect suitability','Complete paid quantity before purchase activation','Bind to existing landing/purchase/fulfillment template']})
+    report['preparation_packets']=prepare_evidence_packets(accumulated)
     report['budget']=ledger.status();path=directory/'report-private.json';pilot.write_private(path,report);ledger.finish(request_id,report['status'],path)
     return dict(status=report['status'],request_id=request_id,service_keys=keys,records=len(report['records']),preparation_packets=len(report['preparation_packets']),private_report=str(path),outreach_sent=0,offer_ready=False)
