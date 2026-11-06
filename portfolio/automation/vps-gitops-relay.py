@@ -49,7 +49,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -73,8 +73,9 @@ MUTATING_INTERNAL_ACTIONS = {
     "scheduler_stop",
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
+    "interest_first_stage",
 }
-EXTERNAL_ACTIONS = {"api_research_budget_50", "growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume"}
+EXTERNAL_ACTIONS = {"api_research_budget_50", "growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume", "interest_first_send_batch"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
@@ -89,6 +90,9 @@ API_ACTIONS = {
     "source_native_step": "/api/process-source-native-research",
     "growth_stage_pressure_washing": "/api/admin/stage-growth-pressure-washing",
     "growth_stage_commercial_cleaning": "/api/admin/stage-growth-commercial-cleaning",
+    "interest_first_preview": "/api/admin/interest-first-preview",
+    "interest_first_stage": "/api/admin/interest-first-stage",
+    "interest_first_send_batch": "/api/admin/interest-first-send-batch",
 }
 
 
