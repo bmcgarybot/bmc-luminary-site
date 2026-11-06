@@ -71,4 +71,23 @@ class Tests(unittest.TestCase):
    root=Path(d);c.queue_status(root);directory=root/'bmc-catalogue-fixture';directory.mkdir();filename='b'*32+'.html';(directory/filename).write_text('changed')
    db=sqlite3.connect(root/'catalogue.sqlite3');db.execute('insert into source_records values(?,?,?)',('auto_glass','https://synthetic.example/',json.dumps({'receipt_file':filename,'content_sha256':'0'*64})));db.commit()
    result=c.revalidate_cached(root);self.assertEqual(result['checked'],0);self.assertEqual(result['receipt_unavailable'],1);db.close()
+ def test_packets_require_checked_distinct_companies(self):
+  def record(name,url,role,status='advertised_service_contact',key='auto_glass'):
+   return {'business_name':name,'source_url':url,'record_role':role,'evidence_status':status,'service_key':key,'proposed_offer':'Draft'}
+  records=[
+   record('Recipient LLC','https://example.org/recipient','recipient'),
+   record('Unverified','https://example.org/unverified','prospect','research_incomplete'),
+   record('recipient llc','https://example.org/same','prospect'),
+   record('Actual Buyer A','https://example.org/a','prospect'),
+   record(' actual  buyer  a ','https://example.org/a2','prospect'),
+   record('Actual Buyer B','https://example.org/b','prospect'),
+   record('Wrong Category','https://example.org/wrong','prospect',key='landscaping'),
+   record('Unchecked Recipient','https://example.org/unchecked','recipient','research_incomplete')]
+  packets=c.prepare_evidence_packets(records)
+  self.assertEqual(len(packets),1)
+  self.assertEqual([p['business_name'] for p in packets[0]['proposed_sample']],['Actual Buyer A','Actual Buyer B'])
+  self.assertEqual(packets[0]['sample_source_checked_count'],2)
+  self.assertFalse(packets[0]['customer_ready'])
+  self.assertTrue(packets[0]['outreach_held'])
+  self.assertIn('suitability',packets[0]['remaining'][0])
 if __name__=='__main__':unittest.main()
