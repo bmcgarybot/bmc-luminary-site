@@ -54,6 +54,11 @@ class Tests(unittest.TestCase):
         self.assertIn('growth_interest_first',sql)
         self.assertNotIn('update outreach',sql)
         self.assertNotIn('delete from',sql)
+    def test_docker_image_copies_demand_first_module(self):
+        dockerfile=(HERE/'api'/'Dockerfile').read_text()
+        self.assertIn('interest_first.py',dockerfile)
+        self.assertIn('app.py',dockerfile)
+
     def test_production_stays_gated_and_reply_first(self):
         source=(HERE/'api/app.py').read_text()
         tree=ast.parse(source)
