@@ -58,6 +58,8 @@ BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
+INTEREST_FIRST_OUTREACH_ENABLED=os.getenv("INTEREST_FIRST_OUTREACH_ENABLED","false").strip().lower()=="true"
+INTEREST_FIRST_DAILY_LIMIT=max(1,min(250,env_int("INTEREST_FIRST_DAILY_LIMIT",100)))
 GROWTH_AUTO_APPROVE_REQUESTED_25=os.getenv("GROWTH_AUTO_APPROVE_REQUESTED_25","false").strip().lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
@@ -4842,6 +4844,128 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         sent+=1
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
 
+
+# DEMAND_FIRST_OUTREACH_V1
+# Separate campaign: do not pre-build free five, alter historical sends, or spend AI credits.
+@app.post("/api/admin/interest-first-preview")
+async def interest_first_preview(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CANDIDATE_SQL,candidate_eligible
+    limit=max(1,min(int((payload or {}).get('limit',3000)),5000))
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch(CANDIDATE_SQL,limit)
+    good=[dict(x) for x in rows if candidate_eligible(dict(x))]
+    from collections import Counter
+    by_service=Counter(x['service_key'] for x in good)
+    by_market=Counter(x['market'] for x in good)
+    return {'ok':True,'read_only':True,'possible_contactable_businesses':len(good),
+      'contactable_by_service':dict(by_service.most_common()),
+      'contactable_by_market':dict(by_market.most_common()),
+      'email_unverified_delivery':True,
+      'note':'This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.'}
+
+@app.post("/api/admin/interest-first-stage")
+async def interest_first_stage(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CANDIDATE_SQL,CAMPAIGN,WAVE,candidate_eligible
+    import uuid as interest_uuid
+    limit=max(1,min(int((payload or {}).get('limit',250)),1000))
+    staged=0;skipped=0;by_service={}
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        rows=await conn.fetch(CANDIDATE_SQL,limit)
+        for raw in rows:
+          row=dict(raw)
+          if not candidate_eligible(row):skipped+=1;continue
+          email_addr=row['public_email'].lower()
+          # Preserve previously reviewed, sent and scoped Growth records.
+          target=await conn.fetchval("""select target_id from growth_outreach_targets
+            where lower(public_email)=$1 and service_key=$2 limit 1""",email_addr,row['service_key'])
+          if not target:
+            target='interest:'+interest_uuid.uuid5(interest_uuid.NAMESPACE_URL,email_addr+'|'+row['service_key']).hex
+            inserted=await conn.fetchval("""insert into growth_outreach_targets
+              (target_id,business_name,public_email,market,service_key,source_url,source_kind,fit_score,source_data)
+              values($1,$2,$3,$4,$5,$6,'interest_first',65,$7::jsonb)
+              on conflict do nothing returning target_id""",target,row['business_name'],email_addr,
+              row['market'],row['service_key'],row['source_url'],
+              json.dumps({'source_ref':row['source_id'],'research_only':True,'message_kind':CAMPAIGN}))
+            if not inserted:
+              target=await conn.fetchval("""select target_id from growth_outreach_targets
+                where lower(public_email)=$1 and service_key=$2 limit 1""",email_addr,row['service_key'])
+          if not target:skipped+=1;continue
+          inserted=await conn.fetchval("""insert into outreach(
+            entity_type,entity_id,campaign,wave,channel,sequence_step,status,
+            next_followup_at,opt_out,owner_review_required,target_market,target_service_key)
+            select 'growth_customer',$1,$2,$3,'email',0,'queued',null,false,false,$4,$5
+            where not exists(select 1 from outreach o where o.entity_type='growth_customer'
+              and o.entity_id=$1 and o.campaign=$2)
+              and not exists(select 1 from outreach_suppressions z where lower(z.email)=$6)
+              and not exists(select 1 from outreach prior
+                left join growth_outreach_targets g on prior.entity_type='growth_customer' and g.target_id=prior.entity_id
+                left join vendors v on prior.entity_type='vendor' and v.vendor_id=prior.entity_id
+                left join buyers b on prior.entity_type='buyer' and b.buyer_id=prior.entity_id
+                where (prior.sent_at is not null or prior.opt_out=true)
+                  and lower(coalesce(g.public_email,v.public_email,b.public_email,''))=$6)
+            returning outreach_id""",target,CAMPAIGN,WAVE,row['market'],row['service_key'],email_addr)
+          if inserted:
+            staged+=1
+            by_service[row['service_key']]=by_service.get(row['service_key'],0)+1
+          else:skipped+=1
+    return {'ok':True,'staged':staged,'skipped':skipped,'by_service':by_service,
+        'sent':0,'paid_research_calls':0,'outreach_hold_unchanged':True,
+        'note':'Queued for one-time invitation only. Existing samples and campaigns remain unchanged.'}
+
+@app.post("/api/admin/interest-first-send-batch")
+async def interest_first_send_batch(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    from interest_first import CAMPAIGN,WAVE,invitation,candidate_eligible
+    if OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED:
+        return {'ok':True,'sent':0,'blocked':True,'message':'Owner hold or separate interest-first send switch is OFF'}
+    if not BUSINESS_POSTAL_ADDRESS or 'CHANGE_ME' in BUSINESS_POSTAL_ADDRESS:
+        raise HTTPException(409,'Business postal address is required')
+    if not all((IMAP_ENABLED,IMAP_HOST,IMAP_USER,IMAP_PASSWORD)):
+        raise HTTPException(409,'Inbound opt-out/reply monitoring must be enabled')
+    limit=max(1,min(int((payload or {}).get('limit',50)),100))
+    sent=0;held=0
+    async with app.state.pool.acquire() as conn:
+      today=await conn.fetchval("""select count(*) from outreach where campaign=$1
+        and sent_at>=date_trunc('day',now())""",CAMPAIGN)
+      limit=min(limit,max(0,INTEREST_FIRST_DAILY_LIMIT-int(today or 0)))
+      rows=await conn.fetch("""select o.outreach_id,g.target_id,g.business_name,g.public_email,
+          g.market,g.service_key,s.display_name as service_name
+        from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
+        join services s on s.service_key=g.service_key
+        where o.entity_type='growth_customer' and o.campaign=$1 and o.wave=$2
+          and o.status='queued' and o.sent_at is null and o.opt_out=false
+          and o.owner_review_required=false
+          and g.status not in ('suppressed','bad_fit')
+          and not exists(select 1 from outreach_suppressions z where lower(z.email)=lower(g.public_email))
+          and not exists(select 1 from outreach prior
+            left join growth_outreach_targets pg on prior.entity_type='growth_customer' and pg.target_id=prior.entity_id
+            left join vendors pv on prior.entity_type='vendor' and pv.vendor_id=prior.entity_id
+            left join buyers pb on prior.entity_type='buyer' and pb.buyer_id=prior.entity_id
+            where (prior.sent_at is not null or prior.opt_out=true)
+              and prior.outreach_id<>o.outreach_id
+              and lower(coalesce(pg.public_email,pv.public_email,pb.public_email,''))=lower(g.public_email))
+        order by o.created_at,g.business_name limit $3""",CAMPAIGN,WAVE,limit)
+      for raw in rows:
+        row=dict(raw)
+        if not candidate_eligible(row):held+=1;continue
+        try:subject,body,html_body=invitation(row,BUSINESS_POSTAL_ADDRESS)
+        except ValueError:held+=1;continue
+        # Durable delivery key prevents replay or duplicate SMTP on worker crashes.
+        ok=await send_mail_once('interest-first:'+str(row['outreach_id'])+':1',
+          row['public_email'],subject,body,html_body)
+        if not ok:
+          await conn.execute("""update outreach set status='review',owner_review_required=true
+            where outreach_id=$1""",row['outreach_id'])
+          held+=1;continue
+        await conn.execute("""update outreach set status='sent',sequence_step=1,subject=$2,
+          body=$3,sent_at=now(),next_followup_at=null where outreach_id=$1 and status='queued'
+          and sent_at is null""",row['outreach_id'],subject,body)
+        sent+=1
+    return {'ok':True,'sent':sent,'held':held,'daily_limit':INTEREST_FIRST_DAILY_LIMIT,
+      'research_calls':0,'note':'This invitation does not promise existing five-prospect research. No followups scheduled.'}
 
 def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
     service_key=clean(row["service_key"])
