@@ -6,7 +6,7 @@ from html import escape
 
 CAMPAIGN="growth_interest_first"
 WAVE="interest-first-v1"
-EMAIL_RE=re.compile(r"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",re.I)
+EMAIL_RE=re.compile(r"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$",re.I)
 BLOCKED_LOCAL={"noreply","no-reply","donotreply","do-not-reply","postmaster","abuse","mailer-daemon","privacy"}
 # Select existing, publicly recorded business mailboxes; no licence/website prerequisite.
 # A business with no verified public email can be researched, but not emailed.
@@ -38,7 +38,7 @@ select distinct on (lower(c.public_email))
 from candidates c
 where c.business_name is not null and length(trim(c.business_name))>=3
  and c.market is not null and length(trim(c.market))>=2
- and c.public_email ~* '^[^[:space:]@]+@[^[:space:]@]+\\.[^[:space:]@]+$'
+ and c.public_email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
  and not exists(select 1 from outreach_suppressions z
                 where lower(z.email)=lower(c.public_email))
  and not exists(
