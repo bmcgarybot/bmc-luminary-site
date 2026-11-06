@@ -49,6 +49,11 @@ class Tests(unittest.TestCase):
         self.assertNotIn('growth_sample_min_reserve',sql)
         self.assertNotIn('license',sql)
         self.assertNotIn('outreach_enabled',sql)
+        self.assertIn('prior.sent_at is not null',sql)
+        self.assertIn('prior.opt_out=true',sql)
+        self.assertIn('growth_interest_first',sql)
+        self.assertNotIn('update outreach',sql)
+        self.assertNotIn('delete from',sql)
     def test_production_stays_gated_and_reply_first(self):
         source=(HERE/'api/app.py').read_text()
         tree=ast.parse(source)
@@ -59,7 +64,7 @@ class Tests(unittest.TestCase):
         self.assertIn('OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED',source)
         self.assertIn('send_mail_once(\'interest-first:',source)
         self.assertIn("'interest_first_free_five_requested'",source)
-        self.assertIn("row['campaign']!='growth_interest_first'",source)
+        self.assertIn("row.get('campaign')!='growth_interest_first'",source)
         self.assertIn('GROWTH_OUTREACH_ENABLED=os.getenv',source)
         self.assertIn('INTEREST_FIRST_OUTREACH_ENABLED=os.getenv',source)
 
