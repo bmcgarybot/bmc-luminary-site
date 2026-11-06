@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-20261106T0005Z-a11-04-scheduler_status",
+  "action": "scheduler_status",
+  "created_at": "2026-11-06T00:07:07.771Z",
+  "expires_at": "2026-11-06T01:12:07.773Z",
+  "allow_external_actions": false,
+  "args": {}
+}
