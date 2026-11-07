@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261107T1843Z-auto11i-07-proof_readout",
+  "action": "proof_readout",
+  "created_at": "2026-11-07T18:42:47.469Z",
+  "expires_at": "2026-11-07T20:12:47.469Z",
+  "allow_external_actions": false,
+  "args": {}
+}
