@@ -1,0 +1,21 @@
+{
+  "action": "interest_first_preview",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-07T16:26:24.555636+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "git_commit_before": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "a4c43f69fd11406d0eacd5e5d291a54b7922aa07",
+  "request_id": "rw-watch-20261107T1623Z-auto11g-18-interest_first_preview",
+  "request_sha256": "a63f6f3f3200ec8871a2bc36926f0ea4dae3dd72b378fd1714c3b118e1cab7ca",
+  "started_at": "2026-11-07T16:26:24.440103+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"read_only\": true,\n      \"possible_contactable_businesses\": 167,\n      \"contactable_by_service\": {\n        \"landscaping\": 19,\n        \"pressure_washing\": 14,\n        \"tree_service\": 13,\n        \"hvac_heat\": 12,\n        \"backflow_plumbing\": 12,\n        \"junk_hauling\": 11,\n        \"str_property_care\": 11,\n        \"electrical_service\": 9,\n        \"rural_property\": 9,\n        \"pool_desert_property\": 6,\n        \"towing_roadside\": 6,\n        \"commercial_cleaning\": 4,\n        \"handyman_repairs\": 4,\n        \"garage_door\": 4,\n        \"pest_control\": 4,\n        \"pet_waste\": 3,\n        \"facility_maintenance\": 3,\n        \"locksmith_access\": 3,\n        \"parking_lot\": 3,\n        \"mobile_pet_grooming\": 3,\n        \"auto_glass\": 3,\n        \"mobile_tire_battery\": 2,\n        \"residential_cleaning\": 2,\n        \"fire_safety\": 2,\n        \"epoxy_flooring\": 1,\n        \"equipment_quotes\": 1,\n        \"linen_laundry\": 1,\n        \"duct_vent\": 1,\n        \"floor_carpet\": 1\n      },\n      \"contactable_by_market\": {\n        \"Phoenix\": 35,\n        \"Kingman\": 17,\n        \"Tucson\": 16,\n        \"Prescott\": 14,\n        \"Flagstaff\": 11,\n        \"Prescott Valley\": 9,\n        \"Scottsdale\": 9,\n        \"Cordes Lakes\": 8,\n        \"Skull Valley\": 6,\n        \"Sedona\": 6,\n        \"Cottonwood\": 5,\n        \"Bullhead City\": 5,\n        \"Camp Verde\": 4,\n        \"Chino Valley\": 4,\n        \"Williamson Valley\": 4,\n        \"Ash Fork\": 3,\n        \"Winslow\": 3,\n        \"Mayer\": 3,\n        \"Dewey-Humboldt\": 2,\n        \"Golden Valley\": 1,\n        \"Kingman / Mohave County\": 1,\n        \"Phoenix Metro / Statewide\": 1\n      },\n      \"email_unverified_delivery\": true,\n      \"note\": \"This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.\"\n    }\n  ]\n}",
+  "version": 1
+}
