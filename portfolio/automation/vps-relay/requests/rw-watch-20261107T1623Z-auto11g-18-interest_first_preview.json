@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261107T1623Z-auto11g-18-interest_first_preview",
+  "action": "interest_first_preview",
+  "created_at": "2026-11-07T16:23:17Z",
+  "expires_at": "2026-11-07T18:23:17Z",
+  "allow_external_actions": false,
+  "args": {}
+}
