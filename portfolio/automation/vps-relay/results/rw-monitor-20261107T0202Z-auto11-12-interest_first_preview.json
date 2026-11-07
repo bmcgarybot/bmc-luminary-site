@@ -1,0 +1,16 @@
+{
+  "action": "interest_first_preview",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-07T02:04:00.881079+00:00",
+  "error": "local admin POST /api/admin/interest-first-preview failed: HTTP Error 500: Internal Server Error",
+  "exit_code": null,
+  "git_commit_after": "ede22970f0432484923e0b2a2c2f9058e62fe288",
+  "git_commit_before": "ede22970f0432484923e0b2a2c2f9058e62fe288",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "rw-monitor-20261107T0202Z-auto11-12-interest_first_preview",
+  "started_at": "2026-11-07T02:04:00.881059+00:00",
+  "status": "rejected",
+  "version": 1
+}
