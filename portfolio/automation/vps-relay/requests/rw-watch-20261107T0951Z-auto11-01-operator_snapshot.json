@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261107T0951Z-auto11-01-operator_snapshot",
+  "action": "operator_snapshot",
+  "created_at": "2026-11-07T09:50:51.451Z",
+  "expires_at": "2026-11-07T11:50:51.451Z",
+  "allow_external_actions": false,
+  "args": {}
+}
