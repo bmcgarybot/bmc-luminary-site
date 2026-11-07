@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "bmc-pr109-deploy-20261107T160358Z",
+  "action": "deploy_update",
+  "created_at": "2026-11-07T16:03:58.082Z",
+  "expires_at": "2026-11-07T18:03:58.082Z",
+  "allow_external_actions": false,
+  "args": {},
+  "required_ci_sha": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e"
+}
