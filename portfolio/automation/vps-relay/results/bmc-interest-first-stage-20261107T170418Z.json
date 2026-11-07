@@ -1,0 +1,27 @@
+{
+  "action": "interest_first_stage",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-07T17:04:38.625481+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "git_commit_before": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "b16e9c700be0c2dc7230f032f88c62edcb150272",
+  "request_id": "bmc-interest-first-stage-20261107T170418Z",
+  "request_sha256": "7cb1a7daa1bf065545bf34c08fbd6df20b90500fea936d1db18f8dac27a74db0",
+  "started_at": "2026-11-07T17:04:38.321050+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"staged\": 167,\n      \"skipped\": 0,\n      \"by_service\": {\n        \"pet_waste\": 3,\n        \"tree_service\": 13,\n        \"pressure_washing\": 14,\n        \"hvac_heat\": 12,\n        \"mobile_tire_battery\": 2,\n        \"electrical_service\": 9,\n        \"junk_hauling\": 11,\n        \"backflow_plumbing\": 12,\n        \"pool_desert_property\": 6,\n        \"str_property_care\": 11,\n        \"facility_maintenance\": 3,\n        \"landscaping\": 19,\n        \"towing_roadside\": 6,\n        \"residential_cleaning\": 2,\n        \"epoxy_flooring\": 1,\n        \"locksmith_access\": 3,\n        \"fire_safety\": 2,\n        \"commercial_cleaning\": 4,\n        \"rural_property\": 9,\n        \"handyman_repairs\": 4,\n        \"garage_door\": 4,\n        \"parking_lot\": 3,\n        \"mobile_pet_grooming\": 3,\n        \"pest_control\": 4,\n        \"auto_glass\": 3,\n        \"equipment_quotes\": 1,\n        \"linen_laundry\": 1,\n        \"duct_vent\": 1,\n        \"floor_carpet\": 1\n      },\n      \"sent\": 0,\n      \"paid_research_calls\": 0,\n      \"outreach_hold_unchanged\": true,\n      \"note\": \"Queued for one-time invitation only. Existing samples and campaigns remain unchanged.\"\n    }\n  ]\n}",
+  "version": 1
+}
