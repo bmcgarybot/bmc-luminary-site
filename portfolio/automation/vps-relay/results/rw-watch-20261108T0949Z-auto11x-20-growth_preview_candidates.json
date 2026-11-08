@@ -1,0 +1,21 @@
+{
+  "action": "growth_preview_candidates",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-08T09:51:16.318320+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "git_commit_before": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "cc85c810b96a4e0910059d2211623b512a8fbcb0",
+  "request_id": "rw-watch-20261108T0949Z-auto11x-20-growth_preview_candidates",
+  "request_sha256": "0f2e454e2f207287073e343e80c9928d9c94ef4d1ea8e971d85c745c368969b7",
+  "started_at": "2026-11-08T09:51:16.309055+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"service_key\": \"commercial_cleaning\",\n  \"records\": [\n    {\n      \"target_id\": \"vendor:v_prescott_americancrown\",\n      \"business_name\": \"American Crown Commercial Cleaning\",\n      \"public_email\": \"donna@americancrowncc.com\",\n      \"market\": \"Prescott\",\n      \"service_key\": \"commercial_cleaning\",\n      \"website\": \"https://americancrowncc.com/\",\n      \"source_url\": \"https://americancrowncc.com/\",\n      \"source_kind\": \"normalized_vendor\",\n      \"source_data\": \"{\\\"historical_reentry\\\": {\\\"email\\\": \\\"donna@americancrowncc.com\\\", \\\"market\\\": \\\"prescott\\\", \\\"version\\\": \\\"historical-growth-reentry-v1\\\", \\\"signature\\\": \\\"5e4ef73c463fa8ca7a4a47b214f531dccc1e2a52f8381aa71e5e1859b2a6e47c\\\", \\\"target_id\\\": \\\"vendor:v_prescott_americancrown\\\", \\\"expires_at\\\": \\\"2026-11-18T20:43:49.658720+00:00\\\", \\\"request_id\\\": \\\"a-live-research-historical-seven-20261104T204312Z\\\", \\\"consumed_at\\\": null, \\\"service_key\\\": \\\"commercial_cleaning\\\", \\\"authorized_at\\\": \\\"2026-11-04T20:43:49.658720+00:00\\\", \\\"business_name\\\": \\\"american crown commercial cleaning\\\", \\\"old_outreach_ids\\\": [\\\"74fba406-5495-4164-aaa7-4209bc764a5a\\\"], \\\"consumed_outreach_id\\\": null, \\\"historical_proof_sha256\\\": \\\"1bf7e5bd552dcbe94d497569f295e553968ad51c5309d9422fcfe4860993042e\\\"}, \\\"legacy_source_data\\\": \\\"{\\\\\\\"vendor_id\\\\\\\": \\\\\\\"v_prescott_americancrown\\\\\\\", \\\\\\\"quality_score\\\\\\\": 0}\\\"}\",\n      \"status\": \"queued\",\n      \"owner_review_required\": false\n    }\n  ],\n  \"note\": \"Research targets only. Confirm identity, scope, operation, territory and safe access before release.\"\n}",
+  "version": 1
+}
