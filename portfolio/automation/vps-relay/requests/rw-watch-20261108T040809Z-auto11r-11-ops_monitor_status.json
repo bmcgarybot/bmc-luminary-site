@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261108T040809Z-auto11r-11-ops_monitor_status",
+  "action": "ops_monitor_status",
+  "created_at": "2026-11-08T04:08:09.785Z",
+  "expires_at": "2026-11-08T05:38:09.785Z",
+  "allow_external_actions": false,
+  "args": {}
+}
