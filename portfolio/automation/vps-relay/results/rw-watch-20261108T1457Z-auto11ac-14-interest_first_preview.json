@@ -1,0 +1,21 @@
+{
+  "action": "interest_first_preview",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-08T15:00:23.001022+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "git_commit_before": "f5689047d76a01384ba0b1dd94a4bc53d9751d0e",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "24b6a2bb7115b82064e6152b7a09ae28814e6547",
+  "request_id": "rw-watch-20261108T1457Z-auto11ac-14-interest_first_preview",
+  "request_sha256": "4ee2d6d42548ec46fbe2a2a86d8270b53d333d37091cfce36b2bde83b42a04d8",
+  "started_at": "2026-11-08T15:00:22.870223+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"read_only\": true,\n      \"possible_contactable_businesses\": 1,\n      \"contactable_by_service\": {\n        \"tree_service\": 1\n      },\n      \"contactable_by_market\": {\n        \"Chino Valley\": 1\n      },\n      \"email_unverified_delivery\": true,\n      \"note\": \"This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.\"\n    }\n  ]\n}",
+  "version": 1
+}
