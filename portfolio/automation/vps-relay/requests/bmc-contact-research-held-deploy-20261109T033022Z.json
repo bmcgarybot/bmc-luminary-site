@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "bmc-contact-research-held-deploy-20261109T033022Z",
+  "action": "deploy_update",
+  "created_at": "2026-11-09T03:30:22.360Z",
+  "expires_at": "2026-11-09T06:30:22.360Z",
+  "allow_external_actions": false,
+  "required_ci_sha": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "args": {}
+}
