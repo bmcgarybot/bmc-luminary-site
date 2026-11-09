@@ -1,0 +1,21 @@
+{
+  "action": "search_quality_probe",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T20:29:14.539111+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "b4a76dcb3afef23bdcb426a9411c62bb569af2e4",
+  "request_id": "rw-watch-20261109T2025Z-auto11bg-19-search_quality_probe",
+  "request_sha256": "b794f025afb09deaddbf94b0560f1fae4459b3eb240112c268a26c13955943b5",
+  "started_at": "2026-11-09T20:29:11.233975+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"probes\": [\n    {\n      \"query\": \"restaurant equipment repair prescott\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"yahoo\",\n          \"HTTP error\"\n        ],\n        [\n          \"yep\",\n          \"HTTP error\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"commercial refrigeration prescott valley\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"yahoo\",\n          \"Suspended: HTTP error\"\n        ],\n        [\n          \"yep\",\n          \"Suspended: HTTP error\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"restaurants kingman arizona\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"yahoo\",\n          \"Suspended: HTTP error\"\n        ],\n        [\n          \"yep\",\n          \"Suspended: HTTP error\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"commercial cleaning phoenix arizona\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"yahoo\",\n          \"Suspended: HTTP error\"\n        ],\n        [\n          \"yep\",\n          \"Suspended: HTTP error\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"site:facebook.com prescott arizona restaurant equipment repair\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"yahoo\",\n          \"Suspended: HTTP error\"\n        ],\n        [\n          \"yep\",\n          \"Suspended: HTTP error\"\n        ]\n      ]\n    }\n  ]\n}",
+  "version": 1
+}
