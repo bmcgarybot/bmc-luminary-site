@@ -1,3 +1,32 @@
+# BMC OVNIGHT CONTINUATION — VERIFIED NOVEMBER 8 20:13 MST (NOVEMBER 9 UTC)
+
+## Standing owner direction
+**Continue cost-contained research and internal staging across all 21 markets. NO CUSTOMER SENDS, no campaign release, no API credit-cap increases, no speculative paid AI runs, no deletion/reset/history resends.** The user is severely delayed and wants all legitimate prospects prepared for a Work-supervised mass launch, not another platform redesign. Keep the owner hold ON and all legacy plus independent interest-first send switches OFF. The stop point is truthful contactability and quality, not an arbitrary 168-row goal.
+
+## Actual production proof since previous handoff
+- Exact merge/deployed master `055e2e50c099a684b91d6585b80b0d7d48fb8061` (PR #112, includes PR #110). Exact-master Portfolio CI `42553372686` and Pages `42553372642` SUCCESS.
+- VPS held-safe deploy request/result `bmc-held-prep-deploy-20261109T025826Z` SUCCESS, exit 0, 2026-11-09 03:01:28 UTC; isolated backup/verification and Docker Compose health passed, scheduler and research refresher RUNNING, private monitor reloaded with retained history. VPS postdeploy `bmc-postdeploy-20261109-20261109T030202Z-03-operator-snapshot`: correct SHA, API/scheduler/runtime healthy, owner launch hold TRUE, prior three outreach flags FALSE.
+- New private `interest_first_readiness` postdeploy report `bmc-postdeploy-20261109-20261109T030202Z-01-interest-first-readiness` SUCCESS 03:02:42 UTC. It records **51,030 active vendor *research rows*** over 21 census markets (NOT unique businesses), **13,867 rows with a phone**, **22,474 rows with direct/evidence labels**, and **168 staged separate interest-first email records across 22 stored territory labels**. They remain ALL queued, zero SMTP submissions/replies/opt-outs in new campaign. The `interest_first_sender_enabled` value is explicitly FALSE and `launch_held` TRUE. A summation of per-market distinct recorded-email counts is ~169; it is **not a globally deduped contact count** and must not be marketed as such. The large asset is a research universe, not thousands of verified email addresses.
+- Postdeploy `bmc-postdeploy-20261109-20261109T030202Z-04-business-metrics`: 327 total outreach rows, 22 historical SMTP submissions, 0 recorded replies, 2 historic samples delivered, 0 paid orders, $0 revenue, 0 active verified providers. Research API pilot status `...05-api-research-status`: internal conservative $50 cap, $43.798691 committed upper estimate, $6.201309 unused, $13.921252 reconciliation credits, $9 pending reservation; **not actual OpenAI billing balance**. No new paid API work charged during this turn.
+- `scheduler.sh` now calls the bounded `interest-first-stage` endpoint continuously (stage-only), and its code is installed on VPS. New eligible public emails will be queued without sends. This alone cannot fill missing email fields.
+- The severe bottleneck is contact coverage: tens of thousands of vendor records have source URLs/phones but few public emails, and SearXNG search quality was previously unreliable. Avoid poisoning the pool by treating generic search results or city labels as qualification.
+
+## New contact-research repair in flight: PR #114 (NOT yet deployed)
+- https://github.com/bmcgarybot/bmc-luminary-site/pull/114 branch `feat/held-contact-coverage-20261108`. CI running at handoff update; inspect exact head and CI before merging.
+- Adds a distinct additive `interest_first_contact_research` database table, never modifies original census. Bounded HTTPS public-company site research, max 4 sites per 15-minute scheduler cycle, checks official/direct source host, company identity, market evidence or matching public phone, and published `mailto:`/Cloudflare-obfuscated business inbox. Ambiguous results remain `needs_review` and are not staged; successful source-bound address is separate evidence, not proof of mail deliverability or current buying intent. GET-only, no forms, no customer outreach, no paid model calls. The old nine Phoenix cohort and all existing targets remain unchanged.
+- Adds source-backed `ready` evidence as an optional source to existing `interest_first` candidate SQL (fresh <=30 days, dedup+opt-out+historic-send exclusions unchanged). New scheduler command `/api/process-interest-contact-research` comes before stage. Adds read-only aggregate status `/api/admin/interest-contact-research-status` and allowlisted relay controls `interest_contact_research_status` and `interest_contact_research_step`. Adds synthetic no-HTTP tests and actual PostgreSQL table/query test.
+- The PR must pass CI, be merged, pass exact-master CI, deploy via guarded `deploy_update`, and be validated from live first results before telling the owner this new enrichment worker is operational. If CI fails, fix precisely; don't bypass tests or weaken sender holds. Observe whether contacts actually grow over the next cycles; report attempted/verified/held counts, not promises of thousands.
+- Existing `BMC Overnight Launch Prep` automation is enabled hourly for 18 runs, alongside BMC Revenue Watch; it should pick up this handoff, avoid double mutations, and keep all external sends held.
+
+## What to do next
+1. Check PR #114 CI; fix failures if any. Merge/deploy only if exact tests and hold-safe gates pass. Verify backup and postdeploy snapshot and old counts.
+2. Run `interest_contact_research_status` and `interest_first_readiness` via the guarded relay, verify attempted/ready/review counts and actual new staged contacts; never infer progress from a running scheduler alone. Keep evidence private.
+3. Improve contact coverage using public business-owned pages and source-native records; do NOT equate URLs with official company sites or telephone fields with unique, permissioned contacts. If no progress, diagnose source quality and job selection rather than burning AI credits blindly.
+4. Keep source-backed potential customer matches reusable, but do not promise 100 paid prospects in every niche. Only Phoenix commercial cleaning currently reached 125 records in the sampled inventory audit.
+5. Update appended public and private handoffs with exact receipts/CI, no speculative stats. Work owner explicitly must authorize any external batch later.
+
+---
+
 # OWNER-APPROVED MASS-LAUNCH PREPARATION — NOVEMBER 8, 2026 (NEWEST; NO CUSTOMER SEND)
 
 ## Current decision: PREPARE, DO NOT RELEASE
