@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "bmc-jsonld-v3-held-deploy-20261109T1532Z",
+  "action": "deploy_update",
+  "required_ci_sha": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "created_at": "2026-11-09T15:32:20.449Z",
+  "expires_at": "2026-11-09T18:32:20.449Z",
+  "allow_external_actions": false,
+  "args": {}
+}
