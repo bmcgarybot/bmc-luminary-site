@@ -35,7 +35,10 @@ with candidates as (
    and coalesce(c.public_email,'')='' and coalesce(c.business_name,'')<>''
    and coalesce(c.source_domain,'')<>'' and c.source_url like 'https://%'
    and (r.candidate_id is null or
-        (r.next_attempt_at < now() and r.attempts < 3))
+        (r.next_attempt_at < now() and r.attempts < 3) or
+        (r.parser_version < 2 and r.attempts < 3 and
+         (r.status in ('no_public_mailbox','needs_review') or
+          (r.status='fetch_failed' and r.reason='bounded_inspection_failed'))))
    and not exists(select 1 from growth_outreach_targets g
      where lower(g.business_name)=lower(c.business_name) and g.market=c.market
        and g.service_key=c.category_key)
@@ -304,14 +307,18 @@ async def process_batch(pool,limit=BATCH_LIMIT,inspector=inspect_public_contact)
         async with pool.acquire() as conn:
             claimed=await conn.fetchval("""
               insert into interest_first_contact_research
-                (candidate_id,status,attempts,last_attempt_at,next_attempt_at,reason)
-              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress')
+                (candidate_id,status,attempts,last_attempt_at,next_attempt_at,reason,parser_version)
+              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress',2)
               on conflict(candidate_id) do update
               set status='running',attempts=interest_first_contact_research.attempts+1,
                   last_attempt_at=now(),next_attempt_at=now()+interval '5 minutes',
-                  updated_at=now()
-              where interest_first_contact_research.next_attempt_at<now()
-                and interest_first_contact_research.attempts<3
+                  updated_at=now(),parser_version=2
+              where interest_first_contact_research.attempts<3 and
+                (interest_first_contact_research.next_attempt_at<now() or
+                 (interest_first_contact_research.parser_version<2 and
+                   (interest_first_contact_research.status in ('no_public_mailbox','needs_review')
+                    or (interest_first_contact_research.status='fetch_failed' and
+                        interest_first_contact_research.reason='bounded_inspection_failed'))))
               returning candidate_id""",row["candidate_id"])
         if not claimed:
             already_claimed+=1
