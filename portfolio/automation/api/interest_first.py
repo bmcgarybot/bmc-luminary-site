@@ -57,6 +57,53 @@ order by lower(c.public_email),c.evidence_priority desc,c.business_name,c.market
 limit $1
 """
 
+
+# Aggregate reachability census: business records, not mail-ready people.
+# A company appearing in multiple market/category lanes can be counted in each lane.
+INVENTORY_CONTACT_MATRIX_SQL=r"""
+select market,category_key as service_key,
+ count(*)::integer as candidate_records,
+ count(distinct lower(trim(business_name)))::integer as distinct_names,
+ count(distinct lower(trim(public_email))) filter(
+   where nullif(trim(public_email),'') is not null and public_email like '%@%')::integer as distinct_recorded_emails,
+ count(*) filter(where nullif(trim(public_phone),'') is not null)::integer as phone_records,
+ count(*) filter(where nullif(trim(source_url),'') is not null)::integer as source_url_records,
+ count(*) filter(where verification_status in ('direct_evidence','government_record','credential_corroborated')
+   or source_tier='direct')::integer as evidence_labeled_records
+from market_inventory_candidates
+where side='vendor' and status='discovered' and closed_at is null
+  and nullif(trim(business_name),'') is not null
+group by market,category_key
+order by market,category_key
+"""
+
+NORMALIZED_VENDOR_CONTACT_MATRIX_SQL=r"""
+select vm.market,vs.service_key,
+ count(distinct v.vendor_id)::integer as normalized_vendor_records,
+ count(distinct v.vendor_id) filter(where nullif(trim(v.public_email),'') is not null)::integer as with_public_email
+from vendors v
+join vendor_markets vm on vm.vendor_id=v.vendor_id
+join vendor_services vs on vs.vendor_id=v.vendor_id
+where v.status='prospect'
+group by vm.market,vs.service_key
+order by vm.market,vs.service_key
+"""
+
+STAGED_INTEREST_MATRIX_SQL=r"""
+select g.market,g.service_key,
+ count(*)::integer as staged_total,
+ count(*) filter(where o.status='queued' and o.sent_at is null)::integer as queued,
+ count(*) filter(where o.sent_at is not null)::integer as smtp_submissions,
+ count(*) filter(where o.replied_at is not null)::integer as replies,
+ count(*) filter(where o.opt_out is true)::integer as opt_outs,
+ count(*) filter(where o.owner_review_required is true)::integer as review_holds
+from outreach o
+join growth_outreach_targets g on g.target_id=o.entity_id
+where o.campaign=$1 and o.entity_type='growth_customer'
+group by g.market,g.service_key
+order by g.market,g.service_key
+"""
+
 def email_valid(value):
     if not isinstance(value,str) or len(value)>254 or not EMAIL_RE.fullmatch(value.strip()):
         return False
