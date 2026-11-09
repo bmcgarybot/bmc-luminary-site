@@ -297,18 +297,54 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
 
     def test_v2_rechecks_old_failed_and_unmatched_pages_once(self):
         from interest_contact_research import CANDIDATE_SQL
-        self.assertIn("r.parser_version < 2",CANDIDATE_SQL)
+        self.assertIn("r.parser_version < 3",CANDIDATE_SQL)
         self.assertIn("earlier.candidate_id<>c.candidate_id",CANDIDATE_SQL)
         self.assertIn('"by_parser_version":[dict(r) for r in version_counts]',(HERE/'api'/'interest_contact_research.py').read_text())
         self.assertIn("r.status in ('no_public_mailbox','needs_review')",CANDIDATE_SQL)
         self.assertIn("r.reason='bounded_inspection_failed'",CANDIDATE_SQL)
         self.assertNotIn("r.reason='source_fetch_unavailable'",CANDIDATE_SQL)
         code=(HERE/'api'/'interest_contact_research.py').read_text()
-        self.assertIn("parser_version=2",code)
-        self.assertIn("parser_version<2",code)
+        self.assertIn("parser_version=3",code)
+        self.assertIn("parser_version<3",code)
         self.assertIn('"no_public_mailbox_in_fetched_html"',code)
         schema=(HERE/'schema.sql').read_text()
         self.assertIn("add column if not exists parser_version integer not null default 1",schema)
+
+    async def test_schema_org_email_and_locality_from_official_site(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Home</title><body><script type="application/ld+json">'
+             '{"@context":"https://schema.org","@type":"LocalBusiness",'
+             '"name":"Example Yard Care","url":"https://example-yard-care.com/",'
+             '"email":"mailto:info@example-yard-care.com",'
+             '"address":{"addressLocality":"Prescott","addressRegion":"AZ"}}'
+             '</script></body></html>')
+        value=await inspect_public_contact(self.row(public_phone=''),
+            fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(value['status'],'ready')
+        self.assertEqual(value['email'],'info@example-yard-care.com')
+
+    async def test_foreign_schema_org_email_never_qualifies(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Home</title><body><script type="application/ld+json">'
+             '{"@context":"https://schema.org","@type":"LocalBusiness",'
+             '"name":"Example Yard Care","url":"https://another-site.example/",'
+             '"email":"info@another-site.example",'
+             '"address":{"addressLocality":"Prescott","addressRegion":"AZ"}}'
+             '</script></body></html>')
+        value=await inspect_public_contact(self.row(public_phone=''),
+            fetch=lambda url:self.receipt(url,doc))
+        self.assertNotEqual(value['status'],'ready')
+        self.assertNotIn('email',value)
+
+    async def test_split_footer_email_is_reconstructed_only_for_own_domain(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Home</title><body><h1>Example Yard Care</h1>'
+             '<p>Prescott Arizona</p><footer>Email: info<span>@</span>'
+             'example-yard-care.com</footer></body></html>')
+        value=await inspect_public_contact(self.row(),
+            fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(value['status'],'ready')
+        self.assertEqual(value['email'],'info@example-yard-care.com')
 
     def test_stage_requires_fresh_independent_source_evidence(self):
         self.assertIn("ir.status='ready'",m.CANDIDATE_SQL)
