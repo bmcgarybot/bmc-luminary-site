@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-footer-v2-qa-20261109T151055Z-06-operator-snapshot",
+  "action": "operator_snapshot",
+  "created_at": "2026-11-09T15:10:55.548Z",
+  "expires_at": "2026-11-09T18:10:55.548Z",
+  "allow_external_actions": false,
+  "args": {}
+}
