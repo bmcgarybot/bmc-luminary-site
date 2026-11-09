@@ -1,0 +1,21 @@
+{
+  "action": "interest_contact_research_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T12:00:52.555427+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "git_commit_before": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "962b6805e3a94e76eee90ac1f884444e7d68d939",
+  "request_id": "bmc-overnight-held-20261109T1200Z-02-interest_contact_research_status",
+  "request_sha256": "7154401adde9c29c5126474795e76b113a24925d70b25b403af5bce38f5fbdc8",
+  "started_at": "2026-11-09T12:00:52.543181+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"read_only\": true,\n      \"by_status\": [\n        {\n          \"status\": \"fetch_failed\",\n          \"records\": 33\n        },\n        {\n          \"status\": \"needs_review\",\n          \"records\": 16\n        },\n        {\n          \"status\": \"no_public_mailbox\",\n          \"records\": 75\n        },\n        {\n          \"status\": \"ready\",\n          \"records\": 40\n        }\n      ],\n      \"attempted_last_24h\": 164,\n      \"sent\": 0,\n      \"paid_api_calls\": 0\n    }\n  ]\n}",
+  "version": 1
+}
