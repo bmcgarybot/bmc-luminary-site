@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-contact-live-20261109T033324Z-01-interest-contact-research-step",
+  "action": "interest_contact_research_step",
+  "created_at": "2026-11-09T03:33:24.539Z",
+  "expires_at": "2026-11-09T05:33:24.539Z",
+  "allow_external_actions": false,
+  "args": {}
+}
