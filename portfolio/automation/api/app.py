@@ -4884,10 +4884,11 @@ async def interest_first_readiness(x_bmc_admin_key:str|None=Header(default=None)
     """Aggregate campaign and vendor-universe coverage. No contacts or customer actions."""
     require_admin(x_bmc_admin_key)
     from interest_first import (CAMPAIGN,INVENTORY_CONTACT_MATRIX_SQL,
-      NORMALIZED_VENDOR_CONTACT_MATRIX_SQL,STAGED_INTEREST_MATRIX_SQL)
+      INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL,NORMALIZED_VENDOR_CONTACT_MATRIX_SQL,STAGED_INTEREST_MATRIX_SQL)
     try:
       async with app.state.pool.acquire() as conn:
         inventory=[dict(row) for row in await conn.fetch(INVENTORY_CONTACT_MATRIX_SQL)]
+        unique_emails=[dict(row) for row in await conn.fetch(INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL)]
         normalized=[dict(row) for row in await conn.fetch(NORMALIZED_VENDOR_CONTACT_MATRIX_SQL)]
         staged=[dict(row) for row in await conn.fetch(STAGED_INTEREST_MATRIX_SQL,CAMPAIGN)]
     except Exception:
@@ -4898,25 +4899,35 @@ async def interest_first_readiness(x_bmc_admin_key:str|None=Header(default=None)
       for row in rows:
         for field in fields:result[row[key]][field]+=int(row[field] or 0)
       return [dict(**{key:k},**values) for k,values in sorted(result.items())]
-    inv_fields=('candidate_records','distinct_recorded_emails','phone_records','source_url_records','evidence_labeled_records')
+    inv_fields=('candidate_records','distinct_recorded_emails','phone_records','missing_recorded_email_and_phone','source_url_records','evidence_labeled_records')
+    # The market/service breakdown sums lane records, but overlapping recorded
+    # email identities require a separate DISTINCT across the whole axis.
+    distinct_by={(row['axis'],row['label']):int(row['distinct_recorded_emails']) for row in unique_emails}
+    by_market=aggregate_by(inventory,'market',inv_fields)
+    by_service=aggregate_by(inventory,'service_key',inv_fields)
+    for row in by_market:row['distinct_recorded_emails']=distinct_by.get(('market',row['market']),0)
+    for row in by_service:row['distinct_recorded_emails']=distinct_by.get(('service',row['service_key']),0)
     staged_fields=('staged_total','queued','smtp_submissions','replies','opt_outs','review_holds')
     return {
       'ok':True,'read_only':True,'campaign':CAMPAIGN,
       'launch_held':OWNER_LAUNCH_HOLD,'interest_first_sender_enabled':INTEREST_FIRST_OUTREACH_ENABLED,
       'inventory_record_total':sum(int(row['candidate_records']) for row in inventory),
+      'unique_recorded_inventory_emails_global':distinct_by.get(('global','all'),0),
       'staged_contact_total':sum(int(row['staged_total']) for row in staged),
       'staged_by_market_and_type':staged,
       'staged_by_market':aggregate_by(staged,'market',staged_fields),
       'staged_by_service':aggregate_by(staged,'service_key',staged_fields),
-      'inventory_by_market':aggregate_by(inventory,'market',inv_fields),
-      'inventory_by_service':aggregate_by(inventory,'service_key',inv_fields),
+      'inventory_by_market':by_market,
+      'inventory_by_service':by_service,
       'inventory_by_market_and_type_with_contact':[
         row for row in inventory if row['distinct_recorded_emails'] or row['phone_records']],
       'normalized_vendors_by_market_and_type':normalized,
       'sent':0,'paid_research_calls':0,
       'limitations':(
         'Inventory counts are records in market/category lanes, not unique businesses or permission to email. '
-        'Recorded email and phone fields are not verified deliverability. Source URLs can be directories. '
+        'Recorded email identities are deduplicated within market, service and globally; this still does not prove deliverability. '
+        'Missing-route totals mean neither email nor phone is recorded, not that no contact method exists. '
+        'Source URLs can be directories. '
         'Normalized vendor records may overlap inventory; do not add the two universes. '
         'Pre-existing queued contacts are excluded from the new eligible-contact preview.')
     }
@@ -4930,6 +4941,10 @@ async def interest_first_stage(payload:dict|None=None,x_bmc_admin_key:str|None=H
     staged=0;skipped=0;by_service={}
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
+        # The scheduler and guarded relay may stage concurrently. Serialize
+        # this campaign's read/insert transaction to prevent duplicate queued
+        # outreach rows when both see the same candidate at the same time.
+        await conn.execute('select pg_advisory_xact_lock(4920261108::bigint)')
         rows=await conn.fetch(CANDIDATE_SQL,limit)
         for raw in rows:
           row=dict(raw)
