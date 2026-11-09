@@ -64,8 +64,21 @@ class Tests(unittest.TestCase):
         scheduler=(HERE/'scheduler.sh').read_text()
         self.assertIn('INTEREST_FIRST_OUTREACH_ENABLED: ${INTEREST_FIRST_OUTREACH_ENABLED:-false}',compose)
         self.assertIn('INTEREST_FIRST_DAILY_LIMIT: ${INTEREST_FIRST_DAILY_LIMIT:-10}',compose)
+        self.assertIn('post /api/admin/interest-first-stage 120',scheduler)
         self.assertIn('post /api/admin/interest-first-send-batch',scheduler)
         self.assertIn('if OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED:',(HERE/'api/app.py').read_text())
+
+    def test_aggregate_readiness_is_read_only_and_reports_staged_matrix(self):
+        source=(HERE/'api/app.py').read_text()
+        self.assertIn('@app.post("/api/admin/interest-first-readiness")',source)
+        self.assertIn("INVENTORY_CONTACT_MATRIX_SQL",source)
+        self.assertIn("STAGED_INTEREST_MATRIX_SQL",source)
+        self.assertIn("'staged_by_market_and_type':staged",source)
+        self.assertIn("'launch_held':OWNER_LAUNCH_HOLD",source)
+        self.assertNotIn('update market_inventory_candidates',m.INVENTORY_CONTACT_MATRIX_SQL.lower())
+        self.assertNotIn('delete from',m.STAGED_INTEREST_MATRIX_SQL.lower())
+        relay=(HERE/'vps-gitops-relay.py').read_text()
+        self.assertIn('"interest_first_readiness": "/api/admin/interest-first-readiness"',relay)
 
     def test_production_stays_gated_and_reply_first(self):
         source=(HERE/'api/app.py').read_text()
