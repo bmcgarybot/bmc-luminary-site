@@ -1,0 +1,21 @@
+{
+  "action": "interest_first_preview",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T03:26:53.675109+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "d166837120b4eed2568d6bfab6813730b3681d26",
+  "git_commit_before": "d166837120b4eed2568d6bfab6813730b3681d26",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "d7c5fb96674d5f642180ca9a4551548225b17ef4",
+  "request_id": "bmc-overnight-postrelease-20261109T032629016Z-05-interest-first-preview",
+  "request_sha256": "e359770ac5d15778744e5f7d7c475a7b8d39978af1275fa106902c9dc448b0d6",
+  "started_at": "2026-11-09T03:26:53.567978+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"read_only\": true,\n      \"possible_contactable_businesses\": 0,\n      \"contactable_by_service\": {},\n      \"contactable_by_market\": {},\n      \"email_unverified_delivery\": true,\n      \"note\": \"This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.\"\n    }\n  ]\n}",
+  "version": 1
+}
