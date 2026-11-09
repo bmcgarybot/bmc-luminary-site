@@ -306,7 +306,7 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
         code=(HERE/'api'/'interest_contact_research.py').read_text()
         self.assertIn("parser_version=2",code)
         self.assertIn("parser_version<2",code)
-        self.assertIn("'no_public_mailbox_in_fetched_html'",code)
+        self.assertIn('"no_public_mailbox_in_fetched_html"',code)
         schema=(HERE/'schema.sql').read_text()
         self.assertIn("add column if not exists parser_version integer not null default 1",schema)
 
