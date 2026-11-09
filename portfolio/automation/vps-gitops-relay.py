@@ -49,7 +49,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview", "interest_first_readiness"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
