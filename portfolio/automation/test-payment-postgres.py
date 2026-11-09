@@ -56,6 +56,14 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.assertIsInstance(normalized,list)
         self.assertIsInstance(staged,list)
 
+    async def test_interest_contact_research_has_additive_schema(self):
+        from interest_contact_research import CANDIDATE_SQL as CONTACT_RESEARCH_CANDIDATES
+        async with self.pool.acquire() as conn:
+            candidates=await conn.fetch(CONTACT_RESEARCH_CANDIDATES,4)
+            status=await conn.fetch("select candidate_id,status,attempts,next_attempt_at from interest_first_contact_research limit 2")
+        self.assertEqual(candidates,[])
+        self.assertEqual(status,[])
+
     async def test_interest_first_readonly_candidate_query_executes_on_real_schema(self):
         from interest_first import CANDIDATE_SQL
         async with self.pool.acquire() as conn:
