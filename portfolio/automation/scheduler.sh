@@ -35,6 +35,9 @@ while true; do
     post /api/process-growth-offers 240
     post /api/process-growth-offer-invitations
     post /api/process-growth-outreach
+    # Dedicated demand-first sender; backend owner hold and independent switch
+    # remain hard gates. The initial container default is ten sends per day.
+    post /api/admin/interest-first-send-batch
   fi
 
   if [ $((i % 2)) -eq 0 ]; then
