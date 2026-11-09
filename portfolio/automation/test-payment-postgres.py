@@ -47,14 +47,40 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
 
     async def test_interest_first_readiness_aggregate_queries_use_real_schema(self):
         from interest_first import (CAMPAIGN, INVENTORY_CONTACT_MATRIX_SQL,
-          NORMALIZED_VENDOR_CONTACT_MATRIX_SQL, STAGED_INTEREST_MATRIX_SQL)
+          INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL,NORMALIZED_VENDOR_CONTACT_MATRIX_SQL, STAGED_INTEREST_MATRIX_SQL)
         async with self.pool.acquire() as conn:
             inventory=await conn.fetch(INVENTORY_CONTACT_MATRIX_SQL)
+            emails=await conn.fetch(INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL)
             normalized=await conn.fetch(NORMALIZED_VENDOR_CONTACT_MATRIX_SQL)
             staged=await conn.fetch(STAGED_INTEREST_MATRIX_SQL,CAMPAIGN)
         self.assertIsInstance(inventory,list)
+        self.assertIsInstance(emails,list)
         self.assertIsInstance(normalized,list)
         self.assertIsInstance(staged,list)
+
+    async def test_inventory_email_counts_deduplicate_across_markets_and_services(self):
+        from interest_first import INVENTORY_CONTACT_MATRIX_SQL,INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL
+        rows=[
+          ('Prescott','landscaping','First Grounds','a','HELLO@EXAMPLE.INVALID', '555-0111'),
+          ('Prescott','tree_service','First Grounds','b','hello@example.invalid', None),
+          ('Sedona','tree_service','Second Grounds','c','hello@example.invalid', None),
+          ('Sedona','landscaping','Third Grounds','d','second@example.invalid', None),
+          ('Sedona','landscaping','Fourth Grounds','e',None, None),
+        ]
+        async with self.pool.acquire() as conn:
+            await conn.executemany("""insert into market_inventory_candidates
+              (side,market,category_key,category_label,business_name,source_url,public_email,public_phone)
+              values('vendor',$1,$2,'Fixture',$3,'https://example.invalid/'||$4,$5,$6)""",rows)
+            cells=[dict(row) for row in await conn.fetch(INVENTORY_CONTACT_MATRIX_SQL)]
+            totals={(row['axis'],row['label']):int(row['distinct_recorded_emails'])
+              for row in await conn.fetch(INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL)}
+        self.assertEqual(sum(row['candidate_records'] for row in cells),5)
+        self.assertEqual(sum(row['missing_recorded_email_and_phone'] for row in cells),1)
+        self.assertEqual(totals[('market','Prescott')],1)
+        self.assertEqual(totals[('market','Sedona')],2)
+        self.assertEqual(totals[('service','landscaping')],2)
+        self.assertEqual(totals[('service','tree_service')],1)
+        self.assertEqual(totals[('global','all')],2)
 
     async def test_interest_first_readonly_candidate_query_executes_on_real_schema(self):
         from interest_first import CANDIDATE_SQL

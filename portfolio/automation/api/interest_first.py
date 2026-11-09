@@ -67,6 +67,8 @@ select market,category_key as service_key,
  count(distinct lower(trim(public_email))) filter(
    where nullif(trim(public_email),'') is not null and public_email like '%@%')::integer as distinct_recorded_emails,
  count(*) filter(where nullif(trim(public_phone),'') is not null)::integer as phone_records,
+ count(*) filter(where nullif(trim(public_email),'') is null
+   and nullif(trim(public_phone),'') is null)::integer as missing_recorded_email_and_phone,
  count(*) filter(where nullif(trim(source_url),'') is not null)::integer as source_url_records,
  count(*) filter(where verification_status in ('direct_evidence','government_record','credential_corroborated')
    or source_tier='direct')::integer as evidence_labeled_records
@@ -75,6 +77,24 @@ where side='vendor' and status='discovered' and closed_at is null
   and nullif(trim(business_name),'') is not null
 group by market,category_key
 order by market,category_key
+"""
+
+INVENTORY_UNIQUE_EMAIL_ROLLUP_SQL=r"""
+-- Distinct email identities must be counted across category and market lanes,
+-- not added from each (market, service) cell. No addresses leave this query.
+with emails as (
+  select market,category_key,lower(trim(public_email)) as email
+  from market_inventory_candidates
+  where side='vendor' and status='discovered' and closed_at is null
+    and nullif(trim(business_name),'') is not null
+    and nullif(trim(public_email),'') is not null and public_email like '%@%'
+), axes as (
+  select 'market'::text as axis,market as label,email from emails
+  union all select 'service'::text,category_key,email from emails
+  union all select 'global'::text,'all'::text,email from emails
+)
+select axis,label,count(distinct email)::integer as distinct_recorded_emails
+from axes group by axis,label order by axis,label
 """
 
 NORMALIZED_VENDOR_CONTACT_MATRIX_SQL=r"""
