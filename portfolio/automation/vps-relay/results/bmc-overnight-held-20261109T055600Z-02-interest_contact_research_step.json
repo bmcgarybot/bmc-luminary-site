@@ -1,0 +1,27 @@
+{
+  "action": "interest_contact_research_step",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T05:58:57.707868+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "git_commit_before": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "9480b8a1c7179c5a25cb6eaa74d442939824d560",
+  "request_id": "bmc-overnight-held-20261109T055600Z-02-interest_contact_research_step",
+  "request_sha256": "4b8b10267925153d1253e63eb86a4bfe293b9d5a49471e24b2329126012afb42",
+  "started_at": "2026-11-09T05:58:53.381481+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"inspected\": 4,\n      \"source_verified_email_ready\": 1,\n      \"research_held\": 3,\n      \"already_claimed\": 0,\n      \"sent\": 0,\n      \"paid_api_calls\": 0,\n      \"note\": \"Only reviewed HTTPS contact evidence is saved; no customer messages or original candidate writes.\"\n    }\n  ]\n}",
+  "version": 1
+}
