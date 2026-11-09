@@ -47,7 +47,8 @@ with candidates as (
    and not exists (
       select 1 from interest_first_contact_research earlier
       join market_inventory_candidates seen on seen.candidate_id=earlier.candidate_id
-      where lower(seen.source_domain)=lower(c.source_domain)
+      where earlier.candidate_id<>c.candidate_id
+        and lower(seen.source_domain)=lower(c.source_domain)
         and regexp_replace(lower(seen.business_name),'[^a-z0-9]','','g') =
             regexp_replace(lower(c.business_name),'[^a-z0-9]','','g')
         and earlier.last_attempt_at > now()-interval '14 days')
@@ -357,6 +358,9 @@ async def aggregate_status(pool):
            from interest_first_contact_research group by status order by status""")
         recent=await conn.fetchval("""select count(*) from interest_first_contact_research
            where last_attempt_at >= now()-interval '24 hours'""")
+        version_counts=await conn.fetch("""select parser_version,status,count(*)::integer as records
+           from interest_first_contact_research
+           group by parser_version,status order by parser_version,status""")
         reasons=await conn.fetch("""select status,reason,count(*)::integer as records
            from interest_first_contact_research
            group by status,reason order by records desc,status,reason limit 15""")
@@ -368,6 +372,7 @@ async def aggregate_status(pool):
     return {"ok":True,"read_only":True,"by_status":[dict(r) for r in rows],
             "by_reason":[dict(r) for r in reasons],
             "by_market":[dict(r) for r in markets],
+            "by_parser_version":[dict(r) for r in version_counts],
             "attempted_last_24h":int(recent or 0),"sent":0,"paid_api_calls":0}
 
 def install(app,require_admin):
