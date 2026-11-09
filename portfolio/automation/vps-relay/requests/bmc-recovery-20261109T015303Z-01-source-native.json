@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-recovery-20261109T015303Z-01-source-native",
+  "action": "source_native_step",
+  "created_at": "2026-11-09T01:53:03.506Z",
+  "expires_at": "2026-11-09T04:53:03.506Z",
+  "allow_external_actions": false,
+  "args": {}
+}
