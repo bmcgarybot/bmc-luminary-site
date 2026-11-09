@@ -1,0 +1,21 @@
+{
+  "action": "growth_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T10:24:11.812377+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "git_commit_before": "da13e00b39384ef596ebb984204c02d4bd7ecd4f",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "15c1b1b521989c7a00f63945e498f2d5410ced90",
+  "request_id": "rw-watch-20261109T1020Z-auto11av-04-growth_status",
+  "request_sha256": "1145a4c25feb70653c5ffd2c2374c753d61b7cb95dc0c29b240988e21f6e46d9",
+  "started_at": "2026-11-09T10:24:11.792988+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"owner_launch_hold_active\": true,\n  \"outreach_switches\": {\n    \"OUTREACH_ENABLED\": false,\n    \"BUYER_OUTREACH_ENABLED\": false,\n    \"GROWTH_OUTREACH_ENABLED\": false\n  },\n  \"growth_enabled\": false,\n  \"wave\": \"growth-cleaning-1\",\n  \"recipient_scope_count\": 9,\n  \"scoped_cohort\": {\n    \"configured_count\": 9,\n    \"target_statuses\": [\n      {\n        \"status\": \"contacted\",\n        \"records\": 8\n      },\n      {\n        \"status\": \"sample_requested\",\n        \"records\": 1\n      }\n    ],\n    \"outreach_statuses\": [\n      {\n        \"wave\": \"growth-cleaning-1\",\n        \"status\": \"sample_requested\",\n        \"owner_review_required\": false,\n        \"opt_out\": false,\n        \"records\": 1\n      },\n      {\n        \"wave\": \"growth-cleaning-1\",\n        \"status\": \"sent\",\n        \"owner_review_required\": false,\n        \"opt_out\": false,\n        \"records\": 8\n      }\n    ]\n  },\n  \"daily_limit\": 25,\n  \"sample_reserve\": 125,\n  \"historical_contacts_awaiting_review\": 7,\n  \"config\": {\n    \"smtp\": true,\n    \"imap\": true,\n    \"postal\": true,\n    \"payment_link\": true\n  },\n  \"config_ready\": true,\n  \"staged_active\": 14,\n  \"sent\": 22,\n  \"replies\": 0,\n  \"samples_requested\": 2,\n  \"samples_delivered\": 2,\n  \"converted_samples\": 0,\n  \"paid_orders\": 0,\n  \"revenue_cents\": 0,\n  \"open_growth_exceptions\": 0\n}",
+  "version": 1
+}
