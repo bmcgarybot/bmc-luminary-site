@@ -298,6 +298,8 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
     def test_v2_rechecks_old_failed_and_unmatched_pages_once(self):
         from interest_contact_research import CANDIDATE_SQL
         self.assertIn("r.parser_version < 2",CANDIDATE_SQL)
+        self.assertIn("earlier.candidate_id<>c.candidate_id",CANDIDATE_SQL)
+        self.assertIn('"by_parser_version":[dict(r) for r in version_counts]',(HERE/'api'/'interest_contact_research.py').read_text())
         self.assertIn("r.status in ('no_public_mailbox','needs_review')",CANDIDATE_SQL)
         self.assertIn("r.reason='bounded_inspection_failed'",CANDIDATE_SQL)
         self.assertNotIn("r.reason='source_fetch_unavailable'",CANDIDATE_SQL)
