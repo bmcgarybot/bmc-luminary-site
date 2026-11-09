@@ -64,6 +64,7 @@ class Tests(unittest.TestCase):
         scheduler=(HERE/'scheduler.sh').read_text()
         self.assertIn('INTEREST_FIRST_OUTREACH_ENABLED: ${INTEREST_FIRST_OUTREACH_ENABLED:-false}',compose)
         self.assertIn('INTEREST_FIRST_DAILY_LIMIT: ${INTEREST_FIRST_DAILY_LIMIT:-10}',compose)
+        self.assertIn('post /api/admin/interest-first-stage 120',scheduler)
         self.assertIn('post /api/admin/interest-first-send-batch',scheduler)
         self.assertIn('if OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED:',(HERE/'api/app.py').read_text())
 
