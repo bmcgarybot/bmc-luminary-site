@@ -1,3 +1,47 @@
+# 2026-11-08 21:05 MST / 2026-11-09 04:05 UTC — NO-SEND VERIFIED CONTACT-COVERAGE RUN
+
+**Exact-master and safe operation:** `master` and VPS are both `da13e00b39384ef596ebb984204c02d4bd7ecd4f` (merged PR #115, incorporating PR #113; do not merge superseded #114). Exact-SHA Portfolio CI [42556349260](https://github.com/bmcgarybot/bmc-luminary-site/actions/runs/42556349260) and Pages [42556349269](https://github.com/bmcgarybot/bmc-luminary-site/actions/runs/42556349269) both SUCCESS, all four check runs successful. **No new deployment needed**: prior guarded `bmc-contact-research-held-deploy-20261109T033022Z` succeeded, including verified checksum and isolated restore from `backups/bmc_20261109_033123.dump` (54 services, 212 vendors, 4,855 buyers, 849 research) and runtime doctor with 0 core failures/warnings. Exact SHA remained deployed at 04:05:14 UTC.
+
+**New executed work:** queued distinct idempotent/no-external-action VPS relay requests `bmc-overnight-held-20261109T040441Z-01...` through `-05...` (bounded source-site collector, stage-only, read-only aggregate, queue readiness, operator snapshot), all five **SUCCESS** on production master. Manually requested site-inspection batch inspected **4** eligible official-source candidates, **0 source-verified ready**, **4 held**, **0 sends**, **0 paid AI calls**; safe stage-only request added **0**, and did not change outreach hold. The separate existing VPS scheduler remained active and also processed a four-site batch during this window; as a result, across **16 total distinct candidates checked** in the live source-mailbox audit table (up from 8 at 03:34): **4 ready** (up 2), **7 no published mailto**, **2 needs review**, **3 fetch failed**. Unusable/unproven results do not become queueable mailboxes. This is source evidence only; it does not establish inbox deliverability.
+
+**Current 04:05:12 UTC live readiness:** **51,039** active vendor *market/category research rows*, NOT unique businesses (+2 vs 03:34, +5 vs older 51,034 baseline); **124** globally distinct inventory email strings, unchanged, and not mail-delivery proof. Independently staged interest-first recipients **172, ALL 172 QUEUED** (+2 vs 03:34; +4 vs 168 original), including existing scheduler-stage progress, not a credit for this manual 0-stage request. The net +4 from original 168 consists of Phoenix `str_property_care` +1, Sedona `mobile_detailing` +1, Skull Valley `handyman_repairs` +1, and Williamson Valley `landscaping` +1. Existing suppression/historic-send exclusions remain enforced by stage logic; do not sum per-market distinct inventory emails as global contacts or claim 500+ contactable businesses.
+
+**Security/revenue 04:05:14 UTC:** owner hold TRUE; `INTEREST_FIRST_OUTREACH_ENABLED=false`; `OUTREACH_ENABLED=false`, `BUYER_OUTREACH_ENABLED=false`, `GROWTH_OUTREACH_ENABLED=false`; ops API and scheduler healthy. Historic 22 SMTP submissions unchanged (NOT proof of delivery), 0 newly sent customer/provider campaigns, replies **0**, paid orders **0**, revenue **$0**. There are **0 active accepted providers**, one active customer request still not confirmed, and no authorization to send, release, activate, charge, reset or run speculative paid AI. Current paid AI API research ledger remains governed by previous proof, not changed by these 0-API-call actions.
+
+**Queued interest-first breakdown — exact live market and service counts; aliases are not new canonical markets:**
+
+| Canonical market / distinct campaign alias | Queued | Service types (queued) |
+|---|---:|---|
+| Ash Fork | 3 | hvac_heat:1, towing_roadside:1, tree_service:1 |
+| Bullhead City | 5 | backflow_plumbing:1, electrical_service:1, locksmith_access:1, pressure_washing:1, tree_service:1 |
+| Camp Verde | 4 | facility_maintenance:1, handyman_repairs:1, junk_hauling:1, landscaping:1 |
+| Chino Valley | 5 | junk_hauling:2, landscaping:1, linen_laundry:1, tree_service:1 |
+| Cordes Lakes | 8 | backflow_plumbing:2, commercial_cleaning:1, junk_hauling:1, locksmith_access:1, parking_lot:2, pest_control:1 |
+| Cottonwood | 5 | backflow_plumbing:1, hvac_heat:1, junk_hauling:1, landscaping:1, mobile_pet_grooming:1 |
+| Dewey-Humboldt | 2 | electrical_service:1, junk_hauling:1 |
+| Flagstaff | 11 | commercial_cleaning:3, electrical_service:1, landscaping:2, pest_control:1, towing_roadside:2, tree_service:2 |
+| Golden Valley | 1 | fire_safety:1 |
+| Kingman | 17 | electrical_service:1, junk_hauling:1, landscaping:1, mobile_tire_battery:2, pressure_washing:1, rural_property:9, towing_roadside:2 |
+| Mayer | 3 | backflow_plumbing:1, parking_lot:1, tree_service:1 |
+| Phoenix | 36 | auto_glass:2, backflow_plumbing:2, electrical_service:2, epoxy_flooring:1, garage_door:3, handyman_repairs:2, junk_hauling:1, landscaping:6, mobile_pet_grooming:2, pest_control:1, pet_waste:1, pressure_washing:9, residential_cleaning:2, str_property_care:1, towing_roadside:1 |
+| Prescott | 14 | backflow_plumbing:1, equipment_quotes:1, hvac_heat:1, junk_hauling:3, landscaping:5, pet_waste:1, pressure_washing:1, tree_service:1 |
+| Prescott Valley | 9 | backflow_plumbing:2, electrical_service:1, garage_door:1, landscaping:1, locksmith_access:1, pet_waste:1, pressure_washing:1, tree_service:1 |
+| Scottsdale | 9 | pressure_washing:1, str_property_care:8 |
+| Sedona | 7 | landscaping:1, mobile_detailing:1, str_property_care:3, tree_service:2 |
+| Seligman | 0 | none |
+| Skull Valley | 7 | facility_maintenance:1, handyman_repairs:2, pest_control:1, tree_service:3 |
+| Tucson | 16 | backflow_plumbing:2, fire_safety:1, hvac_heat:7, pool_desert_property:6 |
+| Williamson Valley | 5 | facility_maintenance:1, floor_carpet:1, hvac_heat:1, landscaping:1, tree_service:1 |
+| Winslow | 3 | auto_glass:1, electrical_service:2 |
+| Kingman / Mohave County (campaign alias) | 1 | duct_vent:1 |
+| Phoenix Metro / Statewide (campaign alias) | 1 | hvac_heat:1 |
+
+**21 inventory markets, 20 with at least one queued recipient; Seligman 0.** Two extra literal campaign labels are aliases (`Kingman / Mohave County`, `Phoenix Metro / Statewide`); do not silently merge them or treat them as separate canonical market coverage. Current known gap: 12/16 checked site candidates not ready (7 no mailbox, 2 review, 3 fetch failed), unverified email deliverability and limited source-validated five-account pre-matches. Last 84-lane inventory reserve audit identified only 40 nominal free-five lanes and one nominal paid 125-reserve lane (Phoenix commercial cleaning), **not** validated per-recipient samples. Recurring bounded source-site research and serialized stage-only are already active; avoid duplicate jobs with Revenue Watch. No change to master code, PR merges, spending ceiling, historic campaigns, customer packets or private log. Private Mac log not mounted/accessed during this run.
+
+**Immutable results:** [01 source step](https://github.com/bmcgarybot/bmc-luminary-site/blob/vps-relay/portfolio/automation/vps-relay/results/bmc-overnight-held-20261109T040441Z-01-interest-contact-research-step.json), [02 stage-only](https://github.com/bmcgarybot/bmc-luminary-site/blob/vps-relay/portfolio/automation/vps-relay/results/bmc-overnight-held-20261109T040441Z-02-interest-first-stage.json), [03 status](https://github.com/bmcgarybot/bmc-luminary-site/blob/vps-relay/portfolio/automation/vps-relay/results/bmc-overnight-held-20261109T040441Z-03-interest-contact-research-status.json), [04 readiness](https://github.com/bmcgarybot/bmc-luminary-site/blob/vps-relay/portfolio/automation/vps-relay/results/bmc-overnight-held-20261109T040441Z-04-interest-first-readiness.json), [05 snapshot](https://github.com/bmcgarybot/bmc-luminary-site/blob/vps-relay/portfolio/automation/vps-relay/results/bmc-overnight-held-20261109T040441Z-05-operator-snapshot.json).
+
+---
+
 # HELD SAFETY VERIFIED AT 2026-11-09 03:36:21 UTC
 
 The independent postdeploy `operator_snapshot` relay result `bmc-contact-safe-snapshot-20261109T033617Z` returned SUCCESS. Deployed master SHA `da13e00b39384ef596ebb984204c02d4bd7ecd4f`, API and scheduler healthy, `owner_launch_hold_active=true`, and `OUTREACH_ENABLED=false`, `BUYER_OUTREACH_ENABLED=false`, `GROWTH_OUTREACH_ENABLED=false`. The separate interest-first sender flag was confirmed false in the 03:34:20 UTC readiness receipt. 170 held and queued interest-first emails, zero new sends, source-backed public-site contact collector active, no paid AI calls or additional budget committed. Continue unattended no-send research/staging; Work release only with express owner go-ahead.
