@@ -35,6 +35,9 @@ while true; do
     post /api/process-growth-offers 240
     post /api/process-growth-offer-invitations
     post /api/process-growth-outreach
+    # Always-on, idempotent research-to-queue preparation. This only stages new
+    # eligible public business contacts; no SMTP or paid research calls.
+    post /api/admin/interest-first-stage 120
     # Dedicated demand-first sender; backend owner hold and independent switch
     # remain hard gates. The initial container default is ten sends per day.
     post /api/admin/interest-first-send-batch
