@@ -295,6 +295,19 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result['status'],'no_public_mailbox')
         self.assertNotIn('email',result)
 
+    def test_v2_rechecks_old_failed_and_unmatched_pages_once(self):
+        from interest_contact_research import CANDIDATE_SQL
+        self.assertIn("r.parser_version < 2",CANDIDATE_SQL)
+        self.assertIn("r.status in ('no_public_mailbox','needs_review')",CANDIDATE_SQL)
+        self.assertIn("r.reason='bounded_inspection_failed'",CANDIDATE_SQL)
+        self.assertNotIn("r.reason='source_fetch_unavailable'",CANDIDATE_SQL)
+        code=(HERE/'api'/'interest_contact_research.py').read_text()
+        self.assertIn("parser_version=2",code)
+        self.assertIn("parser_version<2",code)
+        self.assertIn("'no_public_mailbox_in_fetched_html'",code)
+        schema=(HERE/'schema.sql').read_text()
+        self.assertIn("add column if not exists parser_version integer not null default 1",schema)
+
     def test_stage_requires_fresh_independent_source_evidence(self):
         self.assertIn("ir.status='ready'",m.CANDIDATE_SQL)
         self.assertIn("interest_first_contact_research",m.CANDIDATE_SQL)
