@@ -38,7 +38,7 @@ while true; do
     # Always-on, idempotent research-to-queue preparation. This only stages new
     # eligible public business contacts; no SMTP or paid research calls.
     # Public company-site mailbox research, bounded and source-checked; no SMTP.
-    post /api/process-interest-contact-research 180
+    post /api/process-interest-contact-research 240
     post /api/admin/interest-first-stage 120
     # Dedicated demand-first sender; backend owner hold and independent switch
     # remain hard gates. The initial container default is ten sends per day.
