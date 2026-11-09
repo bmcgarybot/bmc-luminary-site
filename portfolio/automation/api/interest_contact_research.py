@@ -179,31 +179,38 @@ def mailboxes(document,site_host=""):
     the source company domain. Reject designer attribution and role mailboxes
     that are clearly not for business introductions.
     """
-    parsed=_ContactPage()
+    parsed=_TolerantContactPage()
     parsed.feed(document)
     choices=set()
     blocked_roles={"careers","jobs","hr","webmaster","legal","press","media","billing","accounts"}
-    for email,kind,frame in parsed.mail:
-        if not email_valid(email) or email.split("@",1)[0] in blocked_roles:continue
-        frame_text=" ".join(frame["text"])
-        if DESIGNER.search(frame_text) or DESIGNER.search(str(frame["attrs"])):
-            continue
-        choices.add(email.lower())
-    text=" ".join(parsed.text)
     site=str(site_host or "").lower().removeprefix("www.")
-    if site:
-        for match in EMAIL.finditer(text):
-            email=match.group(0).lower()
-            local,domain=email.split("@",1)
-            if not email_valid(email) or local in blocked_roles:
+    text=" ".join(parsed.text)
+    for email,kind,frame in parsed.mail:
+        email=email.lower()
+        if not email_valid(email) or email.split('@',1)[0] in blocked_roles:
+            continue
+        # A footer containing both a business mailbox and "site designed by"
+        # must not discard the business's own-domain email.
+        if not _company_domain(email,site):
+            context=" ".join(frame["text"])
+            if DESIGNER.search(context) or DESIGNER.search(str(frame["attrs"])):
                 continue
-            if domain!=site and not site.endswith("."+domain):
-                continue
-            nearby=text[max(0,match.start()-90):min(len(text),match.end()+60)]
-            if DESIGNER.search(nearby):
-                continue
+        choices.add(email)
+    for match in EMAIL.finditer(text):
+        email=match.group(0).lower()
+        local=email.split('@',1)[0]
+        if not email_valid(email) or local in blocked_roles:continue
+        nearby=text[max(0,match.start()-100):min(len(text),match.end()+70)]
+        if DESIGNER.search(nearby):continue
+        if _company_domain(email,site):
+            choices.add(email)
+        elif (_visible_contact_label(text,match.start()) and
+              email.rsplit('@',1)[-1] in
+              {'gmail.com','outlook.com','yahoo.com','hotmail.com','icloud.com','aol.com'}):
+            # Published, labeled off-domain contact; business/area still checked.
             choices.add(email)
     return sorted(choices),parsed
+
 
 def choose_email(addresses,site_host,identity_proven):
     if not identity_proven or not addresses:return None
