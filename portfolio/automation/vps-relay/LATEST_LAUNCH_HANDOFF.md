@@ -1,3 +1,39 @@
+# OWNER-APPROVED MASS-LAUNCH PREPARATION — NOVEMBER 8, 2026 (NEWEST; NO CUSTOMER SEND)
+
+## Current decision: PREPARE, DO NOT RELEASE
+Owner explicitly requires a monitored always-on Work session before any customer outreach. **Do not send emails, release any campaign switch/owner hold, make charges, restart paid AI research, reset credits or resend historical contacts.** Preparation and read-only checks are authorized. Preserve all legacy records, the original nine Phoenix journeys, samples, suppressions, historical emails, and current VPS services.
+
+## Exact verified production and completed actions
+- Master/VPS still at `f5689047d76a01384ba0b1dd94a4bc53d9751d0e` (PR #109); latest Nov 8 operator snapshot API, DB and scheduler healthy; owner hold ON; historical three outreach flags OFF. New separate interest-first switch defaults OFF, and was NOT released.
+- Existing `growth_interest_first` campaign staged 167 records Nov 7. Distinct `bmc-recovery-20261109T015303Z-02-interest-stage` succeeded 2026-11-09 01:53:41 UTC and staged **1 additional Chino Valley tree-service contact**; expected new total **168** (reconfirm through live grouped read-only audit). Zero customer sends and zero paid research calls. Separate business-metrics result `bmc-recovery-20261109T015303Z-03-audit` confirmed outreach total **327**, historic SMTP submissions **22**, recorded replies **0**, two historic sample deliveries, paid orders **0**, receipts **$0**. Those are not 168 delivered emails; all new campaign contacts remain queued.
+- Read-only/bounded official-source research `bmc-recovery-20261109T015303Z-01-source-native` succeeded: four official data lanes, three existing source records inspected/updated, 0 new prospects, 0 paid model calls. Live source-native discovery continues separately; do not conflate the stopped paid catalogue driver with every existing free/public scheduler task.
+- Prior 21-city census contains 75,000+ unique **historical research records** across buyer/vendor categories; it is NOT a 75,000-email list. Vendor contact readiness in the last launch audit: 212 normalized vendors, 87 with email, 205 with phone. The 167/168 campaign recipients are selected from several pools with duplicate/suppression exclusions. An accurate company-and-channel census is needed before asserting 500+ reachable email recipients.
+- Search quality remains poor for some public search-engine results (examples: unrelated Canadian restaurants on Arizona local queries); do not auto-promote those results into deliverable buyer research.
+- API internal ledger remains $50 cap, $43.798691 committed upper estimate, $6.201309 available, $13.921252 reconciliation credits; separate from the owner's screenshot of $88.23 actual OpenAI credits Nov 7. No cap increase or speculative paid research.
+
+## Branch-only launch-preparation code: NO MERGE/DEPLOY CLAIM
+- **PR #110**: https://github.com/bmcgarybot/bmc-luminary-site/pull/110 ; `fix/interest-first-scheduler-wiring-20261108` head `3c5d9359646bd3b2671a91a2413b748716efda80`. BMC Portfolio branch CI runs `42548027716` and `42548022563` both SUCCESS. Fixes missing `INTEREST_FIRST_OUTREACH_ENABLED` and `INTEREST_FIRST_DAILY_LIMIT` Docker Compose pass-through and adds scheduler call to the existing sender. New switch defaults false, daily cap 10; backend owner hold also blocks sending. PR remains OPEN; it is NOT deployed. Preserve no-send state until Work supervised scoped release.
+- **PR #111**: https://github.com/bmcgarybot/bmc-luminary-site/pull/111 ; `feat/interest-first-market-readiness-20261108` head moves as commits land. Adds an admin-only, read-only `interest-first-readiness` count endpoint and relay action to break down the *staged queue* by territory + service, alongside source inventory phone/email presence and normalized vendor coverage. Includes real Postgres query tests, no private contact exports, and no external sends. Branch CI pending at this public-hand-off checkpoint. Added research-grounded launch plan `portfolio/automation/INTEREST_FIRST_MASS_LAUNCH_PLAN_2026-11-08.md` on the PR branch. Neither PR merged or deployed at this checkpoint; verify newest HEAD/CI before any further operation.
+
+## Actual researched money model to test — not yet proven
+1. **Attraction:** truthful free five *potential* customer businesses offered to service companies; recipient replies FIVE to engage. There are no pre-researched quote requests or promised jobs.
+2. **Preferences:** ask only target service region and desired commercial job/customer type. Reuse saved business inventory, make five preliminary matches cheaply, confirm evidence before delivering a fully usable sample (sources, public contact route, fit reason, outreach angle, date). No unsupported 24-hour guarantee.
+3. **Conversion:** offer a supported $149/25 small pack only when its inactive purchase path is properly enabled/tested; offer $499/100 only with 125 passing candidates in exact territory (currently one automated lane, Phoenix commercial cleaning, clears reserve). Existing $749 premium remains preserved. Refresh subscriptions only after a real fulfilled sale creates repeat demand.
+4. **Positioning:** BMC competes on *account relevance and research effort saved*, not generic CSV lists. Nov 8 external market evidence: Upwork marketplace examples show generic 100-contact offers at $25-$39 and typical list-building projects at $150-$500; Apollo offers a free tier and $49/month annual Basic. Source URLs and caveats in the plan. $499 is a premium hypothesis, **not** validated willingness to pay.
+5. **Scale:** expand existing contact routes across all 21 markets with source-backed public business email/contact-form/phone research, no guessed personal addresses or automated contact-form submissions. The goal is 500+ eligible contacts **only if the actual audit supports it**. Broaden in stages after Work can track replies, bounces, suppression and sample fulfillment; do NOT send 500 at once. CAN-SPAM covers B2B commercial email, and Google recommends authenticated senders and gradual volume increases.
+
+## Exact next Work actions (NO CUSTOMER SEND)
+1. Read private `review/PRIVATE_LATEST_LAUNCH_HANDOFF.md`, `review/continuation/BMC_OPERATOR_HANDOFF.txt` and append-only `review/continuation/AUDIT_LOG.jsonl` if local Mac workspace is accessible; these may supersede public evidence. Preserve their history and private contacts.
+2. Inspect PR #110/#111 exact heads, branch CI, unchanged master and latest VPS state. Focus on verified read-only reporting, safe no-send deploy readiness, and an owner-controlled release mechanism. Never enable old campaigns as a side effect.
+3. Once read-only PR #111 passes and is safely deployed, request the allowlisted `interest_first_readiness` relay action and report the full market × business-type counts with recorded email vs phone vs absent contacts. Compare before/after, including suppressions and prior send history.
+4. Enrich source-backed business contact routes without overchecking simple recipients. Pre-match five potential accounts from existing buyer universe without exhausting the paid API allowance. Do not treat cached names as qualified buyers.
+5. Inspect the actual email body, legal identification/postal/opt-out handling, SPF/DKIM/DMARC, reply-monitoring flow, duplicate-send protections and sample order/pay fulfillment. Stage a large but real pool with all sends OFF.
+6. Only after explicit separate approval within a supervising Work session, start a low-volume deliverability-tested batch, gradually expand and track *real commercial conversions* rather than infrastructure-only uptime.
+
+**The next response must not claim that PR #110 or #111 was deployed merely because branch CI passed. No sale or new reply has been proven.**
+
+---
+
 # LATEST VERIFIED BMC CONTINUATION — 2026-11-06 (supersedes older entries below)
 
 ## Owner's current direction (2026-11-06)
