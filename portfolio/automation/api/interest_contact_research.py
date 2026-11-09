@@ -9,7 +9,7 @@ import re
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
-from contact_enrichment import _ContactPage, DESIGNER, PHONE
+from contact_enrichment import _ContactPage, DESIGNER, PHONE, EMAIL
 from interest_first import email_valid
 from official_research import Page, allowed_url, contact_links, fetch_page_receipt, host, identity_matches
 
@@ -38,11 +38,29 @@ with candidates as (
    and not exists(select 1 from growth_outreach_targets g
      where lower(g.business_name)=lower(c.business_name) and g.market=c.market
        and g.service_key=c.category_key)
+   -- Prevent repeated 14-day fetches of the same company/domain under another
+   -- service or city row. Do not penalize distinct businesses on shared hosts.
+   and not exists (
+      select 1 from interest_first_contact_research earlier
+      join market_inventory_candidates seen on seen.candidate_id=earlier.candidate_id
+      where lower(seen.source_domain)=lower(c.source_domain)
+        and regexp_replace(lower(seen.business_name),'[^a-z0-9]','','g') =
+            regexp_replace(lower(c.business_name),'[^a-z0-9]','','g')
+        and earlier.last_attempt_at > now()-interval '14 days')
+), market_attempts as (
+ select c.market,count(*)::integer as attempted
+ from interest_first_contact_research r
+ join market_inventory_candidates c on c.candidate_id=r.candidate_id
+ where r.last_attempt_at>now()-interval '7 days'
+ group by c.market
 )
-select candidate_id,business_name,market,category_key,source_url,source_domain,
-       public_phone from candidates
-where domain_position=1
-order by last_verified_at desc nulls last,candidate_id
+select c.candidate_id,c.business_name,c.market,c.category_key,c.source_url,c.source_domain,
+       c.public_phone from candidates c
+left join market_attempts a on a.market=c.market
+where c.domain_position=1
+-- Keep researching all available markets instead of repeatedly choosing the
+-- most recently refreshed metro records. Missing sites remain honest gaps.
+order by coalesce(a.attempted,0),c.last_verified_at desc nulls last,c.candidate_id
 limit $1
 """
 
@@ -67,17 +85,38 @@ def contains_market(text,market):
         return bool(re.search(r"\bprescott\b(?!\s+valley\b)",hay))
     return " "+place+" " in " "+hay+" "
 
-def mailboxes(document):
+def mailboxes(document,site_host=""):
+    """Find explicit and visible company-domain mailboxes; never guess addresses.
+
+    A page can publish its contact address in ordinary text without a mailto:
+    link. Only take those visible-text addresses when the email domain matches
+    the source company domain. Reject designer attribution and role mailboxes
+    that are clearly not for business introductions.
+    """
     parsed=_ContactPage()
     parsed.feed(document)
     choices=set()
+    blocked_roles={"careers","jobs","hr","webmaster","legal","press","media","billing","accounts"}
     for email,kind,frame in parsed.mail:
-        if not email_valid(email):continue
-        # Skip mailboxes appearing in developer/site-builder attribution.
+        if not email_valid(email) or email.split("@",1)[0] in blocked_roles:continue
         frame_text=" ".join(frame["text"])
         if DESIGNER.search(frame_text) or DESIGNER.search(str(frame["attrs"])):
             continue
         choices.add(email.lower())
+    text=" ".join(parsed.text)
+    site=str(site_host or "").lower().removeprefix("www.")
+    if site:
+        for match in EMAIL.finditer(text):
+            email=match.group(0).lower()
+            local,domain=email.split("@",1)
+            if not email_valid(email) or local in blocked_roles:
+                continue
+            if domain!=site and not site.endswith("."+domain):
+                continue
+            nearby=text[max(0,match.start()-90):min(len(text),match.end()+60)]
+            if DESIGNER.search(nearby):
+                continue
+            choices.add(email)
     return sorted(choices),parsed
 
 def choose_email(addresses,site_host,identity_proven):
@@ -105,6 +144,9 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
             return {"status":"needs_review","reason":"unexpected_redirect"}
         page_receipts.append(primary)
         observed=contact_links(primary.final_url,primary.document)
+        # Prefer a published contact page to an about/location page when both
+        # exist; no more than one additional same-site GET is performed.
+        observed.sort(key=lambda u: 0 if re.search(r"/contact(?:-us)?(?:/|[.-]|$)",urlsplit(u).path,re.I) else 1)
         if observed:
             try:
                 secondary=await asyncio.wait_for(asyncio.to_thread(fetch,observed[0]),25)
@@ -124,7 +166,7 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
     for receipt in page_receipts:
         html=receipt.document
         title=Page();title.feed(html)
-        addresses,parsed=mailboxes(html)
+        addresses,parsed=mailboxes(html,src_host)
         # Body/title is only local page evidence, never an instruction to execute.
         text=" ".join(parsed.text)[:50000]
         title_text=" ".join(title.title_text)
@@ -148,7 +190,7 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
         return {"status":"needs_review" if boxes else "no_public_mailbox",
                 "reason":"mailbox_ambiguous" if boxes else "no_published_mailto"}
     from hashlib import sha256
-    receipt=next((p for p in pages if email in mailboxes(p.document)[0]),pages[0])
+    receipt=next((p for p in pages if email in mailboxes(p.document,src_host)[0]),pages[0])
     return {"status":"ready","reason":"published_business_mailbox",
             "email":email,"source_url":receipt.final_url,
             "digest":receipt.content_sha256,
@@ -210,7 +252,17 @@ async def aggregate_status(pool):
            from interest_first_contact_research group by status order by status""")
         recent=await conn.fetchval("""select count(*) from interest_first_contact_research
            where last_attempt_at >= now()-interval '24 hours'""")
+        reasons=await conn.fetch("""select status,reason,count(*)::integer as records
+           from interest_first_contact_research
+           group by status,reason order by records desc,status,reason limit 15""")
+        markets=await conn.fetch("""select c.market,count(*)::integer as inspected,
+              count(*) filter(where r.status='ready')::integer as source_ready
+           from interest_first_contact_research r
+           join market_inventory_candidates c on c.candidate_id=r.candidate_id
+           group by c.market order by c.market""")
     return {"ok":True,"read_only":True,"by_status":[dict(r) for r in rows],
+            "by_reason":[dict(r) for r in reasons],
+            "by_market":[dict(r) for r in markets],
             "attempted_last_24h":int(recent or 0),"sent":0,"paid_api_calls":0}
 
 def install(app,require_admin):
