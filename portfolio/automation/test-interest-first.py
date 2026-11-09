@@ -94,4 +94,69 @@ class Tests(unittest.TestCase):
         self.assertIn('GROWTH_OUTREACH_ENABLED=os.getenv',source)
         self.assertIn('INTEREST_FIRST_OUTREACH_ENABLED=os.getenv',source)
 
+class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
+    """Pure HTTP-free cases for the bounded public-site candidate verifier."""
+    def row(self, **changes):
+        d={'candidate_id':'f9821c31-a402-4aef-8267-07c8be0bac43',
+           'business_name':'Example Yard Care','market':'Prescott',
+           'category_key':'landscaping','source_url':'https://example-yard-care.com/',
+           'source_domain':'example-yard-care.com','public_phone':'928-555-0133'}
+        d.update(changes)
+        return d
+
+    def receipt(self,url,document,redirect_chain=()):
+        from official_research import FetchedPageReceipt
+        from hashlib import sha256
+        data=document.encode()
+        return FetchedPageReceipt(url,url,data,sha256(data).hexdigest(),
+            '2026-11-08T20:00:00+00:00',200,'text/html',tuple(redirect_chain))
+
+    async def test_verified_company_mailbox_is_research_only(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><head><title>Example Yard Care | Prescott</title></head>'
+             '<body><h1>Example Yard Care</h1><p>Prescott, Arizona</p>'
+             '<a href="tel:928-555-0133">Call</a>'
+             '<a href="mailto:info@example-yard-care.com">Email</a></body></html>')
+        async def illegal(*args,**kwargs):
+            raise AssertionError('no network')
+        result=await inspect_public_contact(self.row(),
+            fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'ready')
+        self.assertEqual(result['email'],'info@example-yard-care.com')
+        self.assertNotIn('sent',result)
+        self.assertEqual(result['area_basis'],'city')
+
+    async def test_wrong_site_and_foreign_geography_are_held(self):
+        from interest_contact_research import inspect_public_contact,start_url
+        self.assertEqual(start_url(self.row(source_domain='other.com')),'')
+        self.assertEqual(start_url(self.row(source_url='https://www.tripadvisor.com/Restaurants/')),'')
+        doc=('<html><head><title>Example Yard Care | Halifax</title></head>'
+             '<body><h1>Example Yard Care Halifax</h1>'
+             '<a href="mailto:hello@example-yard-care.com">Email</a></body></html>')
+        value=await inspect_public_contact(self.row(public_phone='928-555-1111'),
+            fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(value['status'],'needs_review')
+        self.assertNotIn('email',value)
+
+    async def test_public_page_without_mailbox_stays_unstaged(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Example Yard Care Prescott</title>'
+             '<body>Example Yard Care serving Prescott Arizona</body></html>')
+        value=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(value['status'],'no_public_mailbox')
+        self.assertNotIn('email',value)
+
+    def test_stage_requires_fresh_independent_source_evidence(self):
+        self.assertIn("ir.status='ready'",m.CANDIDATE_SQL)
+        self.assertIn("interest_first_contact_research",m.CANDIDATE_SQL)
+        self.assertIn("ir.last_verified_at>now()-interval '30 days'",m.CANDIDATE_SQL)
+        docker=(HERE/'api'/'Dockerfile').read_text()
+        self.assertIn('interest_contact_research.py',docker)
+        scheduler=(HERE/'scheduler.sh').read_text()
+        self.assertIn('post /api/process-interest-contact-research 180',scheduler)
+        relay=(HERE/'vps-gitops-relay.py').read_text()
+        self.assertIn('interest_contact_research_step',relay)
+        self.assertIn('interest_contact_research_status',relay)
+
+
 if __name__=='__main__':unittest.main()
