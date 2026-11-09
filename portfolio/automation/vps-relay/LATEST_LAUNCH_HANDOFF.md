@@ -1,3 +1,22 @@
+# LIVE HELD CONTACT RESEARCH VERIFIED — NOVEMBER 8 20:35 MST (NOVEMBER 9 UTC)
+
+## This is an operating checkpoint, not a promised future feature
+- Actual master/VPS commit `da13e00b39384ef596ebb984204c02d4bd7ecd4f` from PR #115; exact master CI `42556349260` and Pages `42556349269` success. Guarded deploy `bmc-contact-research-held-deploy-20261109T033022Z` result success exit0 at 03:33:00 UTC, source-independent backup and runtime doctor passed, zero core failures or warnings, private monitor preserved.
+- **New public-site contact collector is RUNNING on VPS**, not just in code. Live results prefix `bmc-contact-live-20261109T033324Z`: 01 research step success, inspected4/source-verified mailbox ready1/held3/sent0/paid calls0. Live 03 aggregate status reveals across **TWO actual API collection calls** (`/api/process-interest-contact-research` API operations requests2/failures0): **8 public-site candidates checked; 2 ready; 1 needs_review; 3 no_public_mailbox; 2 fetch_failed**. The second collection call appears to come from the scheduled cycle; the API operations count proves it is wired beyond the relay request. No API model charges in the collector.
+- 02 interest-first stage receipt succeeded and inserted 1 new `handyman_repairs` queued contact, zero sends/charges. 04 readiness receipt (03:34:20 UTC) reports **170 staged total**, all 170 queued, owner hold TRUE, independent interest-first sender FALSE, 51,037 active vendor research *rows* (not unique companies). Earlier 168 baseline; two independently verified mailboxes from two collection calls increased queue by two; treat proof as 170, not 500+. Read-only API operations report `interest_first_stage` 9 requests, zero failures, including scheduler calls.
+- 06 business metrics receipt records **329 total outreach rows**, historical SMTP submissions **22 unchanged**, replies0, two historic sample deliveries, orders0, revenue$0, 0 unresolved mail attempts. API operations show `interest-first-send-batch` route was polled4 times but remained blocked by the owner hold and separate send switch; **no customer emails were sent**.
+- 07 API research ledger receipt unchanged: internal conservative cap $50, upper reserved $43.798691, available $6.201309, reconciliation credit $13.921252, pending reserved $9, not actual OpenAI invoice. No paid API research called.
+- 05 operator-snapshot result file was NOT available when checked, though 04 readiness independently confirms owner hold and independent sender OFF, and 06 business metrics confirms no new SMTP submissions. If needed, request a fresh read-only `operator_snapshot` to verify legacy switches as well.
+
+## Remain strictly focused
+1. Keep the **existing VPS scheduler running**. It now invokes public-site mailbox research in bounded batches and immediately stages the resulting verified emails every third cycle, indefinitely until intentionally stopped. Uncertain/missing/failed pages are independently tracked and do NOT become sendable.
+2. On future hourly Work/monitor runs query `interest_contact_research_status`, `interest_first_readiness`, and business metrics; report attempts, verified emails, newly queued, suppression, and budget usage accurately. Do not confuse 51k inventory rows with unique companies or ready addresses; 170 is an actual held queue.
+3. Diagnose repeated `fetch_failed`/missing mailboxes from safe source evidence; do not weaken company/geography checks, guess emails, or spend more OpenAI API money merely to inflate counts. Correct poor search engine quality separately.
+4. **No customer send release.** Preserve historical nine Phoenix cohort and all 22 prior SMTP submissions and sample/PDF/Stripe data. Only the owner in a monitored Work conversation may authorize bounded waves. Existing BMC Overnight Launch Prep automation (hourly) and BMC Revenue Watch are active; avoid duplicate research jobs and overlapping merges.
+5. Keep append-only handoff state and private log where available. No unsupported claim of first sale or 500/1000 contactable emails.
+
+---
+
 # VERIFIED HELD CONTACT-COVERAGE DEPLOY — NOVEMBER 8 20:33 MST (NOVEMBER 9 UTC)
 
 ## Operating directive
