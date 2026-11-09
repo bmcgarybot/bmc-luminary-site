@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-jsonld-v3-postdeploy-20261109T153518Z-04-interest-first-readiness",
+  "action": "interest_first_readiness",
+  "created_at": "2026-11-09T15:35:18.885Z",
+  "expires_at": "2026-11-09T17:35:18.885Z",
+  "allow_external_actions": false,
+  "args": {}
+}
