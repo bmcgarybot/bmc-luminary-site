@@ -4879,6 +4879,48 @@ async def interest_first_preview(payload:dict|None=None,x_bmc_admin_key:str|None
       'email_unverified_delivery':True,
       'note':'This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.'}
 
+@app.post("/api/admin/interest-first-readiness")
+async def interest_first_readiness(x_bmc_admin_key:str|None=Header(default=None)):
+    """Aggregate campaign and vendor-universe coverage. No contacts or customer actions."""
+    require_admin(x_bmc_admin_key)
+    from interest_first import (CAMPAIGN,INVENTORY_CONTACT_MATRIX_SQL,
+      NORMALIZED_VENDOR_CONTACT_MATRIX_SQL,STAGED_INTEREST_MATRIX_SQL)
+    try:
+      async with app.state.pool.acquire() as conn:
+        inventory=[dict(row) for row in await conn.fetch(INVENTORY_CONTACT_MATRIX_SQL)]
+        normalized=[dict(row) for row in await conn.fetch(NORMALIZED_VENDOR_CONTACT_MATRIX_SQL)]
+        staged=[dict(row) for row in await conn.fetch(STAGED_INTEREST_MATRIX_SQL,CAMPAIGN)]
+    except Exception:
+      return {'ok':False,'read_only':True,'status':'aggregate_readiness_unavailable','sent':0,'research_calls':0}
+    from collections import defaultdict
+    def aggregate_by(rows,key,fields):
+      result=defaultdict(lambda:{field:0 for field in fields})
+      for row in rows:
+        for field in fields:result[row[key]][field]+=int(row[field] or 0)
+      return [dict(**{key:k},**values) for k,values in sorted(result.items())]
+    inv_fields=('candidate_records','distinct_recorded_emails','phone_records','source_url_records','evidence_labeled_records')
+    staged_fields=('staged_total','queued','smtp_submissions','replies','opt_outs','review_holds')
+    return {
+      'ok':True,'read_only':True,'campaign':CAMPAIGN,
+      'launch_held':OWNER_LAUNCH_HOLD,'interest_first_sender_enabled':INTEREST_FIRST_OUTREACH_ENABLED,
+      'inventory_record_total':sum(int(row['candidate_records']) for row in inventory),
+      'staged_contact_total':sum(int(row['staged_total']) for row in staged),
+      'staged_by_market_and_type':staged,
+      'staged_by_market':aggregate_by(staged,'market',staged_fields),
+      'staged_by_service':aggregate_by(staged,'service_key',staged_fields),
+      'inventory_by_market':aggregate_by(inventory,'market',inv_fields),
+      'inventory_by_service':aggregate_by(inventory,'service_key',inv_fields),
+      'inventory_by_market_and_type_with_contact':[
+        row for row in inventory if row['distinct_recorded_emails'] or row['phone_records']],
+      'normalized_vendors_by_market_and_type':normalized,
+      'sent':0,'paid_research_calls':0,
+      'limitations':(
+        'Inventory counts are records in market/category lanes, not unique businesses or permission to email. '
+        'Recorded email and phone fields are not verified deliverability. Source URLs can be directories. '
+        'Normalized vendor records may overlap inventory; do not add the two universes. '
+        'Pre-existing queued contacts are excluded from the new eligible-contact preview.')
+    }
+
 @app.post("/api/admin/interest-first-stage")
 async def interest_first_stage(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
