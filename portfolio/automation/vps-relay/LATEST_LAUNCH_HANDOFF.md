@@ -1,3 +1,26 @@
+# BMC WEBSITE CONTACT RESEARCH — NOVEMBER 9, 2026, 08:19 ARIZONA — REAL VPS PROOF
+
+**Hard owner instruction:** Research + stage ONLY. No customer outreach, no provider activation, no invoices/charges, no extra paid research API budget. Original Phoenix nine, other historical SMTP22, older PDF samples, suppressions, prior research, Stripe remain intact.
+
+## PR #117 is merged AND DEPLOYED
+- Master + deployed VPS `33f975cb6de738f86714e6924e03de5e2364061b` (PR #117), exact-master CI `42640612535` SUCCESS and Pages `42640612494` SUCCESS.
+- Guarded relay deploy `bmc-footer-parser-v2-deploy-20261109T150804Z` SUCCESS exit0 at 15:10:31Z. Pre-migration backup `backups/bmc_20261109_150847.dump` checksum verified and isolated restore PASS, runtime doctor zero core failures/warnings. API, scheduler, research refresher, private monitor healthy.
+- Fixes `mailto:` links with ?subject, legitimate footer business mailbox falsely discarded due designer credit, page identity in H1/H2 or og:site_name when title Home, and /contact link hidden after the first 2 /about links. Accepts labeled visible Gmail from company-owned pages only with source/identity/area checks; differentiates public contact-form-only and JS-driven pages; never sends/submits forms/runs arbitrary scripts.
+- Adds parser_version (default1 for old research) and new claims v2 so previously held no-public-mailbox, identity-review and bounded-parser-failure sources can be retried once without waiting 14 days; preserves strict same-business duplicate exclusion and old contact history.
+- Exact live QA requests `bmc-footer-v2-qa-20261109T151055Z-{01..07}` all success on exact deployed SHA, owner hold TRUE, 3 historical send flags FALSE, separate interest-first sender FALSE. From first status: 224 old inspected/55 ready/99 no_mailbox/48 fetch_failed/22 review. 16 parser_v2 inspections (4 scheduler and 12 explicit) produced only **1 ready**. The 12 explicit sites produced **0 ready**. After pass, source site counts 56 ready, 103 no_mailbox, 50 failed, 24 review; stage-only request 0 direct, total held interest-first **213** (up from 212 due separate scheduled stage), zero new customer emails. Internal API allowance **$6.201309** still, no paid API calls. Fix was validated technically; its initial observed contact yield is weak. Do NOT claim it solved the large gap.
+
+## Next improvement PR #118 (pending CI, NOT DEPLOYED)
+- https://github.com/bmcgarybot/bmc-luminary-site/pull/118 branch `fix/contact-structured-email-20261109`; latest head at this write `3c77989fad6dcafd9e15aab677fa4d896d29e032`.
+- Adds first-party JSON-LD `LocalBusiness`/`Organization` etc email + company name + Arizona locality/areaServed/phone from same exact pinned official website host, never unrelated page scripts or offsite unrelated organizational contacts. Adds safe reconstruction of emails split in footer HTML spans (e.g., `info <span>@</span> business.com` or `[at]`) only when email domain matches site and no designer attribution. Source/business identity/market or phone proof remains mandatory; none of this establishes inbox deliverability.
+- Parser_version3 allows a one-time bounded recheck of v2 no-mailbox/identity/bounded-parser failures without resetting ready contacts, suppression history, or paid budgets. Synthetic tests added for genuine schema, mismatched offsite schema, and split HTML email. PR CI in progress; **do not merge or deploy until exact green branch and exact merged-master CI**, backed-up guarded VPS release. No send switch changes.
+- After v3 deploy, use guarded `interest_contact_research_step` 2–3 iterations, followed by `interest_first_stage` (no sends), `interest_contact_research_status`, `interest_first_readiness`, operator_snapshot, and api_research_status. Compare `by_parser_version` and `by_reason` to baseline, report actual verified email recoveries. If yield remains low, stop speculative regex expansions and switch to controlled visual review of actually rejected sites in Work/browser (not local JS guesses or mass paid AI calls).
+- The original research universe is 51k+ vendor **rows**, not unique companies/contactable emails; historical business research doesn't imply ready 500/1000 email recipients. Preserve 21-market coverage and offer-specific buyer fulfilment gaps.
+
+## Next Work session handoff priority
+Stop multiple parallel PR/deploy attempts. Read this heading and newest relay. Verify PR #118 CI, clean master head, and held-state before ANY guarded release. Fix only the actual failing issue, run tests, then measure real yield; no customer email until separately authorized. No need to purchase OpenAI credits. The overhead of speculative research is our bottleneck, not a missing new server.
+
+---
+
 # BMC WEBSITE FOOTER CONTACT FIX — 2026-11-09 08:06 MST (15:06 UTC)
 
 **User direction:** Fix why BMC rejected real public email addresses at the bottom of business websites. NO customer sends or paid API research authorized. Do not change historical campaigns, recipients, opt-outs, Stripe, or budgets.
