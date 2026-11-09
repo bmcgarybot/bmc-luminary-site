@@ -45,6 +45,17 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
 
+    async def test_interest_first_readiness_aggregate_queries_use_real_schema(self):
+        from interest_first import (CAMPAIGN, INVENTORY_CONTACT_MATRIX_SQL,
+          NORMALIZED_VENDOR_CONTACT_MATRIX_SQL, STAGED_INTEREST_MATRIX_SQL)
+        async with self.pool.acquire() as conn:
+            inventory=await conn.fetch(INVENTORY_CONTACT_MATRIX_SQL)
+            normalized=await conn.fetch(NORMALIZED_VENDOR_CONTACT_MATRIX_SQL)
+            staged=await conn.fetch(STAGED_INTEREST_MATRIX_SQL,CAMPAIGN)
+        self.assertIsInstance(inventory,list)
+        self.assertIsInstance(normalized,list)
+        self.assertIsInstance(staged,list)
+
     async def test_interest_first_readonly_candidate_query_executes_on_real_schema(self):
         from interest_first import CANDIDATE_SQL
         async with self.pool.acquire() as conn:
