@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261109T070734Z-auto11at-06-growth_status",
+  "action": "growth_status",
+  "created_at": "2026-11-09T07:07:34.000Z",
+  "expires_at": "2026-11-09T09:07:34.000Z",
+  "allow_external_actions": false,
+  "args": {}
+}
