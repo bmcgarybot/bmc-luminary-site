@@ -236,10 +236,8 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
            any(host(h)!=src_host for h in primary.redirect_chain)):
             return {"status":"needs_review","reason":"unexpected_redirect"}
         page_receipts.append(primary)
-        observed=contact_links(primary.final_url,primary.document)
-        # Prefer a published contact page to an about/location page when both
-        # exist; no more than one additional same-site GET is performed.
-        observed.sort(key=lambda u: 0 if re.search(r"/contact(?:-us)?(?:/|[.-]|$)",urlsplit(u).path,re.I) else 1)
+        observed=observed_contact_pages(primary.final_url,primary.document)
+        # One additional same-host fetch at most; no forms or scripts run.
         if observed:
             try:
                 secondary=await asyncio.wait_for(asyncio.to_thread(fetch,observed[0]),25)
@@ -259,11 +257,11 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
     for receipt in page_receipts:
         html=receipt.document
         title=Page();title.feed(html)
+        page_names=_BusinessIdentity();page_names.feed(html)
         addresses,parsed=mailboxes(html,src_host)
-        # Body/title is only local page evidence, never an instruction to execute.
         text=" ".join(parsed.text)[:50000]
         title_text=" ".join(title.title_text)
-        names.append(title_text)
+        names.extend([title_text,*page_names.names])
         visible.append(text)
         pages.append(receipt)
         boxes.update(addresses)
@@ -280,8 +278,15 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
         return {"status":"needs_review","reason":"business_or_area_unproven"}
     email=choose_email(sorted(boxes),src_host,identity)
     if not email:
-        return {"status":"needs_review" if boxes else "no_public_mailbox",
-                "reason":"mailbox_ambiguous" if boxes else "no_published_mailto"}
+        if boxes:return {"status":"needs_review","reason":"mailbox_ambiguous"}
+        if any('<form' in p.document.lower() for p in pages) and any(
+                re.search(r'/contact(?:-us)?(?:/|[.-]|$)',urlsplit(p.final_url).path,re.I)
+                for p in pages):
+            return {"status":"no_public_mailbox","reason":"public_contact_form_only"}
+        if any(re.search(r'<(?:script|div)[^>]*(?:id|data-app)[^>]*(?:root|app)[^>]*>',
+                         p.document,re.I) for p in pages) and len(text)<180:
+            return {"status":"needs_review","reason":"client_rendered_contact_unavailable"}
+        return {"status":"no_public_mailbox","reason":"no_public_mailbox_in_fetched_html"}
     from hashlib import sha256
     receipt=next((p for p in pages if email in mailboxes(p.document,src_host)[0]),pages[0])
     return {"status":"ready","reason":"published_business_mailbox",
