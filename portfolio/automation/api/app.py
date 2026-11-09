@@ -8511,6 +8511,10 @@ record_owner_reply_review=install_reply_review(app,require_admin,ADMIN_KEY,
 from contact_enrichment_api import install as install_contact_enrichment_api
 install_contact_enrichment_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS)
 
+# GET-only business contact discovery for held interest-first outreach.
+from interest_contact_research import install as install_interest_contact_research
+install_interest_contact_research(app, require_admin)
+
 from rolling_vendor_research import install as install_rolling_vendor_research
 install_rolling_vendor_research(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS, search_research_web)
 

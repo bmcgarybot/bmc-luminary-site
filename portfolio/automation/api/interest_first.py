@@ -31,6 +31,18 @@ with candidates as (
    and coalesce(i.public_email,'')<>'' and
    (i.verification_status in ('direct_evidence','government_record','credential_corroborated')
     or i.source_tier='direct')
+ union all
+ select 'contact_verified:'||i.candidate_id::text as source_id,
+   i.business_name,ir.public_email,i.market,i.category_key as service_key,
+   s.display_name as service_name,ir.email_source_url as source_url,'public_site_contact' as source_kind,
+   4 as evidence_priority
+ from interest_first_contact_research ir
+ join market_inventory_candidates i on i.candidate_id=ir.candidate_id
+ join services s on s.service_key=i.category_key and s.is_active=true
+ where ir.status='ready' and ir.last_verified_at>now()-interval '30 days'
+   and i.side='vendor' and i.status='discovered' and i.closed_at is null
+   and i.official_site=true and i.source_tier='direct' and
+   coalesce(ir.public_email,'')<>''
 )
 select distinct on (lower(c.public_email))
  c.source_id,c.business_name,lower(c.public_email) as public_email,c.market,

@@ -1397,3 +1397,25 @@ create table if not exists census_research_attempts (
  error_code text,proposal jsonb,
  unique(job_id,attempt_no)
 );
+
+
+-- Interest-first public business mailbox research. Separate from original census
+-- and provider approval; safe to inspect before external campaign authorization.
+create table if not exists interest_first_contact_research (
+  candidate_id uuid primary key references market_inventory_candidates(candidate_id) on delete cascade,
+  status text not null default 'pending'
+    check(status in ('pending','running','ready','needs_review','no_public_mailbox','fetch_failed')),
+  attempts integer not null default 0,
+  public_email text,
+  email_source_url text,
+  source_sha256 text,
+  area_basis text,
+  reason text,
+  last_attempt_at timestamptz,
+  last_verified_at timestamptz,
+  next_attempt_at timestamptz default now(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists idx_interest_first_contact_research_status_due
+  on interest_first_contact_research(status,next_attempt_at);
