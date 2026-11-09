@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 
 from contact_enrichment import _ContactPage, DESIGNER, PHONE, EMAIL
 from interest_first import email_valid
-from official_research import Page, allowed_url, contact_links, fetch_page_receipt, host, identity_matches
+from official_research import Page, entities, allowed_url, contact_links, fetch_page_receipt, host, identity_matches
 
 CAMPAIGN = "growth_interest_first"
 BATCH_LIMIT = 4
@@ -36,7 +36,7 @@ with candidates as (
    and coalesce(c.source_domain,'')<>'' and c.source_url like 'https://%'
    and (r.candidate_id is null or
         (r.next_attempt_at < now() and r.attempts < 3) or
-        (r.parser_version < 2 and r.attempts < 3 and
+        (r.parser_version < 3 and r.attempts < 3 and
          (r.status in ('no_public_mailbox','needs_review') or
           (r.status='fetch_failed' and r.reason='bounded_inspection_failed'))))
    and not exists(select 1 from growth_outreach_targets g
@@ -175,6 +175,63 @@ def observed_contact_pages(url,document):
     return sorted(found,key=lambda link:(priority(link),link))
 
 
+def structured_company_contacts(document,site_host,business_name,market):
+    """Collect same-host JSON-LD organization contacts, never arbitrary page scripts.
+
+    JSON-LD is a published claim, not proof of employment, ownership, email
+    deliverability or buyer intent. The existing first-party identity + territory
+    checks still apply to the recipient below.
+    """
+    page=Page()
+    page.feed(document)
+    found_names=[]
+    found_emails=set()
+    found_phones=set()
+    locality=False
+    for obj in entities(page.ld):
+        if not isinstance(obj,dict):continue
+        kinds=obj.get('@type') or []
+        if isinstance(kinds,str):kinds=[kinds]
+        kind=' '.join(str(k).lower() for k in kinds)
+        if not any(v in kind for v in
+                   ('organization','business','service','contractor','store','plumber',
+                    'electrician','repair','landscap','locksmith','automotive')):
+            continue
+        url=obj.get('url') or obj.get('@id')
+        if not isinstance(url,str) or not url.startswith('https://') or host(url)!=site_host:
+            continue
+        name=obj.get('name')
+        if not isinstance(name,str) or not identity_matches(business_name,name,market):
+            continue
+        found_names.append(name)
+        emails=obj.get('email') or []
+        if isinstance(emails,str):emails=[emails]
+        if isinstance(emails,list):
+            for item in emails[:8]:
+                if not isinstance(item,str):continue
+                item=item.removeprefix('mailto:').strip().lower()
+                if email_valid(item) and item.split('@',1)[0] not in {
+                        'careers','jobs','webmaster','billing','privacy','press'}:
+                    found_emails.add(item)
+        phone=obj.get('telephone')
+        if isinstance(phone,str) and len(digits(phone))==10:
+            found_phones.add(digits(phone))
+        address=obj.get('address')
+        if isinstance(address,dict):
+            state=str(address.get('addressRegion') or '').lower()
+            place=str(address.get('addressLocality') or '')
+            if state in ('az','arizona','') and contains_market(place,market):
+                locality=True
+        areas=obj.get('areaServed')
+        if isinstance(areas,str):
+            locality=locality or contains_market(areas,market)
+        elif isinstance(areas,list):
+            for area in areas[:12]:
+                label=str(area.get('name') or area.get('addressLocality') or '') if isinstance(area,dict) else str(area)
+                locality=locality or contains_market(label,market)
+    return found_names,found_emails,found_phones,locality
+
+
 def mailboxes(document,site_host=""):
     """Find explicit and visible company-domain mailboxes; never guess addresses.
 
@@ -213,6 +270,18 @@ def mailboxes(document,site_host=""):
               {'gmail.com','outlook.com','yahoo.com','hotmail.com','icloud.com','aol.com'}):
             # Published, labeled off-domain contact; business/area still checked.
             choices.add(email)
+    # Some footers split the visible address across adjacent elements:
+    # "info" + "@" + "example.com", or write "info [at] example.com".
+    # Only company-domain matches may be reconstructed, never guessed.
+    spaced=re.compile(r'([A-Za-z0-9._%+\-]{2,64})\s*(?:@|\[at\]|\(at\))\s*'
+                      r'([A-Za-z0-9.-]+\.[A-Za-z]{2,})',re.I)
+    for match in spaced.finditer(text):
+        address=(match.group(1)+'@'+match.group(2)).lower()
+        if not email_valid(address) or not _company_domain(address,site):
+            continue
+        if DESIGNER.search(text[max(0,match.start()-90):match.end()+70]):
+            continue
+        choices.add(address)
     return sorted(choices),parsed
 
 
@@ -258,6 +327,7 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
     boxes=set()
     visible=[]
     phone_match=False
+    structured_area=False
     for receipt in page_receipts:
         html=receipt.document
         title=Page();title.feed(html)
@@ -266,6 +336,11 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
         text=" ".join(parsed.text)[:50000]
         title_text=" ".join(title.title_text)
         names.extend([title_text,*page_names.names])
+        schema_names,schema_emails,schema_phones,schema_area=structured_company_contacts(
+            html,src_host,row["business_name"],row["market"])
+        names.extend(schema_names)
+        boxes.update(schema_emails)
+        structured_area=structured_area or schema_area
         visible.append(text)
         pages.append(receipt)
         boxes.update(addresses)
@@ -273,11 +348,11 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
         if len(phone)==10:
             phones={digits(p) for p in parsed.phones}
             phones.update(digits(m.group()) for m in PHONE.finditer(text))
-            if phone in phones:phone_match=True
+            if phone in phones or phone in schema_phones:phone_match=True
     text=" ".join(visible)
     identity=any(identity_matches(row["business_name"],title,str(row["market"]))
                  for title in names)
-    area=contains_market(text,row["market"])
+    area=contains_market(text,row["market"]) or structured_area
     if not identity or not (area or phone_match):
         return {"status":"needs_review","reason":"business_or_area_unproven"}
     email=choose_email(sorted(boxes),src_host,identity)
@@ -309,14 +384,14 @@ async def process_batch(pool,limit=BATCH_LIMIT,inspector=inspect_public_contact)
             claimed=await conn.fetchval("""
               insert into interest_first_contact_research
                 (candidate_id,status,attempts,last_attempt_at,next_attempt_at,reason,parser_version)
-              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress',2)
+              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress',3)
               on conflict(candidate_id) do update
               set status='running',attempts=interest_first_contact_research.attempts+1,
                   last_attempt_at=now(),next_attempt_at=now()+interval '5 minutes',
-                  updated_at=now(),parser_version=2
+                  updated_at=now(),parser_version=3
               where interest_first_contact_research.attempts<3 and
                 (interest_first_contact_research.next_attempt_at<now() or
-                 (interest_first_contact_research.parser_version<2 and
+                 (interest_first_contact_research.parser_version<3 and
                    (interest_first_contact_research.status in ('no_public_mailbox','needs_review')
                     or (interest_first_contact_research.status='fetch_failed' and
                         interest_first_contact_research.reason='bounded_inspection_failed'))))
