@@ -153,7 +153,7 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
         docker=(HERE/'api'/'Dockerfile').read_text()
         self.assertIn('interest_contact_research.py',docker)
         scheduler=(HERE/'scheduler.sh').read_text()
-        self.assertIn('post /api/process-interest-contact-research 180',scheduler)
+        self.assertIn('post /api/process-interest-contact-research 240',scheduler)
         relay=(HERE/'vps-gitops-relay.py').read_text()
         self.assertIn('interest_contact_research_step',relay)
         self.assertIn('interest_contact_research_status',relay)
