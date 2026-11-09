@@ -91,6 +91,7 @@ API_ACTIONS = {
     "growth_stage_pressure_washing": "/api/admin/stage-growth-pressure-washing",
     "growth_stage_commercial_cleaning": "/api/admin/stage-growth-commercial-cleaning",
     "interest_first_preview": "/api/admin/interest-first-preview",
+    "interest_first_readiness": "/api/admin/interest-first-readiness",
     "interest_first_stage": "/api/admin/interest-first-stage",
     "interest_first_send_batch": "/api/admin/interest-first-send-batch",
 }
