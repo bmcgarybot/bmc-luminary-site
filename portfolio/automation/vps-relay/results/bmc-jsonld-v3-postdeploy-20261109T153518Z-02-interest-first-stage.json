@@ -1,0 +1,27 @@
+{
+  "action": "interest_first_stage",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-09T15:36:29.226641+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "7c390006694ee9d85c172fda8340971996e98f59",
+  "request_id": "bmc-jsonld-v3-postdeploy-20261109T153518Z-02-interest-first-stage",
+  "request_sha256": "d38271b245451e632bdd41f9c1855df07cba978be55c3ab350b390213a98b592",
+  "started_at": "2026-11-09T15:36:29.047032+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"staged\": 2,\n      \"skipped\": 0,\n      \"by_service\": {\n        \"epoxy_flooring\": 1,\n        \"window_cleaning\": 1\n      },\n      \"sent\": 0,\n      \"paid_research_calls\": 0,\n      \"outreach_hold_unchanged\": true,\n      \"note\": \"Queued for one-time invitation only. Existing samples and campaigns remain unchanged.\"\n    }\n  ]\n}",
+  "version": 1
+}
