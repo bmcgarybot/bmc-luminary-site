@@ -7,7 +7,8 @@ Research is stored separately from immutable original inventory records.
 import asyncio
 import re
 from datetime import datetime, timezone
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urljoin, unquote, parse_qsl
+from html.parser import HTMLParser
 
 from contact_enrichment import _ContactPage, DESIGNER, PHONE, EMAIL
 from interest_first import email_valid
@@ -84,6 +85,91 @@ def contains_market(text,market):
     if place=="prescott":
         return bool(re.search(r"\bprescott\b(?!\s+valley\b)",hay))
     return " "+place+" " in " "+hay+" "
+
+class _TolerantContactPage(_ContactPage):
+    """Resilient website parser; the strict accepted-provider verifier is unchanged."""
+    def handle_starttag(self,tag,attrs):
+        cleaned=[]
+        for key,value in attrs:
+            if key=='href' and tag=='a' and isinstance(value,str) and value.lower().startswith('mailto:'):
+                parts=urlsplit(value)
+                recipient=unquote(parts.path).lower()
+                keys={k.lower() for k,_ in parse_qsl(parts.query,keep_blank_values=True)}
+                if EMAIL.fullmatch(recipient) and not parts.fragment and keys <= {'subject'}:
+                    value='mailto:'+recipient
+                else:
+                    value='#invalid-mailto'
+            if key=='data-cfemail' and (
+                 not isinstance(value,str) or not re.fullmatch(r'[0-9a-fA-F]{6,512}',value)
+                 or len(value)%2):
+                continue
+            cleaned.append((key,value))
+        try:
+            super().handle_starttag(tag,cleaned)
+        except (ValueError,UnicodeError):
+            # Ignore a malformed email attribute rather than losing the page.
+            remaining=[(k,v) for k,v in cleaned if k!='data-cfemail' and
+                       not (k=='href' and str(v).startswith('mailto:'))]
+            super().handle_starttag(tag,remaining)
+
+
+class _BusinessIdentity(HTMLParser):
+    """Use visible H1/H2 and site-name metadata when <title> says only Home."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.names=[]
+        self.heading=None
+        self.parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag in ('h1','h2') and self.heading is None:
+            self.heading=tag
+            self.parts=[]
+        if tag=='meta' and str(attrs.get('property') or attrs.get('name') or '').lower() in (
+             'og:site_name','application-name'):
+            name=str(attrs.get('content') or '').strip()
+            if name:self.names.append(name[:240])
+    def handle_endtag(self,tag):
+        if tag==self.heading:
+            name=' '.join(self.parts).strip()
+            if name:self.names.append(name[:240])
+            self.heading=None
+            self.parts=[]
+    def handle_data(self,data):
+        if self.heading:self.parts.append(data)
+
+
+def _company_domain(email,site_host):
+    domain=email.rsplit('@',1)[-1].lower()
+    return bool(site_host and (domain==site_host or site_host.endswith('.'+domain)))
+
+
+def _visible_contact_label(text,index):
+    before=text[max(0,index-90):index]
+    return bool(re.search(r'(?:^|[\s:|])(?:e-?mail|contact|reach us)\s*(?::|at|is)?\s*$',before,re.I))
+
+
+def observed_contact_pages(url,document):
+    """Sort every observed same-host contact link before limiting navigation."""
+    page=Page();page.feed(document)
+    found=[]
+    for href in page.links:
+        link=urljoin(url,href)
+        parts=urlsplit(link)
+        if (not allowed_url(link) or host(link)!=host(url) or parts.query or
+            parts.fragment or link==url or len(parts.path)>200 or
+            BLOCKED_PATHS.search(parts.path)):
+            continue
+        if re.search(r'(?:^|/)(?:contact(?:-us)?|get-in-touch|reach-us|locations?|about(?:-us)?)(?:/|[.-]|$)',
+                     parts.path,re.I) and link not in found:
+            found.append(link)
+    def priority(link):
+        path=urlsplit(link).path.lower()
+        if re.search(r'/(?:contact(?:-us)?|get-in-touch|reach-us)(?:/|[.-]|$)',path):return 0
+        if re.search(r'/locations?(?:/|[.-]|$)',path):return 1
+        return 2
+    return sorted(found,key=lambda link:(priority(link),link))
+
 
 def mailboxes(document,site_host=""):
     """Find explicit and visible company-domain mailboxes; never guess addresses.
