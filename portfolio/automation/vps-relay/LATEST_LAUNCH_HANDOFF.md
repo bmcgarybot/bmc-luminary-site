@@ -1,3 +1,57 @@
+# LATEST VERIFIED BMC HELD-LAUNCH UPDATE — 2026-11-08 20:28 MST / 2026-11-09 03:28 UTC (NO SEND)
+
+## Exact PR, CI, backup, deploy
+- PR #112 (supersedes open #111 and builds on merged #110) was already deployed at `055e2e50c099a684b91d6585b80b0d7d48fb8061` with runtime 0 failures/warnings.
+- This run identified a reporting bug: adding distinct email counts from multiple market/service cells overstated company contact coverage; concurrent stage-only calls also lacked a dedicated serialization lock. PR **#113** merged as exact master `d166837120b4eed2568d6bfab6813730b3681d26`. Branch Portfolio CI SUCCESS (push 42555091276, PR 42555120797), exact-master Portfolio CI **42555596187 SUCCESS** and Pages **42555596211 SUCCESS**.
+- Guarded no-external-actions deployment `bmc-overnight-held-census-deploy-20261109T032336` succeeded at **03:25:39 UTC**, VPS before `055e2e50` / after `d1668371`, exit 0. Isolated-restorable backup `backups/bmc_20261109_032412.dump` checksum OK and independent restore-test PASS (54 services, 212 vendors, 4,855 buyers, 849 research). Runtime doctor **0 core failures, 0 warnings**; API, scheduler and research refresher healthy. No resets or campaign releases.
+- The new query deduplicates recorded vendor email identities separately across a whole market, across a service, and globally; reports raw rows missing both recorded email and phone. It exports aggregate totals **only**, not any addresses. Staging transactions now use a PostgreSQL transaction-scoped advisory lock so the scheduler and guarded relay cannot simultaneously create the same new campaign queue row.
+
+## Exact live queue and source coverage — 03:26–03:27 UTC
+- `growth_interest_first` **168 staged, 168 queued, 0 new-campaign SMTP submissions/replies** across 22 literal queued-geography labels, compared with 21 base inventory markets. **Seligman has 0 staged**. Market-alias rows `Kingman / Mohave County` and `Phoenix Metro / Statewide` must not be silently merged into Kingman/Phoenix or treated as new canonical market coverage.
+- Existing *vendor inventory* **51,034 market/category records across 21 markets** (up 4 rows since the 03:02 UTC report, source of growth not attributed to this run); **124 distinct recorded public-email strings across the whole inventory** (not verified deliverability or including normalized vendors). Summing distinct market-level email counts gives **154** and would overstate global identities; the prior per-category-summed market totals were **169**. **13,867 vendor records** have a phone recorded; **37,157 rows** have neither recorded email nor recorded phone. Inventory rows are not deduplicated businesses and the source_url field may be a directory rather than proof of service territory.
+- Post-deploy **stage-only** request `bmc-overnight-postrelease-20261109T032629016Z-02-interest-first-stage`: **0 newly staged, 0 skipped, 0 customer sends, 0 paid AI calls**. Read-only `interest_first_preview`: **0 additional currently eligible unqueued addresses** (NOT zero existing staged contacts). No evidence supports 500+ contactable SMTP recipients.
+- Separate existing Growth cached-reserve audit at 02:38 UTC: 84 configured market/service lanes; only **40** nominal free-five-capacity lanes (commercial cleaning and pressure washing, 20 markets each) and **1** 125-account paid-reserve-capable lane (Phoenix commercial cleaning). These are preliminary inventory thresholds before account/source/exposure/customer-specific checks, **not five source-validated pre-matches per recipient** or customer-ready offers. Junk and tree lanes lack nominal free-five reserve. No paid order.
+- Historical records preserved: outreach rows **327**, historic SMTP submissions **22** (not delivered inbox proof), 2 older samples marked delivered in the system, 0 recorded replies, 0 paid orders and **$0 revenue**. Narrower observation window has 17 SMTP accepts; acceptance is NOT inbox delivery.
+- Verified operator snapshot 03:26:50 UTC: VPS SHA `d1668371`, owner launch hold **ON**, `OUTREACH_ENABLED=false`, `BUYER_OUTREACH_ENABLED=false`, `GROWTH_OUTREACH_ENABLED=false`. Separate `INTEREST_FIRST_OUTREACH_ENABLED=false` from live readiness; API/runtime/scheduler healthy. **0 active providers**, so live intake remains blocked. No external release, customer send, order, provider activation or charge.
+- Existing paid catalogue AI driver is still stopped; internal research ledger conservatively reserves **$43.798691 of $50** and reports **$6.201309 available**, *not a bill or actual OpenAI credit statement*. Do not restart or change the cap. The latest public search-quality probe returned irrelevant Montreal/Europe results for Arizona queries; no promotion or paid source research should be resumed until relevance and contact provenance are corrected.
+- Private Mac review/audit files are not mounted in this runtime and were not changed. Older handoff history below is preserved verbatim. Coordinate with hourly Revenue Watch rather than duplicating source/API runs.
+
+## Full stage-only geography × service and contact-route gap (aggregate, no private contacts)
+
+| Market | Inventory vendor rows | Unique recorded inventory emails in this market | Phone rows | Neither email nor phone recorded | Staged (queued) | Staged service types (count) |
+|---|---:|---:|---:|---:|---:|---|
+| Ash Fork | 1197 | 4 | 86 | 1111 | 3 | hvac_heat:1; towing_roadside:1; tree_service:1 |
+| Bullhead City | 1641 | 5 | 578 | 1063 | 5 | backflow_plumbing:1; electrical_service:1; locksmith_access:1; pressure_washing:1; tree_service:1 |
+| Camp Verde | 1717 | 4 | 397 | 1317 | 4 | facility_maintenance:1; handyman_repairs:1; junk_hauling:1; landscaping:1 |
+| Chino Valley | 2081 | 3 | 572 | 1509 | 5 | junk_hauling:2; landscaping:1; linen_laundry:1; tree_service:1 |
+| Cordes Lakes | 1357 | 9 | 79 | 1278 | 8 | backflow_plumbing:2; commercial_cleaning:1; junk_hauling:1; locksmith_access:1; parking_lot:2; pest_control:1 |
+| Cottonwood | 2171 | 5 | 655 | 1515 | 5 | backflow_plumbing:1; hvac_heat:1; junk_hauling:1; landscaping:1; mobile_pet_grooming:1 |
+| Dewey-Humboldt | 1565 | 5 | 323 | 1242 | 2 | electrical_service:1; junk_hauling:1 |
+| Flagstaff | 2486 | 3 | 1146 | 1339 | 11 | commercial_cleaning:3; electrical_service:1; landscaping:2; pest_control:1; towing_roadside:2; tree_service:2 |
+| Golden Valley | 1502 | 4 | 221 | 1280 | 1 | fire_safety:1 |
+| Kingman | 2213 | 2 | 828 | 1385 | 17 | electrical_service:1; junk_hauling:1; landscaping:1; mobile_tire_battery:2; pressure_washing:1; rural_property:9; towing_roadside:2 |
+| Mayer | 1467 | 10 | 175 | 1292 | 3 | backflow_plumbing:1; parking_lot:1; tree_service:1 |
+| Phoenix | 10063 | 44 | 2106 | 7957 | 35 | auto_glass:2; backflow_plumbing:2; electrical_service:2; epoxy_flooring:1; garage_door:3; handyman_repairs:2; junk_hauling:1; landscaping:6; mobile_pet_grooming:2; pest_control:1; pet_waste:1; pressure_washing:9; residential_cleaning:2; towing_roadside:1 |
+| Prescott | 2659 | 12 | 992 | 1667 | 14 | backflow_plumbing:1; equipment_quotes:1; hvac_heat:1; junk_hauling:3; landscaping:5; pet_waste:1; pressure_washing:1; tree_service:1 |
+| Prescott Valley | 2176 | 10 | 843 | 1333 | 9 | backflow_plumbing:2; electrical_service:1; garage_door:1; landscaping:1; locksmith_access:1; pet_waste:1; pressure_washing:1; tree_service:1 |
+| Scottsdale | 5558 | 1 | 2121 | 3437 | 9 | pressure_washing:1; str_property_care:8 |
+| Sedona | 1530 | 2 | 354 | 1176 | 6 | landscaping:1; str_property_care:3; tree_service:2 |
+| Seligman | 461 | 1 | 51 | 410 | 0 | none |
+| Skull Valley | 877 | 13 | 82 | 792 | 6 | facility_maintenance:1; handyman_repairs:1; pest_control:1; tree_service:3 |
+| Tucson | 6818 | 1 | 1978 | 4840 | 16 | backflow_plumbing:2; fire_safety:1; hvac_heat:7; pool_desert_property:6 |
+| Williamson Valley | 935 | 14 | 66 | 868 | 4 | facility_maintenance:1; floor_carpet:1; hvac_heat:1; tree_service:1 |
+| Winslow | 560 | 2 | 214 | 346 | 3 | auto_glass:1; electrical_service:2 |
+| Kingman / Mohave County (campaign alias, outside 21 inventory labels) | — | — | — | — | 1 | duct_vent:1 |
+| Phoenix Metro / Statewide (campaign alias, outside 21 inventory labels) | — | — | — | — | 1 | hvac_heat:1 |
+
+**All staged service categories (queued):** auto_glass 3; backflow_plumbing 12; commercial_cleaning 4; duct_vent 1; electrical_service 9; epoxy_flooring 1; equipment_quotes 1; facility_maintenance 3; fire_safety 2; floor_carpet 1; garage_door 4; handyman_repairs 4; hvac_heat 12; junk_hauling 11; landscaping 19; linen_laundry 1; locksmith_access 3; mobile_pet_grooming 3; mobile_tire_battery 2; parking_lot 3; pest_control 4; pet_waste 3; pool_desert_property 6; pressure_washing 14; residential_cleaning 2; rural_property 9; str_property_care 11; towing_roadside 6; tree_service 14.
+
+**Current blocking gaps:** 37,157 inventory rows without either recorded channel; only 124 distinct inventory email strings, unverified; no further eligible unsuppressed unqueued emails in preview; no Seligman campaign stage; off-market search results; inadequate source-validated five-prospect samples for most service types; 0 provider activations and 0 replies. Continue free/public source validation and stage-only, with holds unchanged.
+
+**Immutable evidence:** `portfolio/automation/vps-relay/results/bmc-overnight-held-census-deploy-20261109T032336.json` and `portfolio/automation/vps-relay/results/bmc-overnight-postrelease-20261109T032629016Z-{01..05}-*.json` on `vps-relay`. The five exact files are keyed by their action names above. PR #113: https://github.com/bmcgarybot/bmc-luminary-site/pull/113 .
+
+---
+
 # BMC CONCURRENT WORK RECONCILIATION — NOV 8 20:24 MST (NOV 9 UTC)
 
 ## Do not confuse production, merged work, and the pending contact collector
