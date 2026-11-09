@@ -206,6 +206,110 @@ class ContactResearchTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn('by_reason',aggregate_status.__code__.co_consts[0] if False else (HERE/'api'/'interest_contact_research.py').read_text())
         self.assertIn('by_market', (HERE/'api'/'interest_contact_research.py').read_text())
 
+    async def test_mailto_subject_is_a_single_published_company_address(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Example Yard Care in Prescott</title><body>'
+             '<h1>Example Yard Care</h1><p>Serving Prescott Arizona</p>'
+             '<a href="mailto:office@example-yard-care.com?subject=Estimate">Email us</a>'
+             '</body></html>')
+        result=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'ready')
+        self.assertEqual(result['email'],'office@example-yard-care.com')
+
+    async def test_footer_mail_survives_unrelated_web_designer_credit(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Home</title><body><h1>Example Yard Care</h1>'
+             '<p>Prescott Arizona</p><footer>'
+             '<a href="mailto:help@example-yard-care.com">Email us</a>'
+             '<p>Website designed by Agency Inc.</p></footer></body></html>')
+        result=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'ready')
+        self.assertEqual(result['email'],'help@example-yard-care.com')
+
+    async def test_labeled_gmail_on_business_contact_page_is_detected(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Home</title><body><h1>Example Yard Care</h1>'
+             '<p>Prescott Arizona</p><footer>'
+             'Email: exampleyardcare@gmail.com</footer></body></html>')
+        result=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'ready')
+        self.assertEqual(result['email'],'exampleyardcare@gmail.com')
+
+    async def test_unlabeled_gmail_and_offsite_designers_not_accepted(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Example Yard Care Prescott</title><body>'
+             '<h1>Example Yard Care</h1><p>Prescott Arizona</p>'
+             '<p>Thanks from randomperson@gmail.com!</p>'
+             '<p>Website designed by Other Co. Email: designer@gmail.com</p>'
+             '</body></html>')
+        result=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'no_public_mailbox')
+        self.assertNotIn('email',result)
+
+    async def test_follow_actual_contact_link_after_multiple_about_links(self):
+        from interest_contact_research import inspect_public_contact
+        pages={
+          'https://example-yard-care.com/':('<html><title>Home</title><body>'
+             '<h1>Example Yard Care</h1><p>Prescott Arizona</p>'
+             '<a href="/about/">About</a><a href="/about-us/">More about</a>'
+             '<a href="/contact-us/">Reach us</a></body></html>'),
+          'https://example-yard-care.com/contact-us/':(
+             '<html><title>Contact</title><body><h1>Example Yard Care</h1>'
+             '<p>Prescott Arizona</p><p>Email: info@example-yard-care.com</p>'
+             '</body></html>')
+        }
+        visited=[]
+        def fake(url):
+            visited.append(url)
+            if url not in pages:raise AssertionError('Visited a non-contact page')
+            return self.receipt(url,pages[url])
+        result=await inspect_public_contact(self.row(),fetch=fake)
+        self.assertEqual(result['status'],'ready')
+        self.assertEqual(result['email'],'info@example-yard-care.com')
+        self.assertEqual(visited,list(pages))
+
+    async def test_contact_form_is_a_separate_held_route_not_an_email(self):
+        from interest_contact_research import inspect_public_contact
+        pages={
+          'https://example-yard-care.com/':(
+            '<html><title>Example Yard Care</title><body><h1>Example Yard Care</h1>'
+            '<p>Prescott Arizona</p><a href="/contact/">Contact</a></body></html>'),
+          'https://example-yard-care.com/contact/':(
+            '<html><title>Example Yard Care Contact</title><body>'
+            '<h1>Example Yard Care</h1><p>Prescott Arizona</p>'
+            '<form method="post"><input name="message"></form></body></html>')
+        }
+        result=await inspect_public_contact(self.row(),
+             fetch=lambda url:self.receipt(url,pages[url]))
+        self.assertEqual(result['status'],'no_public_mailbox')
+        self.assertEqual(result['reason'],'public_contact_form_only')
+        self.assertNotIn('email',result)
+
+    async def test_mailto_with_bcc_is_not_a_single_public_address(self):
+        from interest_contact_research import inspect_public_contact
+        doc=('<html><title>Example Yard Care Prescott</title><body>'
+             '<h1>Example Yard Care</h1><p>Prescott Arizona</p>'
+             '<a href="mailto:info@example-yard-care.com?bcc=hidden@external.test">'
+             'Email us</a></body></html>')
+        result=await inspect_public_contact(self.row(),fetch=lambda url:self.receipt(url,doc))
+        self.assertEqual(result['status'],'no_public_mailbox')
+        self.assertNotIn('email',result)
+
+    def test_v2_rechecks_old_failed_and_unmatched_pages_once(self):
+        from interest_contact_research import CANDIDATE_SQL
+        self.assertIn("r.parser_version < 2",CANDIDATE_SQL)
+        self.assertIn("earlier.candidate_id<>c.candidate_id",CANDIDATE_SQL)
+        self.assertIn('"by_parser_version":[dict(r) for r in version_counts]',(HERE/'api'/'interest_contact_research.py').read_text())
+        self.assertIn("r.status in ('no_public_mailbox','needs_review')",CANDIDATE_SQL)
+        self.assertIn("r.reason='bounded_inspection_failed'",CANDIDATE_SQL)
+        self.assertNotIn("r.reason='source_fetch_unavailable'",CANDIDATE_SQL)
+        code=(HERE/'api'/'interest_contact_research.py').read_text()
+        self.assertIn("parser_version=2",code)
+        self.assertIn("parser_version<2",code)
+        self.assertIn('"no_public_mailbox_in_fetched_html"',code)
+        schema=(HERE/'schema.sql').read_text()
+        self.assertIn("add column if not exists parser_version integer not null default 1",schema)
+
     def test_stage_requires_fresh_independent_source_evidence(self):
         self.assertIn("ir.status='ready'",m.CANDIDATE_SQL)
         self.assertIn("interest_first_contact_research",m.CANDIDATE_SQL)

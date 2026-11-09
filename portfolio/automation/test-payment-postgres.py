@@ -86,7 +86,7 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         from interest_contact_research import CANDIDATE_SQL as CONTACT_RESEARCH_CANDIDATES
         async with self.pool.acquire() as conn:
             candidates=await conn.fetch(CONTACT_RESEARCH_CANDIDATES,4)
-            status=await conn.fetch("select candidate_id,status,attempts,next_attempt_at from interest_first_contact_research limit 2")
+            status=await conn.fetch("select candidate_id,status,attempts,next_attempt_at,parser_version from interest_first_contact_research limit 2")
         self.assertEqual(candidates,[])
         self.assertEqual(status,[])
 

@@ -1419,3 +1419,9 @@ create table if not exists interest_first_contact_research (
 );
 create index if not exists idx_interest_first_contact_research_status_due
   on interest_first_contact_research(status,next_attempt_at);
+
+-- Parser v2 fixes footer/header/visible Gmail handling. Previously rejected
+-- candidates can be rechecked once without resetting evidence or history.
+alter table interest_first_contact_research
+  add column if not exists parser_version integer not null default 1;
+

@@ -7,7 +7,8 @@ Research is stored separately from immutable original inventory records.
 import asyncio
 import re
 from datetime import datetime, timezone
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urljoin, unquote, parse_qsl
+from html.parser import HTMLParser
 
 from contact_enrichment import _ContactPage, DESIGNER, PHONE, EMAIL
 from interest_first import email_valid
@@ -34,7 +35,10 @@ with candidates as (
    and coalesce(c.public_email,'')='' and coalesce(c.business_name,'')<>''
    and coalesce(c.source_domain,'')<>'' and c.source_url like 'https://%'
    and (r.candidate_id is null or
-        (r.next_attempt_at < now() and r.attempts < 3))
+        (r.next_attempt_at < now() and r.attempts < 3) or
+        (r.parser_version < 2 and r.attempts < 3 and
+         (r.status in ('no_public_mailbox','needs_review') or
+          (r.status='fetch_failed' and r.reason='bounded_inspection_failed'))))
    and not exists(select 1 from growth_outreach_targets g
      where lower(g.business_name)=lower(c.business_name) and g.market=c.market
        and g.service_key=c.category_key)
@@ -43,7 +47,8 @@ with candidates as (
    and not exists (
       select 1 from interest_first_contact_research earlier
       join market_inventory_candidates seen on seen.candidate_id=earlier.candidate_id
-      where lower(seen.source_domain)=lower(c.source_domain)
+      where earlier.candidate_id<>c.candidate_id
+        and lower(seen.source_domain)=lower(c.source_domain)
         and regexp_replace(lower(seen.business_name),'[^a-z0-9]','','g') =
             regexp_replace(lower(c.business_name),'[^a-z0-9]','','g')
         and earlier.last_attempt_at > now()-interval '14 days')
@@ -85,6 +90,91 @@ def contains_market(text,market):
         return bool(re.search(r"\bprescott\b(?!\s+valley\b)",hay))
     return " "+place+" " in " "+hay+" "
 
+class _TolerantContactPage(_ContactPage):
+    """Resilient website parser; the strict accepted-provider verifier is unchanged."""
+    def handle_starttag(self,tag,attrs):
+        cleaned=[]
+        for key,value in attrs:
+            if key=='href' and tag=='a' and isinstance(value,str) and value.lower().startswith('mailto:'):
+                parts=urlsplit(value)
+                recipient=unquote(parts.path).lower()
+                keys={k.lower() for k,_ in parse_qsl(parts.query,keep_blank_values=True)}
+                if EMAIL.fullmatch(recipient) and not parts.fragment and keys <= {'subject'}:
+                    value='mailto:'+recipient
+                else:
+                    value='#invalid-mailto'
+            if key=='data-cfemail' and (
+                 not isinstance(value,str) or not re.fullmatch(r'[0-9a-fA-F]{6,512}',value)
+                 or len(value)%2):
+                continue
+            cleaned.append((key,value))
+        try:
+            super().handle_starttag(tag,cleaned)
+        except (ValueError,UnicodeError):
+            # Ignore a malformed email attribute rather than losing the page.
+            remaining=[(k,v) for k,v in cleaned if k!='data-cfemail' and
+                       not (k=='href' and str(v).startswith('mailto:'))]
+            super().handle_starttag(tag,remaining)
+
+
+class _BusinessIdentity(HTMLParser):
+    """Use visible H1/H2 and site-name metadata when <title> says only Home."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.names=[]
+        self.heading=None
+        self.parts=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if tag in ('h1','h2') and self.heading is None:
+            self.heading=tag
+            self.parts=[]
+        if tag=='meta' and str(attrs.get('property') or attrs.get('name') or '').lower() in (
+             'og:site_name','application-name'):
+            name=str(attrs.get('content') or '').strip()
+            if name:self.names.append(name[:240])
+    def handle_endtag(self,tag):
+        if tag==self.heading:
+            name=' '.join(self.parts).strip()
+            if name:self.names.append(name[:240])
+            self.heading=None
+            self.parts=[]
+    def handle_data(self,data):
+        if self.heading:self.parts.append(data)
+
+
+def _company_domain(email,site_host):
+    domain=email.rsplit('@',1)[-1].lower()
+    return bool(site_host and (domain==site_host or site_host.endswith('.'+domain)))
+
+
+def _visible_contact_label(text,index):
+    before=text[max(0,index-90):index]
+    return bool(re.search(r'(?:^|[\s:|])(?:e-?mail|contact|reach us)\s*(?::|at|is)?\s*$',before,re.I))
+
+
+def observed_contact_pages(url,document):
+    """Sort every observed same-host contact link before limiting navigation."""
+    page=Page();page.feed(document)
+    found=[]
+    for href in page.links:
+        link=urljoin(url,href)
+        parts=urlsplit(link)
+        if (not allowed_url(link) or host(link)!=host(url) or parts.query or
+            parts.fragment or link==url or len(parts.path)>200 or
+            BLOCKED_PATHS.search(parts.path)):
+            continue
+        if re.search(r'(?:^|/)(?:contact(?:-us)?|get-in-touch|reach-us|locations?|about(?:-us)?)(?:/|[.-]|$)',
+                     parts.path,re.I) and link not in found:
+            found.append(link)
+    def priority(link):
+        path=urlsplit(link).path.lower()
+        if re.search(r'/(?:contact(?:-us)?|get-in-touch|reach-us)(?:/|[.-]|$)',path):return 0
+        if re.search(r'/locations?(?:/|[.-]|$)',path):return 1
+        return 2
+    return sorted(found,key=lambda link:(priority(link),link))
+
+
 def mailboxes(document,site_host=""):
     """Find explicit and visible company-domain mailboxes; never guess addresses.
 
@@ -93,31 +183,38 @@ def mailboxes(document,site_host=""):
     the source company domain. Reject designer attribution and role mailboxes
     that are clearly not for business introductions.
     """
-    parsed=_ContactPage()
+    parsed=_TolerantContactPage()
     parsed.feed(document)
     choices=set()
     blocked_roles={"careers","jobs","hr","webmaster","legal","press","media","billing","accounts"}
-    for email,kind,frame in parsed.mail:
-        if not email_valid(email) or email.split("@",1)[0] in blocked_roles:continue
-        frame_text=" ".join(frame["text"])
-        if DESIGNER.search(frame_text) or DESIGNER.search(str(frame["attrs"])):
-            continue
-        choices.add(email.lower())
-    text=" ".join(parsed.text)
     site=str(site_host or "").lower().removeprefix("www.")
-    if site:
-        for match in EMAIL.finditer(text):
-            email=match.group(0).lower()
-            local,domain=email.split("@",1)
-            if not email_valid(email) or local in blocked_roles:
+    text=" ".join(parsed.text)
+    for email,kind,frame in parsed.mail:
+        email=email.lower()
+        if not email_valid(email) or email.split('@',1)[0] in blocked_roles:
+            continue
+        # A footer containing both a business mailbox and "site designed by"
+        # must not discard the business's own-domain email.
+        if not _company_domain(email,site):
+            context=" ".join(frame["text"])
+            if DESIGNER.search(context) or DESIGNER.search(str(frame["attrs"])):
                 continue
-            if domain!=site and not site.endswith("."+domain):
-                continue
-            nearby=text[max(0,match.start()-90):min(len(text),match.end()+60)]
-            if DESIGNER.search(nearby):
-                continue
+        choices.add(email)
+    for match in EMAIL.finditer(text):
+        email=match.group(0).lower()
+        local=email.split('@',1)[0]
+        if not email_valid(email) or local in blocked_roles:continue
+        nearby=text[max(0,match.start()-100):min(len(text),match.end()+70)]
+        if DESIGNER.search(nearby):continue
+        if _company_domain(email,site):
+            choices.add(email)
+        elif (_visible_contact_label(text,match.start()) and
+              email.rsplit('@',1)[-1] in
+              {'gmail.com','outlook.com','yahoo.com','hotmail.com','icloud.com','aol.com'}):
+            # Published, labeled off-domain contact; business/area still checked.
             choices.add(email)
     return sorted(choices),parsed
+
 
 def choose_email(addresses,site_host,identity_proven):
     if not identity_proven or not addresses:return None
@@ -143,10 +240,8 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
            any(host(h)!=src_host for h in primary.redirect_chain)):
             return {"status":"needs_review","reason":"unexpected_redirect"}
         page_receipts.append(primary)
-        observed=contact_links(primary.final_url,primary.document)
-        # Prefer a published contact page to an about/location page when both
-        # exist; no more than one additional same-site GET is performed.
-        observed.sort(key=lambda u: 0 if re.search(r"/contact(?:-us)?(?:/|[.-]|$)",urlsplit(u).path,re.I) else 1)
+        observed=observed_contact_pages(primary.final_url,primary.document)
+        # One additional same-host fetch at most; no forms or scripts run.
         if observed:
             try:
                 secondary=await asyncio.wait_for(asyncio.to_thread(fetch,observed[0]),25)
@@ -166,11 +261,11 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
     for receipt in page_receipts:
         html=receipt.document
         title=Page();title.feed(html)
+        page_names=_BusinessIdentity();page_names.feed(html)
         addresses,parsed=mailboxes(html,src_host)
-        # Body/title is only local page evidence, never an instruction to execute.
         text=" ".join(parsed.text)[:50000]
         title_text=" ".join(title.title_text)
-        names.append(title_text)
+        names.extend([title_text,*page_names.names])
         visible.append(text)
         pages.append(receipt)
         boxes.update(addresses)
@@ -187,8 +282,15 @@ async def inspect_public_contact(row,fetch=fetch_page_receipt):
         return {"status":"needs_review","reason":"business_or_area_unproven"}
     email=choose_email(sorted(boxes),src_host,identity)
     if not email:
-        return {"status":"needs_review" if boxes else "no_public_mailbox",
-                "reason":"mailbox_ambiguous" if boxes else "no_published_mailto"}
+        if boxes:return {"status":"needs_review","reason":"mailbox_ambiguous"}
+        if any('<form' in p.document.lower() for p in pages) and any(
+                re.search(r'/contact(?:-us)?(?:/|[.-]|$)',urlsplit(p.final_url).path,re.I)
+                for p in pages):
+            return {"status":"no_public_mailbox","reason":"public_contact_form_only"}
+        if any(re.search(r'<(?:script|div)[^>]*(?:id|data-app)[^>]*(?:root|app)[^>]*>',
+                         p.document,re.I) for p in pages) and len(text)<180:
+            return {"status":"needs_review","reason":"client_rendered_contact_unavailable"}
+        return {"status":"no_public_mailbox","reason":"no_public_mailbox_in_fetched_html"}
     from hashlib import sha256
     receipt=next((p for p in pages if email in mailboxes(p.document,src_host)[0]),pages[0])
     return {"status":"ready","reason":"published_business_mailbox",
@@ -206,14 +308,18 @@ async def process_batch(pool,limit=BATCH_LIMIT,inspector=inspect_public_contact)
         async with pool.acquire() as conn:
             claimed=await conn.fetchval("""
               insert into interest_first_contact_research
-                (candidate_id,status,attempts,last_attempt_at,next_attempt_at,reason)
-              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress')
+                (candidate_id,status,attempts,last_attempt_at,next_attempt_at,reason,parser_version)
+              values ($1,'running',1,now(),now()+interval '5 minutes','in_progress',2)
               on conflict(candidate_id) do update
               set status='running',attempts=interest_first_contact_research.attempts+1,
                   last_attempt_at=now(),next_attempt_at=now()+interval '5 minutes',
-                  updated_at=now()
-              where interest_first_contact_research.next_attempt_at<now()
-                and interest_first_contact_research.attempts<3
+                  updated_at=now(),parser_version=2
+              where interest_first_contact_research.attempts<3 and
+                (interest_first_contact_research.next_attempt_at<now() or
+                 (interest_first_contact_research.parser_version<2 and
+                   (interest_first_contact_research.status in ('no_public_mailbox','needs_review')
+                    or (interest_first_contact_research.status='fetch_failed' and
+                        interest_first_contact_research.reason='bounded_inspection_failed'))))
               returning candidate_id""",row["candidate_id"])
         if not claimed:
             already_claimed+=1
@@ -252,6 +358,9 @@ async def aggregate_status(pool):
            from interest_first_contact_research group by status order by status""")
         recent=await conn.fetchval("""select count(*) from interest_first_contact_research
            where last_attempt_at >= now()-interval '24 hours'""")
+        version_counts=await conn.fetch("""select parser_version,status,count(*)::integer as records
+           from interest_first_contact_research
+           group by parser_version,status order by parser_version,status""")
         reasons=await conn.fetch("""select status,reason,count(*)::integer as records
            from interest_first_contact_research
            group by status,reason order by records desc,status,reason limit 15""")
@@ -263,6 +372,7 @@ async def aggregate_status(pool):
     return {"ok":True,"read_only":True,"by_status":[dict(r) for r in rows],
             "by_reason":[dict(r) for r in reasons],
             "by_market":[dict(r) for r in markets],
+            "by_parser_version":[dict(r) for r in version_counts],
             "attempted_last_24h":int(recent or 0),"sent":0,"paid_api_calls":0}
 
 def install(app,require_admin):
