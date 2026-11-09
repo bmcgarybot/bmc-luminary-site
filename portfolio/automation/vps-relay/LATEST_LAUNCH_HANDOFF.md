@@ -1,3 +1,33 @@
+# BMC WEBSITE FOOTER CONTACT FIX — 2026-11-09 08:06 MST (15:06 UTC)
+
+**User direction:** Fix why BMC rejected real public email addresses at the bottom of business websites. NO customer sends or paid API research authorized. Do not change historical campaigns, recipients, opt-outs, Stripe, or budgets.
+
+## Specific defects verified from actual code
+- Collector called a strict `_ContactPage` parser that raises on common `mailto:info@business.com?subject=Question` links, throwing out otherwise usable pages.
+- Mailbox context checking used the *entire footer region* to exclude web designer emails; if a legitimate business mailbox shared a footer with a "designed by" credit, it could be discarded.
+- The title-only identity check rejected sites whose <title> is merely "Home" although the company name appears in H1/H2 or og:site_name metadata.
+- The shared contact-link finder returned only two links before the collector sorted them. /about links could displace an actual /contact page later in the HTML.
+- Ordinary visible labeled business Gmail/Outlook addresses and contact-form-only pages were not separately recognized. Client-rendered JavaScript contacts are still NOT renderable by the static crawler, and should be flagged for a browser review rather than invented.
+- Existing rejected records had a 14-day cooldown. Without an additive parser version, new extraction would not promptly revisit those sites.
+
+## Code completed, merged but deployment unverified at this checkpoint
+**PR #117** https://github.com/bmcgarybot/bmc-luminary-site/pull/117 , merged master SHA `33f975cb6de738f86714e6924e03de5e2364061b`. The corrected branch CI run `42639859601` succeeded. Exact-master Portfolio CI `42640612535` was still IN PROGRESS, Pages `42640612494` SUCCESS at 15:06 UTC. **Do NOT deploy until exact-master Portfolio CI SUCCESS**; check that master still matches.
+
+Changes restricted to `portfolio/automation/api/interest_contact_research.py`, additive `schema.sql` parser_version column, synthetic `test-interest-first.py`, and real DB `test-payment-postgres.py`. No send/payment/prospect-fulfillment path code changed. New research-only parser tolerates subject-prefilled mailto without allowing multiple recipients/bcc, malformed Cloudflare masks won't abort page research, company-domain footer mail survives unrelated designer credits, and explicitly labeled visible Gmail addresses can be considered only after original website identity + market/phone proof. It ranks all actual safe same-host contact links then visits at most one; accepts H1/H2/og:site_name identity. It records contact-form-only / JS-content-unavailable separately, never submits forms or runs scripts.
+
+**One-time historical recheck:** additive `parser_version` default1 for old rows, new claims marked2, old no_public_mailbox / business_or_area_unproven / bounded_inspection_failed records can be rechecked once without waiting 14 days (only attempts<3). Fixed own-candidate duplicate exclusion so self-recheck isn't accidentally blocked; same-business/domain duplicate cross-record hold remains. New read-only `by_parser_version` counts show recheck outcomes. No existing verified contacts invalidated. Strict source host/public DNS proof, old suppression and duplicate sender gates remain.
+
+## Measured predeployment baseline and next actions
+Read-only receipts prefix `bmc-footer-fix-pre-20261109T145912Z` at 15:00 UTC: deployed prior master `b2c8e566cf026ae2eef2e2b4d01b9ebf15c17ba6`, owner hold TRUE, three legacy send flags FALSE, independent interest-first sender FALSE, scheduler healthy. Source-site status **224 inspected/55 ready/99 no_public_mailbox/48 fetch_failed/22 needs_review**; 212 held interest-first contacts, all queued, 51,287 research rows not unique businesses. Internal conservative API allowance still $6.201309 under $50 cap ($43.798691 upper committed). Zero new campaign sends/replies/orders.
+
+Next Work/continuation:
+1. Verify exact-master Portfolio CI `42640612535` SUCCESS and master head matches SHA. If true, use allowlisted `deploy_update` with `required_ci_sha` via `vps-relay`. Must take and verify backup, check all four send switches/owner hold OFF/ON appropriately. No customer sends or paid research.
+2. Verify deployed SHA, API/scheduler, `interest_contact_research_status` new `by_parser_version`, and budget unchanged.
+3. Trigger 1–4 bounded source-only research steps (up to 4 websites each), then read source research status and stage-only; see whether parser v2 recovers old rejected addresses. Report **actual** ready results and staged growth, not speculative improved yields.
+4. Update this handoff with exact receipts and changes. Preserve all original nine Phoenix cohorts, historical 22 SMTP submissions, old research and samples. Browser rendering of JS-only sites is a later distinct Work task, not something currently deployed.
+
+---
+
 # MORNING GROWTH TUNING — NOVEMBER 9 07:07 MST / 14:07 UTC — VERIFIED NO SEND
 
 **Owner direction:** Use time before the ~1 PM usage reset to improve BMC's held launch readiness; do not send customers. Continue source-backed contact discovery while avoiding expensive speculative AI research and raw-record-count inflation.
