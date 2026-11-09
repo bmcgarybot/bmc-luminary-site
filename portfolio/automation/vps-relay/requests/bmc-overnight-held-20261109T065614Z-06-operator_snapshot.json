@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-overnight-held-20261109T065614Z-06-operator_snapshot",
+  "action": "operator_snapshot",
+  "created_at": "2026-11-09T06:56:14.000Z",
+  "expires_at": "2026-11-09T08:30:00.000Z",
+  "allow_external_actions": false,
+  "args": {}
+}
