@@ -52,9 +52,28 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             lambda row,*args,**kw:(row['service_key'],'Synthetic subject','Exact private text','<p>Exact private HTML</p>','https://example.test/owner/'+row['target_id']))
         self.approval=next(r.endpoint for r in app.routes if getattr(r,'path','')=='/api/admin/approve-scoped-journey')
         self.compiler=AsyncMock(side_effect=lambda *args,**kw:copy.deepcopy(self.packet))
-    async def call(self,key='allowed',diagnostics=False):
+    async def call(self,key='allowed',diagnostics=False,expected_identity_digest=""):
         with patch.object(api,'compile_native_packet',self.compiler),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
-            return await self.endpoint('test-journey-request',str(self.packet['recipient']['candidate_id']),key,diagnostics=diagnostics)
+            return await self.endpoint('test-journey-request',str(self.packet['recipient']['candidate_id']),key,
+                diagnostics=diagnostics,expected_identity_digest=expected_identity_digest)
+    async def test_reviewed_identity_correction_requires_current_digest_and_unscoped_target(self):
+        self.setup()
+        await self.call()
+        self.target['source_data']={}
+        self.preview=None
+        self.target['business_name']='Earlier directory label'
+        self.writes.clear()
+        review=self.decrypt(await self.call(diagnostics=True))
+        self.assertEqual(review['reason'],'target_identity_changed')
+        self.assertEqual(self.writes,[])
+        with self.assertRaises(HTTPException):
+            await self.call(expected_identity_digest='0'*64)
+        self.assertEqual(self.writes,[])
+        result=self.decrypt(await self.call(expected_identity_digest=review['identity_review']['digest']))
+        self.assertEqual(result['status'],'scoped_journey_draft')
+        self.assertEqual(result['profile']['business_name'],self.packet['recipient']['business_name'])
+        self.assertEqual(self.target['source_data']['identity_reconciliation']['current']['business_name'],
+            'Earlier directory label')
     async def test_diagnostics_encrypt_failure_without_creating_a_draft(self):
         self.setup()
         self.compiler.side_effect=ValueError('saved_five_immutable')

@@ -1,5 +1,6 @@
 """Held administrator journey preparation and explicit scope approval; no outreach."""
 import json
+import hashlib
 import hmac
 from datetime import datetime, timezone
 import re
@@ -19,9 +20,11 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
     if len(frozen)!=9: raise ValueError('original_nine_ids_required')
 
     @app.post('/api/admin/prepare-scoped-journey')
-    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), diagnostics: bool=False):
+    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), diagnostics: bool=False, expected_identity_digest: str=""):
         require_admin(x_bmc_admin_key)
         if not hold_required(): raise HTTPException(409,'owner_hold_required')
+        identity_review=None
+        reconciled=False
         try:
             if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id): raise ValueError('invalid_request')
             candidate=uuid.UUID(candidate_id)
@@ -48,7 +51,21 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                                 raise ValueError('target_identity_changed')
                         elif any(str(target.get(k) or '').lower()!=str(fields[k] or '').lower()
                                  for k in ('business_name','public_email','market','service_key','source_url')):
-                            raise ValueError('target_identity_changed')
+                            keys=('business_name','public_email','market','service_key','source_url')
+                            identity_review=dict(target_id=target['target_id'],candidate_id=str(candidate),
+                                current={k:target.get(k) for k in keys},verified={k:fields[k] for k in keys})
+                            identity_digest=hashlib.sha256(json.dumps(identity_review,sort_keys=True).encode()).hexdigest()
+                            identity_review['digest']=identity_digest
+                            if not expected_identity_digest or not hmac.compare_digest(expected_identity_digest,identity_digest):
+                                raise ValueError('target_identity_changed')
+                            from official_research import host,auto_evidence_valid
+                            if (not auto_evidence_valid(recipient,secret)
+                                or not host(target.get('source_url',''))
+                                or host(target['source_url'])!=host(fields['source_url'])
+                                or any(str(target.get(k) or '').lower()!=str(fields[k]).lower()
+                                       for k in ('public_email','market','service_key'))):
+                                raise ValueError('recipient_identity_unproven')
+                            reconciled=True
                     if await conn.fetchval(HISTORY_SQL,email,list(frozen)) is not False:
                         from campaign_reentry import approved_reentry
                         reentry=await approved_reentry(conn,dict(recipient,target_id=target['target_id']),secret)
@@ -57,6 +74,9 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                     if isinstance(data,str): data=json.loads(data)
                     if not isinstance(data,dict): raise ValueError('invalid_source_metadata')
                     old=profile_for_target(target,secret) if existing else None
+                    if reconciled:
+                        if old:raise ValueError('existing_scoped_identity_immutable')
+                        data=dict(data,identity_reconciliation=dict(identity_review,request_id=request_id))
                     if reentry and 'historical_reentry_target_archive' not in data:
                         data=dict(data,historical_reentry_target_archive={key:target.get(key) for key in
                             ('target_id','business_name','public_email','public_phone','source_url','market','service_key','status')})
@@ -66,6 +86,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                     sample=packet['artifacts'][5]['rows'];ids=[uuid.UUID(x) for x in profile['sample_ids']]
                     saved=await conn.fetchrow('select * from growth_owner_previews where target_id=$1 and version=$2 for update',target['target_id'],VERSION)
                     if saved:
+                        if reconciled:raise ValueError('saved_preview_identity_immutable')
                         payload=saved['sample_payload'];payload=json.loads(payload) if isinstance(payload,str) else payload
                         if (list(map(str,saved['candidate_ids']))!=profile['sample_ids'] or payload!=sample
                             or list(saved['selected_markets'])!=[recipient['market']]
@@ -88,7 +109,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         remaining_gates=['Owner scope/release review','Current customer purchase/fulfillment/reply proof']),request_id)
                     if len(json.dumps(capsule,separators=(',',':')).encode())>500_000: raise ValueError('capsule_too_large')
                     if existing:
-                        if reentry:
+                        if reentry or reconciled:
                             await conn.execute('''update growth_outreach_targets set source_data=$2::jsonb,business_name=$3,
                                 public_email=$4,public_phone=$5,source_url=$6,market=$7,service_key=$8,status='contactable',updated_at=now()
                                 where target_id=$1''',target['target_id'],json.dumps(target['source_data']),fields['business_name'],email,
@@ -115,7 +136,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
             if diagnostics is True and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):
                 return seal_export(dict(status='scoped_journey_requires_review',
                     reason=error.preparation_reason,offer_ready=False,
-                    candidate_id=str(candidate_id),outreach_sent=0),request_id)
+                    candidate_id=str(candidate_id),identity_review=identity_review,outreach_sent=0),request_id)
             raise error
     @app.post('/api/admin/approve-scoped-journey')
     async def approve_scope(request_id: str, target_id: str, expected_profile_signature: str,

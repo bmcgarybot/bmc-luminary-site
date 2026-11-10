@@ -1109,11 +1109,13 @@ def execute(req: dict) -> dict:
 
     elif action == "prepare_scoped_journey":
         candidate_id=str(args.get('candidate_id') or '')
-        if set(args)!={'candidate_id'} or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',candidate_id):
+        if (not {'candidate_id'}<=set(args)<={'candidate_id','expected_identity_digest'}
+            or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',candidate_id)
+            or ('expected_identity_digest' in args and not re.fullmatch(r'[0-9a-f]{64}',str(args['expected_identity_digest'])))):
             raise RelayError('One native research candidate UUID is required')
         if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').strip().lower()!='true' or any(str(v).lower()!='false' for v in outreach_state().values()):
             raise RelayError('Scoped preparation requires owner hold and all outreach OFF')
-        path='/api/admin/prepare-scoped-journey?'+urllib.parse.urlencode({'request_id':req['request_id'],'candidate_id':candidate_id,'diagnostics':'true'})
+        path='/api/admin/prepare-scoped-journey?'+urllib.parse.urlencode(dict(args,request_id=req['request_id'],diagnostics='true'))
         stdout=json.dumps(admin_post(path,timeout=180),separators=(',',':'));stderr='';exit_code=0
 
     elif action == "private_held_packet":
