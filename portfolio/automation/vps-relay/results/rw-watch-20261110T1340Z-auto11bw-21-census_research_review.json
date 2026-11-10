@@ -1,0 +1,16 @@
+{
+  "action": "census_research_review",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T13:44:33.196047+00:00",
+  "error": "Bounded existing research source keys and one service are required",
+  "exit_code": null,
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "rw-watch-20261110T1340Z-auto11bw-21-census_research_review",
+  "started_at": "2026-11-10T13:44:33.196027+00:00",
+  "status": "rejected",
+  "version": 1
+}
