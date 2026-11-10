@@ -4340,7 +4340,7 @@ async def handle_growth_scope_request(conn,p):
     if max(len(business),len(contact),len(market))>200 or len(scope)>5000:raise HTTPException(400,"Please shorten the request")
     territory=growth_territory_markets(market,p.get("selected_markets"))
     size=clean(p.get("requested_size"))
-    if size not in ("","unsure","20","50","100"):raise HTTPException(400,"Choose a listed size to discuss")
+    if size not in ("","unsure","20","25","50","100"):raise HTTPException(400,"Choose a listed size to discuss")
     sid=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchval("select lead_id from leads where submission_id=$1",sid)
     if existing:return {"ok":True,"status":"scope_review","message":"Your territory request is already saved. No payment was taken."}
@@ -8626,3 +8626,9 @@ This is a business offer. Reply 'no thanks' to stop further marketing emails.
                 where entity_id=$1 and campaign='manual_sender_correction_20261110'""", target, 'sent' if accepted else 'uncertain', accepted)
         results.append({"business": name, "smtp_accepted": bool(accepted)})
     return {"sender": sender, "reply_to": SMTP_REPLY_TO, "results": results}
+
+
+from owner_dashboard import install as install_owner_dashboard
+install_owner_dashboard(app, require_admin,
+    lambda: SMTP_FROM.strip().lower()=="contact@bmcservicenetwork.com" and SMTP_REPLY_TO.strip().lower()=="contact@bmcservicenetwork.com" and not SMTP_DRY_RUN,
+    send_mail_once, lambda: process_replies(ADMIN_KEY))

@@ -1425,3 +1425,17 @@ create index if not exists idx_interest_first_contact_research_status_due
 alter table interest_first_contact_research
   add column if not exists parser_version integer not null default 1;
 
+
+
+-- Owner dashboard credentials are random, single-use codes or expiring sessions.
+create table if not exists owner_dashboard_logins (
+  code_hash text primary key, expires_at timestamptz not null
+);
+create table if not exists owner_dashboard_sessions (
+  token_hash text primary key, expires_at timestamptz not null
+);
+create table if not exists owner_dashboard_messages (
+  request_id uuid primary key, target_id text not null, subject text not null,
+  body text not null, payload_hash text not null, status text not null,
+  created_at timestamptz not null default now()
+);

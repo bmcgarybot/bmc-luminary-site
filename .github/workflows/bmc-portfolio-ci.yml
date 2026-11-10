@@ -26,7 +26,7 @@ jobs:
           python3 - <<'PY'
           import runpy
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
-          expected={"owner_hundred_invitations","nov10_sender_corrections",
+          expected={"owner_dashboard_access","owner_hundred_invitations","nov10_sender_corrections",
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
               "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","census_research_review","census_queue_status","census_queue_export","reply_review_export","historical_growth_review","authorize_historical_reentry","queue_census_research","census_queue_step","official_research_step","prepare_scoped_journey", "authorize_scoped_batch","enrich_native_contact","research_promote_census","refresh_uncontacted_vendor",
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
@@ -56,6 +56,7 @@ jobs:
         run: |
           python -m pip install reportlab==4.4.9 pypdf==6.10.0 cryptography==50.0.2 fastapi==0.115.6
           python3 portfolio/automation/test-growth-pdf.py
+          python3 portfolio/automation/test-owner-dashboard.py
           python3 portfolio/automation/test-owner-pack-review.py
           python3 portfolio/automation/test-growth-offers.py
           python3 portfolio/automation/test-growth-strategy.py

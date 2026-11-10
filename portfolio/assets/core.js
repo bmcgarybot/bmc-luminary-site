@@ -14,6 +14,7 @@
   }
   if(new URLSearchParams(location.search).get('target') && new URLSearchParams(location.search).get('claim')){
     const section=document.getElementById('full-pack');if(section)section.hidden=true;
+    const currentOffer=document.getElementById('current-offer');if(currentOffer)currentOffer.hidden=true;
     const teaser=document.querySelector('.hero-photo-card span');if(teaser){growthOfferOriginals.set(teaser,teaser.textContent);teaser.textContent='Review the five prepared for your company before choosing a pack.';}
   }
   // BMC_TWO_SIDED_NAV: keep the two audiences obvious without hiding either path.

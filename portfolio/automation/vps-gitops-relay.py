@@ -51,6 +51,7 @@ REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
 READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview", "interest_first_readiness", "interest_contact_research_status"}
 MUTATING_INTERNAL_ACTIONS = {
+    "owner_dashboard_access",
     "deploy_update",
     "prepare_ops_configuration",
     "configure_ops_monitoring",
@@ -1310,6 +1311,12 @@ def execute(req: dict) -> dict:
         metadata["ci_proof"] = proof
         cp = run(["bash", "./deploy-update.sh", ENV_FILE], timeout=1200)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "owner_dashboard_access":
+        if args:
+            raise RelayError("Owner dashboard access accepts no arguments")
+        stdout = json.dumps(admin_post("/api/admin/owner-dashboard-access?request_id=" + req["request_id"]))
+        exit_code = 0
 
     elif action == "owner_hundred_invitations":
         if args:
