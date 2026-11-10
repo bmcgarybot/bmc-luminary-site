@@ -1,0 +1,16 @@
+{
+  "action": "prepare_scoped_journey",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T17:54:14.781119+00:00",
+  "error": "local admin POST /api/admin/prepare-scoped-journey?request_id=bmc-first-sale-20261110T175355Z-prepare_scoped_journey&candidate_id=9a436823-7733-4ccf-a4b9-dd469ee1db3e failed: HTTP Error 409: Conflict",
+  "exit_code": null,
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bmc-first-sale-20261110T175355Z-prepare_scoped_journey",
+  "started_at": "2026-11-10T17:54:14.781079+00:00",
+  "status": "rejected",
+  "version": 1
+}
