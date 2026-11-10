@@ -1,0 +1,21 @@
+{
+  "action": "interest_first_preview",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T11:30:50.805603+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "c1893d7b67696ed8d18f3f10b1f0a4e7a1fbed87",
+  "request_id": "rw-watch-20261110T1126Z-auto11bu-21-interest_first_preview",
+  "request_sha256": "fbd6fa9951dbb1d627b030a88ca19d5c5d257a064e9c53ce4f432a2ab70436be",
+  "started_at": "2026-11-10T11:30:50.675297+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"read_only\": true,\n      \"possible_contactable_businesses\": 0,\n      \"contactable_by_service\": {},\n      \"contactable_by_market\": {},\n      \"email_unverified_delivery\": true,\n      \"note\": \"This is not an approved-send count. Publicly recorded emails still need deliverability and suppression checks. No samples, emails or paid research generated.\"\n    }\n  ]\n}",
+  "version": 1
+}
