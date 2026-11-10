@@ -1,0 +1,21 @@
+{
+  "action": "nov10_sender_corrections",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-10T21:47:17.018626+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "47d2ae9c38bef268970bf62c849b1d39e334d2bc",
+  "git_commit_before": "47d2ae9c38bef268970bf62c849b1d39e334d2bc",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "b1109e87b4aefaadc4ec4ba9bb9aa467e65c1ede",
+  "request_id": "bmc-first-sale-20261110T214656Z-nov10_sender_corrections",
+  "request_sha256": "0eb1a98371d313fca59056ccb2ee373c32ba82640b30ae3c89c96b659638e7a3",
+  "started_at": "2026-11-10T21:47:11.488637+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"sender\": \"contact@bmcservicenetwork.com\", \"reply_to\": \"contact@bmcservicenetwork.com\", \"results\": [{\"business\": \"Lollar Junk Removal\", \"smtp_accepted\": true}, {\"business\": \"Flagstaff Tree Service\", \"smtp_accepted\": true}, {\"business\": \"Blue J Paint & Stain\", \"smtp_accepted\": true}]}",
+  "version": 1
+}
