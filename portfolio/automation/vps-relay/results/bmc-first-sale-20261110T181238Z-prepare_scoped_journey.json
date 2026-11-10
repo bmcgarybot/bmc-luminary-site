@@ -1,0 +1,27 @@
+{
+  "action": "prepare_scoped_journey",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T18:13:15.251048+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "da5ee196cc621b5a9fe90c4d58844f125e9ef3ba",
+  "git_commit_before": "da5ee196cc621b5a9fe90c4d58844f125e9ef3ba",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "79d1002250adf9d4cf42a95fac5e2f21854fe996",
+  "request_id": "bmc-first-sale-20261110T181238Z-prepare_scoped_journey",
+  "request_sha256": "d018ed9e9add7bcec2a71c4b798d204a9e23fe04fb1fa320a8b964f3c760e18a",
+  "started_at": "2026-11-10T18:13:12.310318+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-first-sale-20261110T181238Z-prepare_scoped_journey\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"K7/j9YUFaICJdvJr8JwHu6jCYyaZZWC0WfdySP8/aKVMbhhjlS+tf2zoAFhmq3cUyyoLjzVRzTGq4yZngVwq2VEpiLf/N/BLKURa/2p2vGY3sMwfL5UGSvdB+cIOnll8UIn72CjJWDKVLZOsw7wv8wsZrDiJS3mBaEuSgjGEqyyspES1XHYCN0v4+wM16mcHKtnvrxu8bNZQO/qnhPmHhvpgC4KUyFDkZfp44Ozcm+S3ZbSMsYQZyXRKYiLhiqEIrq4zW+vDaDNGC7+LPs/h+FQdWX7MqM6GzSQF08iScnLhURWa07aVa/qsCLZZyNmYfOe8FB2O0Q0ZlfcrxMnjMNFkxLoR6BM0rJpOvA7yaShMtDa0Rlzmg/KQvnQdEXBigDGIrhuMrL3Ymh4bfkbr44arLVqN/U9YRWr4gIxsuoCRDSWdvOBjXCU4WuS5c4pBIY8EOoUPh33SJqRntog5NY+yEezbqNixvJVQBs3tT7Nz4BgVyqNwqCVSEv5ZVBE2\",\"nonce\":\"2E+A9avlvaxRkULm\",\"ciphertext\":\"2Lz0WXuKGR4w4C9lwlhYMO3Fy7bPMuRqiKl+tFsB/aznpU7vm2DDE63YusoZVMdomRmA5Z2T5sCX5ELzhhQ9YZ8AH6T6QdggCfSZK9UEKTZZHliVr0g+O7LL3C0qr8ad6ebTEf3YGNYVqmfFU+DZeHGr6vXZ4O3ajxTC2Z2BrnIxXz6JfYGyKSEIcIHg7Q4vRIckAi/NPw8ZSv5xMVHOfZRn4IgHM1RAOz4=\"}",
+  "version": 1
+}
