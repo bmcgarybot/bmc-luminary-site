@@ -4990,19 +4990,30 @@ async def interest_first_stage(payload:dict|None=None,x_bmc_admin_key:str|None=H
 @app.post("/api/admin/interest-first-send-batch")
 async def interest_first_send_batch(payload:dict|None=None,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
-    from interest_first import CAMPAIGN,WAVE,invitation,candidate_eligible
     if OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED:
+        return {"ok":True,"sent":0,"blocked":True,"message":"Interest-first campaign is held"}
+    return await send_interest_first_batch(payload)
+
+async def send_interest_first_batch(payload, owner_hundred=False):
+    from interest_first import CAMPAIGN,WAVE,invitation,candidate_eligible
+    if not owner_hundred and (OWNER_LAUNCH_HOLD or not INTEREST_FIRST_OUTREACH_ENABLED):
         return {'ok':True,'sent':0,'blocked':True,'message':'Owner hold or separate interest-first send switch is OFF'}
+    if SMTP_FROM.strip().lower() != 'contact@bmcservicenetwork.com' or SMTP_REPLY_TO.strip().lower() != 'contact@bmcservicenetwork.com' or SMTP_DRY_RUN:
+        raise HTTPException(409,'Live BMC sender and reply address required')
     if not BUSINESS_POSTAL_ADDRESS or 'CHANGE_ME' in BUSINESS_POSTAL_ADDRESS:
         raise HTTPException(409,'Business postal address is required')
     if not all((IMAP_ENABLED,IMAP_HOST,IMAP_USER,IMAP_PASSWORD)):
         raise HTTPException(409,'Inbound opt-out/reply monitoring must be enabled')
     limit=max(1,min(int((payload or {}).get('limit',50)),100))
     sent=0;held=0
+    accepted_businesses=[]
+    seen_emails=set()
     async with app.state.pool.acquire() as conn:
       today=await conn.fetchval("""select count(*) from outreach where campaign=$1
         and sent_at>=date_trunc('day',now())""",CAMPAIGN)
       limit=min(limit,max(0,INTEREST_FIRST_DAILY_LIMIT-int(today or 0)))
+      total=await conn.fetchval("select count(*) from outreach where campaign=$1 and sent_at is not null",CAMPAIGN)
+      if owner_hundred:limit=min(limit,max(0,100-int(total or 0)))
       rows=await conn.fetch("""select o.outreach_id,g.target_id,g.business_name,g.public_email,
           g.market,g.service_key,s.display_name as service_name
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
@@ -5010,19 +5021,22 @@ async def interest_first_send_batch(payload:dict|None=None,x_bmc_admin_key:str|N
         where o.entity_type='growth_customer' and o.campaign=$1 and o.wave=$2
           and o.status='queued' and o.sent_at is null and o.opt_out=false
           and o.owner_review_required=false
-          and g.status not in ('suppressed','bad_fit')
+          and g.status not in ('suppressed','bad_fit','manual_contacted')
+          and lower(g.public_email) not in ('info@am-pros.com','lollarjunkremoval@gmail.com','flagstafftreeservice@gmail.com','bluejpaint@gmail.com')
           and not exists(select 1 from outreach_suppressions z where lower(z.email)=lower(g.public_email))
           and not exists(select 1 from outreach prior
             left join growth_outreach_targets pg on prior.entity_type='growth_customer' and pg.target_id=prior.entity_id
             left join vendors pv on prior.entity_type='vendor' and pv.vendor_id=prior.entity_id
             left join buyers pb on prior.entity_type='buyer' and pb.buyer_id=prior.entity_id
-            where (prior.sent_at is not null or prior.opt_out=true)
+            where (prior.sent_at is not null or prior.opt_out=true or prior.status in ('sent','completed','attempting','uncertain'))
               and prior.outreach_id<>o.outreach_id
               and lower(coalesce(pg.public_email,pv.public_email,pb.public_email,''))=lower(g.public_email))
         order by o.created_at,g.business_name limit $3""",CAMPAIGN,WAVE,limit)
       for raw in rows:
         row=dict(raw)
-        if not candidate_eligible(row):held+=1;continue
+        email_key=row['public_email'].strip().lower()
+        if email_key in seen_emails or not candidate_eligible(row):held+=1;continue
+        seen_emails.add(email_key)
         try:subject,body,html_body=invitation(row,BUSINESS_POSTAL_ADDRESS)
         except ValueError:held+=1;continue
         # Durable delivery key prevents replay or duplicate SMTP on worker crashes.
@@ -5036,8 +5050,21 @@ async def interest_first_send_batch(payload:dict|None=None,x_bmc_admin_key:str|N
           body=$3,sent_at=now(),next_followup_at=null where outreach_id=$1 and status='queued'
           and sent_at is null""",row['outreach_id'],subject,body)
         sent+=1
-    return {'ok':True,'sent':sent,'held':held,'daily_limit':INTEREST_FIRST_DAILY_LIMIT,
+        accepted_businesses.append(row['business_name'])
+    return {'ok':True,'sent':sent,'campaign_total_sent':int(total or 0)+sent,'businesses':accepted_businesses,'sender':SMTP_FROM,'reply_to':SMTP_REPLY_TO,'held':held,'daily_limit':INTEREST_FIRST_DAILY_LIMIT,
       'research_calls':0,'note':'This invitation does not promise existing five-prospect research. No followups scheduled.'}
+
+
+@app.post("/api/admin/owner-hundred-invitations")
+async def owner_hundred_invitations(x_bmc_admin_key:str|None=Header(default=None)):
+    """Explicit owner release capped at 100 initial invitations across retries."""
+    require_admin(x_bmc_admin_key)
+    if not OWNER_LAUNCH_HOLD or OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED or INTEREST_FIRST_OUTREACH_ENABLED:
+        raise HTTPException(409,'Bounded release requires other campaigns held')
+    async with app.state.pool.acquire() as lock_conn:
+        async with lock_conn.transaction():
+            await lock_conn.execute('select pg_advisory_xact_lock(20261110100::bigint)')
+            return await send_interest_first_batch({'limit':100},owner_hundred=True)
 
 def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
     service_key=clean(row["service_key"])

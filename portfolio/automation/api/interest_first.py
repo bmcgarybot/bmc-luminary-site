@@ -166,7 +166,7 @@ def invitation(row,postal_address):
        f"I saw {name} listed for {service.lower()} in {market}. We help service businesses find companies that might be worth approaching.",
        f"If you want, reply FIVE. I'll ask what kinds of jobs and areas you want, then research five possible customer businesses for you at no cost.",
        "These would be researched prospects, not people who asked for quotes or promised work. You can keep the five with no obligation.",
-       "If they're useful, we can discuss a larger custom research pack. I'll confirm the scope, price and delivery time before any purchase.",
+       "If they're useful, our 25-prospect research pack is $149 one time, including the original five. I'll confirm the scope and delivery time before any purchase.",
        "If this isn't relevant, reply NO and we won't contact you again.",
     ]
     body="\n\n".join(paragraphs)+"\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+postal
