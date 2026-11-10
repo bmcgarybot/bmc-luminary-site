@@ -114,7 +114,7 @@ def install(app, require_admin, sender_config, send_once, refresh_inbox):
             totals = dict(await conn.fetchrow("select count(*) as paid_orders, coalesce(sum(amount_cents) filter(where currency='usd'),0) as usd_cents from orders where payment_status in ('paid','complete')"))
             clock = await conn.fetchval("select now()")
         payload = {"observed_at": clock, "sender": SENDER, "sender_ready": sender_config(),
-                   "campaign": campaign, "totals": totals, "contacts": [dict(r) for r in contacts],
+                   "campaign": campaign, "totals": totals, "offer_terms": 'Regular offer $149 for 25 prospects. The $129 correction offer applies only to Lollar Junk Removal, Flagstaff Tree Service and Blue J Paint &amp; Stain. Confirm scope and delivery timing before collecting payment. Mail-server acceptance does not establish inbox delivery.', "contacts": [dict(r) for r in contacts],
                    "replies": [dict(r) for r in replies], "messages": [dict(r) for r in messages],
                    "orders": [dict(r) for r in orders], "tasks": [dict(r) for r in tasks]}
         return JSONResponse(json_safe(payload), headers={"Cache-Control": "no-store"})
