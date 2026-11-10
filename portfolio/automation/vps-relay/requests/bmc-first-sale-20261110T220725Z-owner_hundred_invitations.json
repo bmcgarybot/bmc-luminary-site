@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261110T220725Z-owner_hundred_invitations",
+  "action": "owner_hundred_invitations",
+  "args": {},
+  "allow_external_actions": true,
+  "created_at": "2026-11-10T22:07:25.369399+00:00",
+  "expires_at": "2026-11-11T00:07:25.369399+00:00"
+}
