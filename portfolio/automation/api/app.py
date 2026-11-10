@@ -8533,3 +8533,68 @@ install_public_contractor_ads(app,require_admin)
 from autonomous_preparation import install as install_autonomous_preparation
 install_autonomous_preparation(app, require_admin, prepare_scoped_journey, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
     lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)))
+
+
+@app.post("/api/admin/nov10-sender-corrections")
+async def nov10_sender_corrections(x_bmc_admin_key:str|None=Header(default=None)):
+    """Owner-authorized correction to exactly three mistaken manual sends."""
+    require_admin(x_bmc_admin_key)
+    sender = "contact@bmcservicenetwork.com"
+    if SMTP_FROM.strip().lower() != sender or SMTP_REPLY_TO.strip().lower() != sender or SMTP_DRY_RUN:
+        raise HTTPException(409, "Correction requires live BMC From and Reply-To")
+    if not OWNER_LAUNCH_HOLD or OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED or INTEREST_FIRST_OUTREACH_ENABLED:
+        raise HTTPException(409, "Correction requires campaigns held")
+    recipients = [
+        ("Lollar Junk Removal", "lollarjunkremoval@gmail.com", "Prescott", "junk_hauling"),
+        ("Flagstaff Tree Service", "flagstafftreeservice@gmail.com", "Flagstaff", "tree_service"),
+        ("Blue J Paint & Stain", "bluejpaint@gmail.com", "Kingman", "pressure_washing"),
+    ]
+    results = []
+    for name, email, market, service in recipients:
+        delivery_key = "nov10-sender-correction-v1:" + email
+        subject = "An apology from BMC Service Network and a $129 offer"
+        body = f"""Hi {name} team,
+
+The prospect sample and offer we sent earlier today came from the wrong company email account. That was our error. I apologize for the confusion. Please use this address, contact@bmcservicenetwork.com, for BMC Service Network correspondence.
+
+As an apology, your business can receive the same 25-prospect research pack for $129 instead of $149, a one-time $20 reduction. This offer is private to the three businesses affected by our sender error.
+
+The pack includes the five prospects already shared, plus 20 additional distinct businesses, with public contact details, source links and suggested approaches. Research is nonexclusive and does not guarantee jobs or customer interest.
+
+If you are interested, reply to this email with your preferred towns and job types. We will confirm the scope and delivery date before requesting payment. The five prospects already sent remain free to use.
+
+Brett
+BMC Service Network / BMC Luminary Ventures LLC
+186 E. Sheldon St. #1144, Prescott, AZ 86301
+
+This is a business offer. Reply 'no thanks' to stop further marketing emails.
+"""
+        async with app.state.pool.acquire() as conn:
+            async with conn.transaction():
+                await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))", delivery_key)
+                if await conn.fetchval("select exists(select 1 from outreach_suppressions where lower(email)=$1)", email):
+                    results.append({"business": name, "status": "suppressed", "smtp_accepted": False})
+                    continue
+                target = await conn.fetchval("select target_id from growth_outreach_targets where lower(public_email)=$1 and service_key=$2", email, service)
+                if not target:
+                    target = "manual-nov10:" + email
+                    await conn.execute("""insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key,status,source_kind)
+                        values($1,$2,$3,$4,$5,'manual_contacted','owner_manual') on conflict do nothing""", target, name, email, market, service)
+                    target = await conn.fetchval("select target_id from growth_outreach_targets where lower(public_email)=$1 and service_key=$2", email, service)
+                await conn.execute("""insert into outreach(entity_type,entity_id,campaign,wave,status,subject,body,owner_review_required)
+                    select 'growth_customer',$1,'manual_wrong_sender_20261110','manual','sent','Manual offer sent from wrong company account',
+                    'Owner confirmed prior Gmail send on November 10. Preserve history and do not resend initial offer.',true
+                    where not exists(select 1 from outreach where entity_id=$1 and campaign='manual_wrong_sender_20261110')""", target)
+                await conn.execute("update growth_outreach_targets set status='manual_contacted',updated_at=now() where lower(public_email)=$1", email)
+                await conn.execute("""update outreach set owner_review_required=true,next_followup_at=null
+                    where entity_type='growth_customer' and entity_id in
+                    (select target_id from growth_outreach_targets where lower(public_email)=$1)""", email)
+                await conn.execute("""insert into outreach(entity_type,entity_id,campaign,wave,status,subject,body,owner_review_required)
+                    select 'growth_customer',$1,'manual_sender_correction_20261110','manual','attempting',$2,$3,true
+                    where not exists(select 1 from outreach where entity_id=$1 and campaign='manual_sender_correction_20261110')""", target, subject, body)
+        accepted = await send_mail_once(delivery_key, email, subject, body)
+        async with app.state.pool.acquire() as conn:
+            await conn.execute("""update outreach set status=$2,sent_at=case when $3 then coalesce(sent_at,now()) else sent_at end
+                where entity_id=$1 and campaign='manual_sender_correction_20261110'""", target, 'sent' if accepted else 'uncertain', accepted)
+        results.append({"business": name, "smtp_accepted": bool(accepted)})
+    return {"sender": sender, "reply_to": SMTP_REPLY_TO, "results": results}
