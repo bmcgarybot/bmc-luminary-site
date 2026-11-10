@@ -5011,7 +5011,8 @@ async def send_interest_first_batch(payload, owner_hundred=False):
     async with app.state.pool.acquire() as conn:
       today=await conn.fetchval("""select count(*) from outreach where campaign=$1
         and sent_at>=date_trunc('day',now())""",CAMPAIGN)
-      limit=min(limit,max(0,INTEREST_FIRST_DAILY_LIMIT-int(today or 0)))
+      if not owner_hundred:
+          limit=min(limit,max(0,INTEREST_FIRST_DAILY_LIMIT-int(today or 0)))
       total=await conn.fetchval("select count(*) from outreach where campaign=$1 and sent_at is not null",CAMPAIGN)
       if owner_hundred:limit=min(limit,max(0,100-int(total or 0)))
       rows=await conn.fetch("""select o.outreach_id,g.target_id,g.business_name,g.public_email,
