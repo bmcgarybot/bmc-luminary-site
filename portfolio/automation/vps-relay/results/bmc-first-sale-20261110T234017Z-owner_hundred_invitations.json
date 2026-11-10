@@ -1,0 +1,21 @@
+{
+  "action": "owner_hundred_invitations",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-10T23:42:34.757394+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "564b32a1687ab8db7df8ff903c284704fdc55eb9",
+  "git_commit_before": "564b32a1687ab8db7df8ff903c284704fdc55eb9",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "e526104338312bddccfafcc6551f20fcd0e7b68c",
+  "request_id": "bmc-first-sale-20261110T234017Z-owner_hundred_invitations",
+  "request_sha256": "ca65656b61664cd9ab3b401600d1820c5afb2e1bbbc5501961f0e3b94dd47701",
+  "started_at": "2026-11-10T23:40:32.727106+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ok\": true, \"sent\": 20, \"campaign_total_sent\": 30, \"businesses\": [\"Absolute Comfort HVAC LLC\", \"Ace Surface Maintenance, Inc.\", \"Adan Repair & Towing LLC\", \"Advanced Environmental Systems LLC\", \"Air-Exx HVAC\", \"AirZona Heating Cooling & Plumbing\", \"American Affordable Air\", \"Apex Arbor Services\", \"Apollo Air Conditioning Systems\", \"Arizona All Service Plumbing\", \"Arizona Garage Door & Repair\", \"Arizona North Tree Service\", \"Arizona Pima Chemical Pool Service\", \"Arizona Pool Designs LLC\", \"Arizona's Garage Door Doctors\", \"Aspen Landscaping\", \"Aspen Pest Control, LLC\", \"Baro Stays\", \"Bella Palazzo\", \"Best Pressure Washing Services Provider in Bullhead City, (877) 658-5887\"], \"sender\": \"contact@bmcservicenetwork.com\", \"reply_to\": \"contact@bmcservicenetwork.com\", \"held\": 70, \"daily_limit\": 10, \"research_calls\": 0, \"note\": \"This invitation does not promise existing five-prospect research. No followups scheduled.\"}",
+  "version": 1
+}
