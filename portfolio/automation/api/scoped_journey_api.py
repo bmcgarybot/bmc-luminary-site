@@ -19,7 +19,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
     if len(frozen)!=9: raise ValueError('original_nine_ids_required')
 
     @app.post('/api/admin/prepare-scoped-journey')
-    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None)):
+    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), diagnostics: bool=False):
         require_admin(x_bmc_admin_key)
         if not hold_required(): raise HTTPException(409,'owner_hold_required')
         try:
@@ -112,6 +112,10 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
             # response remains unchanged and does not expose research details.
             error.preparation_reason=reason if (re.fullmatch(r'[a-z_]{3,90}',reason) or reason in (
                 'Qualified sample reserve is incomplete','The promised quantity is incomplete')) else 'compiler_failed'
+            if diagnostics is True and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):
+                return seal_export(dict(status='scoped_journey_requires_review',
+                    reason=error.preparation_reason,offer_ready=False,
+                    candidate_id=str(candidate_id),outreach_sent=0),request_id)
             raise error
     @app.post('/api/admin/approve-scoped-journey')
     async def approve_scope(request_id: str, target_id: str, expected_profile_signature: str,

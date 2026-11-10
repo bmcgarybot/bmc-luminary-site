@@ -52,9 +52,19 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             lambda row,*args,**kw:(row['service_key'],'Synthetic subject','Exact private text','<p>Exact private HTML</p>','https://example.test/owner/'+row['target_id']))
         self.approval=next(r.endpoint for r in app.routes if getattr(r,'path','')=='/api/admin/approve-scoped-journey')
         self.compiler=AsyncMock(side_effect=lambda *args,**kw:copy.deepcopy(self.packet))
-    async def call(self,key='allowed'):
+    async def call(self,key='allowed',diagnostics=False):
         with patch.object(api,'compile_native_packet',self.compiler),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
-            return await self.endpoint('test-journey-request',str(self.packet['recipient']['candidate_id']),key)
+            return await self.endpoint('test-journey-request',str(self.packet['recipient']['candidate_id']),key,diagnostics=diagnostics)
+    async def test_diagnostics_encrypt_failure_without_creating_a_draft(self):
+        self.setup()
+        self.compiler.side_effect=ValueError('saved_five_immutable')
+        result=self.decrypt(await self.call(diagnostics=True))
+        self.assertEqual(result['reason'],'saved_five_immutable')
+        self.assertEqual(result['status'],'scoped_journey_requires_review')
+        self.assertFalse(result['offer_ready'])
+        self.assertEqual(self.writes,[])
+        with self.assertRaises(HTTPException):
+            await self.call()
     async def approve(self,expected=None,explicit=True,key='allowed'):
         expected=expected or self.target['source_data']['scoped_offer']['signature']
         with patch.object(api,'compile_native_packet',self.compiler),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
