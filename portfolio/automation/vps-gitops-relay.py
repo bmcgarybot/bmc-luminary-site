@@ -76,7 +76,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "interest_first_stage",
     "interest_contact_research_step",
 }
-EXTERNAL_ACTIONS = {"nov10_sender_corrections", "api_research_budget_50", "growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume", "interest_first_send_batch"}
+EXTERNAL_ACTIONS = {"owner_hundred_invitations", "nov10_sender_corrections", "api_research_budget_50", "growth_scoped_launch_enable", "growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test", "api_research_run", "api_research_worker_start", "api_research_worker_resume", "interest_first_send_batch"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
@@ -1310,6 +1310,12 @@ def execute(req: dict) -> dict:
         metadata["ci_proof"] = proof
         cp = run(["bash", "./deploy-update.sh", ENV_FILE], timeout=1200)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "owner_hundred_invitations":
+        if args:
+            raise RelayError("Bounded hundred-business release accepts no arguments")
+        stdout = json.dumps(admin_post("/api/admin/owner-hundred-invitations", timeout=420))
+        exit_code = 0
 
     elif action == "nov10_sender_corrections":
         if args:
