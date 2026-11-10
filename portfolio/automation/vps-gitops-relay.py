@@ -1113,7 +1113,7 @@ def execute(req: dict) -> dict:
             raise RelayError('One native research candidate UUID is required')
         if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').strip().lower()!='true' or any(str(v).lower()!='false' for v in outreach_state().values()):
             raise RelayError('Scoped preparation requires owner hold and all outreach OFF')
-        path='/api/admin/prepare-scoped-journey?'+urllib.parse.urlencode({'request_id':req['request_id'],'candidate_id':candidate_id})
+        path='/api/admin/prepare-scoped-journey?'+urllib.parse.urlencode({'request_id':req['request_id'],'candidate_id':candidate_id,'diagnostics':'true'})
         stdout=json.dumps(admin_post(path,timeout=180),separators=(',',':'));stderr='';exit_code=0
 
     elif action == "private_held_packet":
