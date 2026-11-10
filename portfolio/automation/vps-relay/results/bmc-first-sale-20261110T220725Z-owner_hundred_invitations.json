@@ -1,0 +1,21 @@
+{
+  "action": "owner_hundred_invitations",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-10T22:08:06.870919+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "8190f1a188c1fa5c3ff335b91f7ceacebfb3a32b",
+  "git_commit_before": "8190f1a188c1fa5c3ff335b91f7ceacebfb3a32b",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "e6a46932027ce7181d2261784dc6f2081427d05c",
+  "request_id": "bmc-first-sale-20261110T220725Z-owner_hundred_invitations",
+  "request_sha256": "fcf619255578443354ab13aa423f12b40947da0870626ef6294d58010689e6c9",
+  "started_at": "2026-11-10T22:07:51.898074+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ok\": true, \"sent\": 10, \"campaign_total_sent\": 10, \"businesses\": [\"A and C Tree Services LLC\", \"A&B Gutters & Glass\", \"A&G Towing & Storage Inc.\", \"A1 Septic Tanks and Systems\", \"ACE Cooling, Heating, Plumbing and Electrical\", \"ADJ Electric LLC\", \"AM PM Towing & Recovery\", \"ARK Rentals\", \"AZ Pressure Wash and Windows\", \"AZE Electrical Contractors LLC\"], \"sender\": \"contact@bmcservicenetwork.com\", \"reply_to\": \"contact@bmcservicenetwork.com\", \"held\": 0, \"daily_limit\": 10, \"research_calls\": 0, \"note\": \"This invitation does not promise existing five-prospect research. No followups scheduled.\"}",
+  "version": 1
+}
