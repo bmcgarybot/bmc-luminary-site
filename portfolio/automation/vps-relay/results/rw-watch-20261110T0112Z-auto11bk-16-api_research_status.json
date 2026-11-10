@@ -1,0 +1,24 @@
+{
+  "action": "api_research_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T01:16:01.919426+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "git_commit_before": "595f621cb724e8e8f9b3e155276fc6600dfd2199",
+  "host": "vps-5675821a",
+  "metadata": {
+    "customer_actions": false,
+    "pilot_budget_ceiling_usd": 50
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "38b3c1fc92690a87a93478df52843467025e5c43",
+  "request_id": "rw-watch-20261110T0112Z-auto11bk-16-api_research_status",
+  "request_sha256": "a3b2fb3a621b260e05ee75126333b8d94f8c256a1e93bbce1e4f3a7f70ed2183",
+  "started_at": "2026-11-10T01:16:01.775764+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"status\":\"pilot_status\",\"model\":\"gpt-6.1-sol\",\"cap_usd\":50.0,\"reserved_usd\":43.798691,\"available_usd\":6.201309,\"committed_upper_usd\":43.798691,\"original_reservation_amount_usd\":57.719943,\"reconciliation_credit_usd\":13.921252,\"retained_completed_calls\":13,\"budget_accounting\":\"conservative_committed_upper_not_invoice\",\"pending_reserved_usd\":9.0,\"settled_upper_usd\":9.719943,\"missions\":228,\"uncertain_calls\":3,\"max_searches\":6,\"model_tools_enabled\":false,\"grounded_models\":{\"discovery\":\"gpt-6-luna\",\"visible_extraction\":\"gpt-6.1-sol\"},\"outreach_sent\":0}\n",
+  "version": 1
+}
