@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261110T235135Z-owner_dashboard_access",
+  "action": "owner_dashboard_access",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-10T23:51:35.940631+00:00",
+  "expires_at": "2026-11-11T01:51:35.940631+00:00"
+}
