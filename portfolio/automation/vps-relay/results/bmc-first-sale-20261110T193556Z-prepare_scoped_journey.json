@@ -1,0 +1,27 @@
+{
+  "action": "prepare_scoped_journey",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-10T19:36:45.469503+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f0faea2738268deaa829e6ec0e307e36ca1fbda3",
+  "git_commit_before": "f0faea2738268deaa829e6ec0e307e36ca1fbda3",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ced92b2687119a64cc717bf4ea66e5ab22725b42",
+  "request_id": "bmc-first-sale-20261110T193556Z-prepare_scoped_journey",
+  "request_sha256": "a907a0e28577b0f03d135ad2c82c9bf3f148f9d504d3826259f2a395f991fb79",
+  "started_at": "2026-11-10T19:36:42.266620+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"bmc-first-sale-20261110T193556Z-prepare_scoped_journey\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"EnFkWejmzbszkJw0hBR3EqDLAKq8DvlTbGikOUHzxj4wUK3pyWZm+GQmXBdf3Gzip4smm2g41+cGmU6u7ayi1dq6lwgSFnGQaErVbPRZUNc5zorA4ArIU+SIZFzXrkMsFFPvlEbONXnG00txSOygIPg5sitxD1JGCB08lvUji/kdKe8b7N06pXO75xXfyV3ihZ3OsaUdh51BK129kHxiTU98cUbbU9lq9nx0erL/jfSOLk469VrequjHlJwU8P2t9s49fDn2FfiSk6bCNoW5NIUvwrqIoAvYmMaZd4Z4OTXwXhGLyQFAFlumHSHInW6Q/GURQfyK4RjgJ/UQfG26HucpLSbsiBxEGdskDEw2UhMMISX34ug4JB22/rQxcEAQ1XklP34pM2jM9Gwi8O0pRkEjxnrsrPN6vcxJgxlRlkVN5Mb60Qa8puqwBNH+vBU1Dm2VEXOLNZaH4dvagV4/vNoS4eScxeel0TDodS9owf7fV5HNoStczE1SssfIb7Pf\",\"nonce\":\"TyH9SdP8yVy94UwM\",\"ciphertext\":\"x4cC0ZCYkQEo6Aklc4clZ1lsDANfdOwkUj5SqTfzpr3v9jr25jzE7F69ig4q+RAAP5Fi4cB9YPtP8JpEOWCnj1GPo7q5ypKHPsw6WHOm5waC+tQ6q6uTq77h/01ShrwuqGxYb2tECUdCiI6tTNsfDJSgR+kwJOhNr3EY+4REXO6rRSHOIjmNvPBJcLF88xpLfK23ObS9VpUY12/0Tc6ZQu7oAaimhJQD/9YXcnyGVsFGmPs8thEJe8l3rNknf1coNpotbskqjWy6neetPaQRCd801MUHsCJbz9eK9969tUV+VpUP//lDz5gUmnUw1i+HsZ2eEj9v5jVCmIjNUsCPrNpE1y7CakjHoBVbfrD/8t+4llGLOIIlL0c0gZlJYrJ2MBli2toSUAl9l1DJq+R+c4RAZXd7Hct2ZoPO/jr/XWrLvlaAYgACuehkuAfACiJduAT4a4qG4sHDzxymNLxtIz0mZtujrabGWHmFuw62HPX5RC8BaOicDFkGMekv+PS6tbdsScHn7SUyK9a7U0AX2JMXqffVBCZ0qNTmaP/xyqvmxpGAkWGRqe+R3Z2qoZ55\"}",
+  "version": 1
+}
