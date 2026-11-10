@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261110T201812Z-prepare_scoped_journey",
+  "action": "prepare_scoped_journey",
+  "args": {
+    "candidate_id": "74359d97-e0fe-4cb2-a859-4eea8e504c2f"
+  },
+  "allow_external_actions": false,
+  "created_at": "2026-11-10T20:18:12.872865+00:00",
+  "expires_at": "2026-11-10T22:18:12.872865+00:00"
+}
