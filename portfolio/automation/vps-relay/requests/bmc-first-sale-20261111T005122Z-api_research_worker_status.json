@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261111T005122Z-api_research_worker_status",
+  "action": "api_research_worker_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-11T00:51:22.577650+00:00",
+  "expires_at": "2026-11-11T02:51:22.577650+00:00"
+}
