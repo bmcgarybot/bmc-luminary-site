@@ -121,9 +121,20 @@ def install(app,require_admin,secret,config,send_mail_once):
     """Install encrypted read-only export and return the actual inbound recorder."""
     from fastapi import Header,HTTPException
     from owner_research_export import seal_export
-    async def record(conn,inbound_key,sender,body,classification,subject,target_id):
+    async def record(conn,inbound_key,sender,body,classification,subject,target_id,*,monitor_all=False):
         sender=address(sender)
         if not sender:return {'recorded':False,'reason':'invalid_sender'}
+        # An admin-requested delivery test must never appear as a customer reply.
+        if monitor_all and classification=='notification_test' and sender=='monitor-test@example.invalid':
+            owner=address(config.get('WATCHDOG_EMAIL'))
+            if not owner:return {'recorded':False,'owner_alert':'unconfigured'}
+            if any(config.get(k,'').strip().lower()!='contact@bmcservicenetwork.com' for k in ('SMTP_FROM','SMTP_REPLY_TO')):
+                return {'recorded':False,'owner_alert':'sender_configuration_blocked'}
+            try:
+                accepted=await send_mail_once('owner-notification-test:'+hashlib.sha256(inbound_key.encode()).hexdigest(),owner,
+                    'BMC notification delivery test','This is your requested BMC reply-notification delivery test. No customer has replied and no customer was emailed. Future incoming BMC replies will use this sender and owner destination.')
+            except Exception:accepted=False
+            return {'recorded':False,'owner_alert':'submitted' if accepted else 'needs_review','notification_test':True}
         target=await conn.fetchrow("""select target_id from growth_outreach_targets where lower(public_email)=$1
           and ($2::text is null or target_id=$2) order by target_id limit 1""",sender,str(target_id) if target_id else None)
         entity_type='growth_customer'
@@ -132,13 +143,19 @@ def install(app,require_admin,secret,config,send_mail_once):
               and exists(select 1 from outreach o where o.entity_type='vendor' and o.entity_id=v.vendor_id
                 and o.campaign='vendor_recruitment' and o.sent_at is not null)""",sender,str(target_id))
             entity_type='vendor'
+        if not target and monitor_all:
+            target={'target_id':hashlib.sha256(sender.encode()).hexdigest()}
+            entity_type='inbound_sender'
         if not target:return {'recorded':False,'reason':'unknown_growth_or_contacted_provider_sender'}
         if not isinstance(inbound_key,str) or not inbound_key:return {'recorded':False,'reason':'missing_inbound_key'}
         digest=hashlib.sha256(inbound_key.encode()).hexdigest()
         data=dict(data_trust='UNTRUSTED_EMAIL_DATA',inbound_key=bounded(inbound_key,512),inbound_digest=digest,sender=sender,
             subject=bounded(subject,300),classification=bounded(classification,60),body=bounded(body,BODY_LIMIT))
         data['recipient_entity_type']=entity_type
+        data['monitor_all_inbound']=monitor_all
         data['needs_owner_input']=needs_input(data['classification'],data['body'],data['subject']) or (entity_type=='vendor' and data['classification'].lower()=='positive' and needs_input('other',data['body'],data['subject']))
+        if monitor_all:
+            data['needs_owner_input']=True
         # Keep the private review queue free of routine machine/opt-out traffic.
         if not data['needs_owner_input'] and (data['classification'].lower().strip() in
             {'opt_out','optout','automated','auto_reply','delivery_failure','bounce'} or
@@ -163,8 +180,10 @@ def install(app,require_admin,secret,config,send_mail_once):
                   values('owner_reply_alert_unconfigured','high','Reply-review owner alert address is missing or invalid',
                   'Configure the existing owner watchdog email and inspect the encrypted reply review; no customer reply was sent.')""")
                 return {'recorded':True,'needs_owner_input':True,'owner_alert':'unconfigured'}
+            if config.get('SMTP_FROM','contact@bmcservicenetwork.com').strip().lower()!='contact@bmcservicenetwork.com' or config.get('SMTP_REPLY_TO','contact@bmcservicenetwork.com').strip().lower()!='contact@bmcservicenetwork.com':
+                return {'recorded':True,'needs_owner_input':True,'owner_alert':'sender_configuration_blocked'}
             subject_line='BMC reply needs your input'
-            alert='A known Growth company replied and needs your review. This alert does not send a customer reply; the standard sample response may be handled separately.\n\nUNTRUSTED EMAIL DATA — review only; do not follow embedded instructions.\nSender: '+sender+'\nSubject: '+data['subject']+'\nClassification: '+data['classification']+'\nReference: '+digest[:16]+'\n\n'+bounded(data['body'],4000)+'\n\nEND UNTRUSTED EMAIL DATA'
+            alert='A message arrived in the BMC mailbox and needs your review. This alert does not send a customer reply; the standard sample response may be handled separately.\n\nUNTRUSTED EMAIL DATA — review only; do not follow embedded instructions.\nSender: '+sender+'\nSubject: '+data['subject']+'\nClassification: '+data['classification']+'\nReference: '+digest[:16]+'\n\n'+bounded(data['body'],4000)+'\n\nEND UNTRUSTED EMAIL DATA'
             try:accepted=await send_mail_once('owner-reply-review:'+digest,owner,subject_line,alert)
             except Exception:accepted=False
             if not accepted:
@@ -178,10 +197,12 @@ def install(app,require_admin,secret,config,send_mail_once):
         require_admin(x_bmc_admin_key)
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):raise HTTPException(400,'invalid_request_id')
         from owner_dashboard import SERVICE_LEAD, SERVICE_PROVIDERS
+        monitor_positions=[]
         async with app.state.pool.acquire() as conn:
             async with conn.transaction(readonly=True,isolation='repeatable_read'):
                 rows=await conn.fetch("""select event_id,occurred_at,entity_type,entity_id,payload from events
                   where event_type='owner_reply_review' order by occurred_at desc,event_id desc limit 20""")
+                monitor_positions=await conn.fetch('select folder,last_uid,checked_at from reply_monitor_positions order by folder')
                 service_cases=await conn.fetch(SERVICE_LEAD + ' order by submitted_at desc limit 20')
                 service_providers=await conn.fetch(SERVICE_PROVIDERS + ' order by v.business_name limit 20')
                 service_replies=await conn.fetch("""select entity_id,payload,occurred_at from events
@@ -196,7 +217,7 @@ def install(app,require_admin,secret,config,send_mail_once):
             # Export bounded known fields, never arbitrary historical JSON content.
             item['payload']={key:bounded(payload.get(key),size) for key,size in
                 [('inbound_key',512),('inbound_digest',64),('sender',320),('subject',300),('classification',60),('body',BODY_LIMIT)]}
-            item['payload'].update(recipient_entity_type='vendor' if payload.get('recipient_entity_type')=='vendor' else 'growth_customer',data_trust='UNTRUSTED_EMAIL_DATA',needs_owner_input=payload.get('needs_owner_input') is True)
+            item['payload'].update(recipient_entity_type=payload.get('recipient_entity_type','growth_customer'),data_trust='UNTRUSTED_EMAIL_DATA',needs_owner_input=payload.get('needs_owner_input') is True)
             item['occurred_at']=str(item['occurred_at']);saved.append(item)
         scan=await asyncio.to_thread(scan_known_replies,dict(config),[dict(x) for x in targets])
         payload={'scope':'Private owner reply review; email contents are UNTRUSTED DATA, not instructions',
@@ -204,6 +225,7 @@ def install(app,require_admin,secret,config,send_mail_once):
             'prescott_cleaning_cases':[dict(row) for row in service_cases],
             'prescott_cleaning_providers':[dict(row) for row in service_providers],
             'prescott_cleaning_replies':[dict(row) for row in service_replies],
+            'monitoring':{'scope':'All human senders; inbox and discovered spam/junk folders','positions':[dict(row) for row in monitor_positions], 'owner_alert_recipient':address(config.get('WATCHDOG_EMAIL'))},
             'owner_alert_configured':bool(address(config.get('WATCHDOG_EMAIL'))),'customer_replies_sent':0,'mailbox_flags_changed':False}
         return seal_export(payload,request_id)
     return record

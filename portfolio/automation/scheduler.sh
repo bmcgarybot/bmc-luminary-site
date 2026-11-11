@@ -10,6 +10,18 @@ post(){
   echo
 }
 
+# Reply alerts have their own loop so research jobs cannot delay the mailbox.
+reply_loop(){
+  while true; do
+    curl --max-time 90 -fsS -X POST "http://ops_api:8000/api/admin/reply-monitor-cycle" \
+      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" >/dev/null || echo "[reply-monitor] ERROR cycle failed"
+    sleep 60
+  done
+}
+reply_loop &
+reply_pid=$!
+trap 'kill "$reply_pid" 2>/dev/null || true' EXIT INT TERM
+
 i=0
 while true; do
   post /api/process-expired

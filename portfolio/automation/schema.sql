@@ -1439,3 +1439,8 @@ create table if not exists owner_dashboard_messages (
   body text not null, payload_hash text not null, status text not null,
   created_at timestamptz not null default now()
 );
+
+create table if not exists reply_monitor_positions (
+    mailbox_key text primary key, folder text not null, uidvalidity text not null,
+    last_uid bigint not null default 0, checked_at timestamptz not null default now()
+);
