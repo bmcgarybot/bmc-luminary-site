@@ -1,0 +1,21 @@
+{
+  "action": "census_queue_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-11T04:09:18.900935+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "7433152cc33163e90c484c899fdb407b2a7b5f40",
+  "git_commit_before": "7433152cc33163e90c484c899fdb407b2a7b5f40",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "1bd0b5e66e1f5a7a6f6fee45a02bf09bc700cf44",
+  "request_id": "rw-watch-20261111T0404Z-auto11cl-19-census_queue_status",
+  "request_sha256": "72cd7fd6ca1c2bcbc50a8fa9e321e686b4f8a8cf7972db34d07ec1ba824a4924",
+  "started_at": "2026-11-11T04:09:18.885797+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ok\": true, \"research_enabled\": true, \"proposal_only\": true, \"counts\": [{\"status\": \"needs_review\", \"jobs\": 6, \"max_attempts\": 3, \"expired_leases\": 0, \"oldest_created_at\": \"2026-11-04T09:00:35.887996+00:00\", \"last_updated_at\": \"2026-11-04T10:06:21.833453+00:00\", \"last_completed_at\": \"2026-11-04T10:06:21.833453+00:00\"}]}",
+  "version": 1
+}
