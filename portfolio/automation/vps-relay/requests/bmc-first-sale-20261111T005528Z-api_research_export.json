@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261111T005528Z-api_research_export",
+  "action": "api_research_export",
+  "args": {
+    "source_request_id": "bmc-catalogue-20261106T141921-187ce815"
+  },
+  "allow_external_actions": false,
+  "created_at": "2026-11-11T00:55:28.016337+00:00",
+  "expires_at": "2026-11-11T02:55:28.016337+00:00"
+}
