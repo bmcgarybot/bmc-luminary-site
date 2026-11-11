@@ -8551,7 +8551,7 @@ install_census_research_queue(app, require_admin, ADMIN_KEY,
 from reply_review import install as install_reply_review
 record_owner_reply_review=install_reply_review(app,require_admin,ADMIN_KEY,
     dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER,
-         WATCHDOG_EMAIL=os.getenv('WATCHDOG_EMAIL','')),send_mail_once)
+         WATCHDOG_EMAIL=os.getenv('WATCHDOG_EMAIL',''), SMTP_FROM=SMTP_FROM, SMTP_REPLY_TO=SMTP_REPLY_TO),send_mail_once)
 
 # Bounded never-contacted native research; no target staging or customer sends.
 from contact_enrichment_api import install as install_contact_enrichment_api
@@ -8653,3 +8653,8 @@ install_owner_dashboard(app, require_admin,
 
 from mail_incident import install as install_mail_incident
 install_mail_incident(app, require_admin)
+
+from reply_monitor import install as install_reply_monitor
+install_reply_monitor(app,require_admin,dict(IMAP_ENABLED=IMAP_ENABLED,IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,
+    IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER,SMTP_FROM=SMTP_FROM,
+    WATCHDOG_EMAIL=os.getenv("WATCHDOG_EMAIL","")),record_owner_reply_review)
