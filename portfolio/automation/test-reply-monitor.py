@@ -44,6 +44,13 @@ class Tests(unittest.IsolatedAsyncioTestCase):
    self.assertEqual(send.await_count,2);self.assertTrue(all(c.args[1]=='owner@example.com' for c in send.await_args_list))
    again=await app.routes['/api/admin/reply-monitor-cycle']('monitor_124',False,'admin')
    self.assertEqual(again['processed'],0);self.assertEqual(send.await_count,2)
+ async def test_notification_test_does_not_create_customer_review(self):
+  conn=Conn();app=fixture.App(conn);send=AsyncMock(return_value=True)
+  config=dict(fixture.CONFIG,SMTP_FROM='contact@bmcservicenetwork.com',SMTP_REPLY_TO='contact@bmcservicenetwork.com')
+  rec=fixture.r.install(app,lambda key:None,'secret',config,send)
+  out=await rec(conn,'monitor-test:123','monitor-test@example.invalid','Test','notification_test','Test',None,monitor_all=True)
+  self.assertEqual(out['owner_alert'],'submitted');self.assertFalse(out['recorded']);self.assertEqual(conn.events,[])
+  self.assertEqual(send.await_args.args[1],'owner@example.com');self.assertEqual(send.await_args.args[2],'BMC notification delivery test')
  async def test_denied_admin_never_connects(self):
   app=fixture.App(Conn())
   def deny(key):raise PermissionError('denied')

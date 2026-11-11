@@ -124,6 +124,17 @@ def install(app,require_admin,secret,config,send_mail_once):
     async def record(conn,inbound_key,sender,body,classification,subject,target_id,*,monitor_all=False):
         sender=address(sender)
         if not sender:return {'recorded':False,'reason':'invalid_sender'}
+        # An admin-requested delivery test must never appear as a customer reply.
+        if monitor_all and classification=='notification_test' and sender=='monitor-test@example.invalid':
+            owner=address(config.get('WATCHDOG_EMAIL'))
+            if not owner:return {'recorded':False,'owner_alert':'unconfigured'}
+            if any(config.get(k,'').strip().lower()!='contact@bmcservicenetwork.com' for k in ('SMTP_FROM','SMTP_REPLY_TO')):
+                return {'recorded':False,'owner_alert':'sender_configuration_blocked'}
+            try:
+                accepted=await send_mail_once('owner-notification-test:'+hashlib.sha256(inbound_key.encode()).hexdigest(),owner,
+                    'BMC notification delivery test','This is your requested BMC reply-notification delivery test. No customer has replied and no customer was emailed. Future incoming BMC replies will use this sender and owner destination.')
+            except Exception:accepted=False
+            return {'recorded':False,'owner_alert':'submitted' if accepted else 'needs_review','notification_test':True}
         target=await conn.fetchrow("""select target_id from growth_outreach_targets where lower(public_email)=$1
           and ($2::text is null or target_id=$2) order by target_id limit 1""",sender,str(target_id) if target_id else None)
         entity_type='growth_customer'
