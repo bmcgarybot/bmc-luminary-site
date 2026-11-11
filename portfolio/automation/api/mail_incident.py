@@ -1,4 +1,4 @@
-"""Read-only incident evidence: no SMTP envelope/data and no mailbox writes."""
+"""Read-only incident evidence: no SMTP DATA or mailbox writes."""
 import asyncio, imaplib, json, os, re, smtplib, ssl
 from email import policy
 from email.parser import BytesParser
@@ -20,7 +20,7 @@ def safe_error(exc):
 
 def provider_evidence(known):
     out={'smtp_host':os.getenv('SMTP_HOST'),'smtp_from':os.getenv('SMTP_FROM'),'reply_to':os.getenv('SMTP_REPLY_TO'),
-         'probe_scope':'AUTH and NOOP only; no MAIL, RCPT, DATA, message or mailbox mutation'}
+         'probe_scope':'AUTH/NOOP and an envelope addressed only to the BMC mailbox, immediately reset; no DATA, delivered message or mailbox mutation'}
     smtp=None
     try:
         host=os.environ['SMTP_HOST'];port=int(os.getenv('SMTP_PORT','587'))
@@ -30,6 +30,12 @@ def provider_evidence(known):
             if os.getenv('SMTP_STARTTLS','true').lower()=='true':smtp.starttls(context=ssl.create_default_context());smtp.ehlo()
         if os.getenv('SMTP_USER'):smtp.login(os.environ['SMTP_USER'],os.environ['SMTP_PASSWORD'])
         code,response=smtp.noop();out['smtp_account']={'status':'authenticated','noop_code':code,'response':response.decode('utf-8','replace')[:500]}
+        if os.getenv('SMTP_FROM','').strip().lower()=='contact@bmcservicenetwork.com':
+            sender='contact@bmcservicenetwork.com'
+            code,response=smtp.mail(sender);out['envelope_mail']={'code':code,'response':response.decode('utf-8','replace')[:1500]}
+            if code==250:
+                code,response=smtp.rcpt(sender);out['envelope_rcpt_self']={'code':code,'response':response.decode('utf-8','replace')[:1500]}
+            smtp.rset()  # Never issue DATA; no email can be delivered.
     except Exception as exc:out['smtp_account']={'status':'failed',**safe_error(exc)}
     finally:
         if smtp:
