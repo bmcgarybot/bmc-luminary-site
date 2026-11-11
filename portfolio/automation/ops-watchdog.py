@@ -137,11 +137,11 @@ def collect(env,state):
             add(name,type(value) is int and value==0,str(value)+" recorded")
     if isinstance(metrics,dict):
         by_route={row["route"]:row for row in metrics.get("api_operations",[])}
-        for route in ("/api/process-replies","/api/agent-cycle"):
+        for route in ("/api/process-replies","/api/agent-cycle","/api/admin/reply-monitor-cycle"):
             stamp=by_route.get(route,{}).get("last_success_at")
             try:age=time.time()-dt.datetime.fromisoformat(stamp).timestamp()
             except (TypeError,ValueError):age=None
-            add("Worker freshness "+route,(age is not None and age<2700 and by_route[route].get("last_status",500)<400) or (route not in by_route and time.time()-state.get("configured_at",0)<900),"last successful run age seconds: "+str(round(age) if age is not None else "unknown"))
+            add("Worker freshness "+route,(age is not None and age<(300 if route=="/api/admin/reply-monitor-cycle" else 2700) and by_route[route].get("last_status",500)<400) or (route not in by_route and time.time()-state.get("configured_at",0)<900),"last successful run age seconds: "+str(round(age) if age is not None else "unknown"))
     code,growth=readings["growth"]
     expected={k:env.get(k,"").strip().lower() for k in FLAGS}
     live=(growth or {}).get("outreach_switches",{})
@@ -190,8 +190,10 @@ def alert_audit(message_id,status):
 
 def send_alert(env,subject,body,message_id):
     recipient=env.get("WATCHDOG_EMAIL","")
+    if env.get("SMTP_FROM","").strip().lower()!="contact@bmcservicenetwork.com" or env.get("SMTP_REPLY_TO","").strip().lower()!="contact@bmcservicenetwork.com":return False
     if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",recipient):return False
     msg=EmailMessage();msg["From"]=env.get("SMTP_FROM") or env.get("SMTP_USER","")
+    msg["Reply-To"]="contact@bmcservicenetwork.com"
     msg["To"]=recipient;msg["Subject"]=subject;msg["Message-ID"]=message_id
     msg.set_content(body)
     alert_audit(message_id,"attempting")
