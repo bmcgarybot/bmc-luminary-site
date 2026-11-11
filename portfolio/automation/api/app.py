@@ -2136,6 +2136,9 @@ async def handle_lead(conn,p):
             service_key="unclassified"
         else:
             fulfillment_mode=clean(service["fulfillment_mode"]) or "provider_match"
+            if market=="Prescott" and service_key=="commercial_cleaning":
+                fulfillment_mode="managed_sourcing"
+                customer_path="get_me_options"
 
     if not customer_path:
         if form_type in ("quote_sourcing","equipment_quotes"):
@@ -2227,7 +2230,9 @@ async def handle_lead(conn,p):
     if product_payment_required and not paid_order:
         await conn.execute("update leads set status='awaiting_payment',updated_at=now() where lead_id=$1",lead_id)
 
-    if p.get("email"):
+    bmc_receipt_sender = SMTP_FROM.strip().lower()=="contact@bmcservicenetwork.com" and SMTP_REPLY_TO.strip().lower()=="contact@bmcservicenetwork.com"
+    prescott_cleaning = market=="Prescott" and service_key=="commercial_cleaning"
+    if p.get("email") and (not prescott_cleaning or bmc_receipt_sender):
         if fulfillment_mode=="provider_match":
             workflow_text="We’re looking for the right participating provider now."
         elif product_payment_required and paid_order:
@@ -7851,6 +7856,12 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                   order by o.created_at desc limit 1""",sender)
                 sample=await conn.fetchrow("""select sample_id from growth_sample_requests where lower(email)=lower($1)
                   order by created_at desc limit 1""",sender)
+                subject=str(msg.get('Subject') or '')
+                if '[bmc case ' in subject.lower() and not msg.get('Auto-Submitted','').lower().startswith('auto'):
+                    from owner_dashboard import record_service_reply
+                    if await record_service_reply(conn,sender,subject,reply_text(msg),inbound_key):
+                        await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,"service_reply")
+                        continue
                 if not row and not sample:continue
                 body=reply_text(msg); classification=classify_reply_text(body)
                 if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster"):
