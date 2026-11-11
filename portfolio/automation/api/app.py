@@ -8632,3 +8632,6 @@ from owner_dashboard import install as install_owner_dashboard
 install_owner_dashboard(app, require_admin,
     lambda: SMTP_FROM.strip().lower()=="contact@bmcservicenetwork.com" and SMTP_REPLY_TO.strip().lower()=="contact@bmcservicenetwork.com" and not SMTP_DRY_RUN,
     send_mail_once, lambda: process_replies(ADMIN_KEY))
+
+from mail_incident import install as install_mail_incident
+install_mail_incident(app, require_admin)
