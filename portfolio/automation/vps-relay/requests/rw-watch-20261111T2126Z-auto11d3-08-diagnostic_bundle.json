@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261111T2126Z-auto11d3-08-diagnostic_bundle",
+  "created_at": "2026-11-11T21:26:26.000Z",
+  "expires_at": "2026-11-11T23:55:00.000Z",
+  "action": "diagnostic_bundle",
+  "args": {},
+  "allow_external_actions": false
+}
