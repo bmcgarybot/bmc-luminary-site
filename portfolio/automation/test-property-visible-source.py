@@ -4,7 +4,7 @@ from datetime import datetime,timezone,timedelta
 ROOT=Path(__file__).resolve().parent
 sys.path[:0]=[str(ROOT/'api'),str(ROOT)]
 from property_visible_source import *
-NOW=datetime(2026,11,4,12,tzinfo=timezone.utc)
+NOW=datetime.now(timezone.utc)
 SECRET='synthetic-offline-secret'
 HTML='<html><title>Example Property LLC</title><main><h1>Example Property LLC</h1><p>We provide property management services in Phoenix.</p><address>123 North Main Street, Phoenix, AZ 85004</address><p>Call 602-555-0101 or email hello@example.test</p></main></html>'
 C={'business_name':'Example Property LLC','side':'buyer','market':'Phoenix','category_key':'property_management','source_url':'https://example.test/'}
