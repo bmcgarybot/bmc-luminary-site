@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261111T001042Z-deploy_update",
+  "action": "deploy_update",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-11T00:10:42.390157+00:00",
+  "expires_at": "2026-11-11T02:10:42.390157+00:00",
+  "required_ci_sha": "8a980b89a56a65a8b76c98599565a919ac4e0160"
+}
