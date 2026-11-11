@@ -7859,8 +7859,15 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                 subject=str(msg.get('Subject') or '')
                 if '[bmc case ' in subject.lower() and not msg.get('Auto-Submitted','').lower().startswith('auto'):
                     from owner_dashboard import record_service_reply
-                    if await record_service_reply(conn,sender,subject,reply_text(msg),inbound_key):
-                        await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,"service_reply")
+                    case_body=reply_text(msg)
+                    if await record_service_reply(conn,sender,subject,case_body,inbound_key):
+                        case_classification=classify_reply_text(case_body)
+                        if case_classification=="opt_out":
+                            await conn.execute("""insert into outreach_suppressions(email,reason,source)
+                                values($1,'reply opt-out','imap') on conflict(email) do nothing""",sender)
+                        await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,
+                            "opt_out" if case_classification=="opt_out" else "service_reply")
+                        matched+=1
                         continue
                 if not row and not sample:continue
                 body=reply_text(msg); classification=classify_reply_text(body)
