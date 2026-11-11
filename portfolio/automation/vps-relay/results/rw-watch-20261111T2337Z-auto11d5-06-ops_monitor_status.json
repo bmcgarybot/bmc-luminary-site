@@ -1,0 +1,21 @@
+{
+  "action": "ops_monitor_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-11T23:40:04.496373+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "848fe376551bde20ba84f151c29658981ff54c46",
+  "git_commit_before": "848fe376551bde20ba84f151c29658981ff54c46",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "3472550ed2debf1d18315d619868ecea29f1e44a",
+  "request_id": "rw-watch-20261111T2337Z-auto11d5-06-ops_monitor_status",
+  "request_sha256": "5e92985a8f70757d8b70dce2c57ec7e67d3a7b3707da66d3647e7521d8445179",
+  "started_at": "2026-11-11T23:40:04.318127+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"busy\": true, \"system_timer_active\": true, \"user_timer_active\": false}",
+  "version": 1
+}
