@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261111T153807Z-reply_monitor_cycle",
+  "action": "reply_monitor_cycle",
+  "args": {
+    "test_owner_alert": true
+  },
+  "allow_external_actions": true,
+  "created_at": "2026-11-11T15:38:07.583500+00:00",
+  "expires_at": "2026-11-11T17:38:07.583500+00:00"
+}
