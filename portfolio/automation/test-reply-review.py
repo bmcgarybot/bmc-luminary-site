@@ -158,6 +158,10 @@ class ProviderReplyTests(unittest.IsolatedAsyncioTestCase):
   self.conn.events.append(dict(inbound_key='synthetic',inbound_digest='a'*64,sender='provider@example.test',subject='Scope',classification='other',body='Question?',needs_owner_input=True,recipient_entity_type='vendor'))
   original=self.conn.fetch
   async def fetch(sql):
+   if 'join vendor_services' in sql:
+    self.assertIn("v.status in ('active','pilot')",sql)
+    self.assertIn("m.market='Prescott'",sql)
+    return [{'vendor_id':'participating-cleaner','public_email':'cleaner@example.test'}]
    if 'from vendors' in sql:
     self.assertIn("o.campaign='vendor_recruitment'",sql);self.assertIn('o.sent_at is not null',sql)
     return [{'target_id':'synthetic-provider','public_email':'provider@example.test'}]
@@ -167,6 +171,7 @@ class ProviderReplyTests(unittest.IsolatedAsyncioTestCase):
    app=App(self.conn);r.install(app,lambda key:None,'secret',CONFIG,self.send)
    self.assertEqual(await app.routes['/api/admin/reply-review-export']('request_123','admin'),{'ciphertext':'sealed'})
    self.assertEqual(seal.call_args.args[0]['stored_reviews'][0]['payload']['recipient_entity_type'],'vendor')
+   self.assertEqual(seal.call_args.args[0]['prescott_cleaning_providers'][0]['vendor_id'],'participating-cleaner')
    self.assertEqual(scan.call_args.args[1],[{'target_id':'synthetic-provider','public_email':'provider@example.test'}])
   self.send.assert_not_awaited();self.assertIn({'readonly':True,'isolation':'repeatable_read'},self.conn.transactions)
 if __name__=='__main__':unittest.main()
