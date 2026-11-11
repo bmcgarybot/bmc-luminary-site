@@ -2,6 +2,7 @@
 import base64
 import hashlib
 import json
+import re
 import secrets
 import uuid
 from pathlib import Path
@@ -25,6 +26,62 @@ def json_safe(value):
 def check_origin(request):
     if request.headers.get("origin") != ORIGIN:
         raise HTTPException(403, "Open this action from the BMC dashboard")
+
+
+SERVICE_LEAD = """select lead_id, customer_name, business_name, email, phone,
+    scope, urgency, status, submitted_at from leads
+    where service_key='commercial_cleaning' and market='Prescott' and consent=true
+    and status not in ('closed','cancelled','won','lost','fulfilled')"""
+SERVICE_PROVIDERS = """select v.vendor_id,v.business_name,v.public_email,v.public_phone
+    from vendors v join vendor_services s using(vendor_id) join vendor_markets m using(vendor_id)
+    where s.service_key='commercial_cleaning' and m.market='Prescott'
+    and v.status in ('active','pilot') and v.vendor_id not like 'test_%'
+    and nullif(v.public_email,'') is not null
+    and not exists(select 1 from outreach_suppressions x where lower(x.email)=lower(v.public_email))"""
+CASE_REFERENCE = re.compile(r'\[BMC case ([0-9a-f-]{36})\]', re.I)
+
+
+async def service_recipient(conn, target_id):
+    parts = target_id.split(':', 2)
+    try:
+        lead_id = uuid.UUID(parts[1])
+    except (IndexError, ValueError):
+        return None
+    lead = await conn.fetchrow(SERVICE_LEAD + ' and lead_id=$1', lead_id)
+    if not lead:
+        return None
+    if parts[0] == 'service-buyer' and len(parts) == 2:
+        email = lead['email']
+        if email and not await conn.fetchval(
+            'select 1 from outreach_suppressions where lower(email)=lower($1)', email
+        ):
+            return email
+    if parts[0] == 'service-provider' and len(parts) == 3:
+        provider = await conn.fetchrow(SERVICE_PROVIDERS + ' and v.vendor_id=$1', parts[2])
+        if provider:
+            return provider['public_email']
+    return None
+
+
+async def record_service_reply(conn, sender, subject, body, inbound_key):
+    reference = CASE_REFERENCE.search(subject)
+    if not reference:
+        return False
+    lead_id = reference.group(1).lower()
+    records = await conn.fetch("""select distinct target_id from owner_dashboard_messages
+        where status='sent' and (target_id=$1 or starts_with(target_id,$2))""",
+        'service-buyer:' + lead_id, 'service-provider:' + lead_id + ':')
+    for row in records:
+        email = await service_recipient(conn, row['target_id'])
+        if email and email.lower() == sender:
+            payload = dict(sender=sender, subject=subject[:300], body=body[:12000],
+                           target_id=row['target_id'], inbound_key=inbound_key)
+            await conn.execute("""insert into events(entity_type,entity_id,event_type,actor,payload)
+                select 'lead',$1,'owner_service_reply','mailbox',$2::jsonb
+                where not exists(select 1 from events where event_type='owner_service_reply'
+                    and payload->>'inbound_key'=$3)""", lead_id, json.dumps(payload), inbound_key)
+            return True
+    return False
 
 
 def install(app, require_admin, sender_config, send_once, refresh_inbox):
@@ -112,11 +169,18 @@ def install(app, require_admin, sender_config, send_once, refresh_inbox):
             tasks = await conn.fetch("""select task_id,task_type,status,summary,due_at,order_id from tasks
                 where status not in ('done','completed','cancelled') order by created_at desc limit 100""")
             totals = dict(await conn.fetchrow("select count(*) as paid_orders, coalesce(sum(amount_cents) filter(where currency='usd'),0) as usd_cents from orders where payment_status in ('paid','complete')"))
+            service_leads = await conn.fetch(SERVICE_LEAD + ' order by submitted_at desc limit 30')
+            service_providers = await conn.fetch(SERVICE_PROVIDERS + ' order by v.business_name limit 30')
+            service_replies = await conn.fetch("""select entity_id,payload,occurred_at from events
+                where event_type='owner_service_reply' order by occurred_at desc limit 50""")
             clock = await conn.fetchval("select now()")
         payload = {"observed_at": clock, "sender": SENDER, "sender_ready": sender_config(),
                    "campaign": campaign, "totals": totals, "offer_terms": 'Regular offer $149 for 25 prospects. The $129 correction offer applies only to Lollar Junk Removal, Flagstaff Tree Service and Blue J Paint &amp; Stain. Confirm scope and delivery timing before collecting payment. Mail-server acceptance does not establish inbox delivery.', "contacts": [dict(r) for r in contacts],
                    "replies": [dict(r) for r in replies], "messages": [dict(r) for r in messages],
-                   "orders": [dict(r) for r in orders], "tasks": [dict(r) for r in tasks]}
+                   "orders": [dict(r) for r in orders], "tasks": [dict(r) for r in tasks],
+                   "service_leads": [dict(r) for r in service_leads],
+                   "service_providers": [dict(r) for r in service_providers],
+                   "service_replies": [dict(r) for r in service_replies]}
         return JSONResponse(json_safe(payload), headers={"Cache-Control": "no-store"})
 
     @app.post("/api/owner/check-replies")
@@ -167,7 +231,16 @@ def install(app, require_admin, sender_config, send_once, refresh_inbox):
         fingerprint = hashlib.sha256(raw).hexdigest()
         async with app.state.pool.acquire() as conn:
             async with conn.transaction():
-                target = await conn.fetchrow("""select g.target_id,g.public_email from growth_outreach_targets g
+                if target_id.startswith(('service-buyer:', 'service-provider:')):
+                    email = await service_recipient(conn, target_id)
+                    if not email or order_id:
+                        raise HTTPException(409, "Select a consenting buyer or eligible provider for an open request")
+                    target = {'public_email': email}
+                    reference = '[BMC case ' + target_id.split(':', 2)[1] + ']'
+                    if reference not in subject:
+                        subject = reference + ' ' + subject[:150]
+                else:
+                    target = await conn.fetchrow("""select g.target_id,g.public_email from growth_outreach_targets g
                     where target_id=$1 and exists(select 1 from outreach o where o.entity_type='growth_customer'
                     and o.entity_id=g.target_id and o.sent_at is not null)
                     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))""",target_id)

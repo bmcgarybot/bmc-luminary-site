@@ -220,6 +220,18 @@ class Ledger:
         original_commitments=self.db.execute('select coalesce(sum(amount),0) from reservations').fetchone()[0]
         credit=self.reconciliation_credit();spent=original_commitments-credit
         if spent<0:raise Held('invalid_reconciled_commitments')
+        pending = self.db.execute(
+            "select coalesce(sum(amount),0) from reservations where state='reserved'"
+        ).fetchone()[0]
+        settled = self.db.execute('select coalesce(sum(upper_micro),0) from cost_settlements').fetchone()[0]
+        adjustments = self.db.execute('select upper_micro,manifest from budget_reconciliations').fetchall()
+        usage_based_upper = settled + sum(upper for upper, _ in adjustments)
+        reconciled_calls = sum(len(json.loads(manifest)['reservations']) for _, manifest in adjustments)
+        retained_calls = self.db.execute("""select count(*) from reservations r where state='completed'
+            and not exists(select 1 from cost_settlements s where s.call_id=r.id)""").fetchone()[0] - reconciled_calls
+        retained_completed = spent - pending - usage_based_upper
+        if retained_completed < 0 or retained_calls < 0:
+            raise Held('invalid_budget_breakdown')
         cap=min(CAP_MICRO,self.db.execute('select cap from config where id=1').fetchone()[0])
         grant=self.db.execute('select total_micro from owner_budget_authorizations where id=?',('owner-20261105-research-50',)).fetchone()
         if grant:
@@ -228,9 +240,12 @@ class Ledger:
         return {'model':MODEL,'cap_usd':cap/1e6,'reserved_usd':spent/1e6,'available_usd':max(0,cap-spent)/1e6,
             'committed_upper_usd':spent/1e6,'original_reservation_amount_usd':original_commitments/1e6,
             'reconciliation_credit_usd':credit/1e6,
-            'retained_completed_calls':self.db.execute("select count(*) from reservations r where state='completed' and not exists(select 1 from cost_settlements s where s.call_id=r.id)").fetchone()[0],'budget_accounting':'conservative_committed_upper_not_invoice',
-            'pending_reserved_usd':self.db.execute("select coalesce(sum(amount),0) from reservations where state='reserved'").fetchone()[0]/1e6,
-            'settled_upper_usd':self.db.execute('select coalesce(sum(upper_micro),0) from cost_settlements').fetchone()[0]/1e6,
+            'retained_completed_calls':retained_calls,
+            'retained_completed_usd':retained_completed/1e6,
+            'usage_based_upper_usd':usage_based_upper/1e6,
+            'budget_accounting':'internal_commitment_upper_not_provider_balance_or_invoice',
+            'pending_reserved_usd':pending/1e6,
+            'settled_upper_usd':settled/1e6,
             'missions':self.db.execute('select count(*) from missions').fetchone()[0],
             'uncertain_calls':self.db.execute("select count(*) from reservations where state='reserved'").fetchone()[0],
             'max_searches':MAX_SEARCHES,'model_tools_enabled':False,

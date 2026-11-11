@@ -6,8 +6,9 @@
 <div id="app" class="hidden"><div class="toolbar"><div><h1>Today at BMC</h1><div id="updated" class="muted">Loading live records…</div></div><div class="actions"><button id="refresh" class="secondary">Refresh dashboard</button><button id="check">Check for replies</button></div></div>
 <div class="sender">All dashboard emails use <strong>contact@bmcservicenetwork.com</strong> for From and Reply-To. <span id="senderState"></span></div>
 <div class="cards" style="margin-top:20px"><div class="panel">Campaign sent<strong class="number" id="sent">—</strong><progress id="progress" max="100" value="0"></progress><small>Goal 100 · mail-server acceptance</small></div><div class="panel">Recorded replies<strong class="number" id="replied">—</strong><small>Review messages below</small></div><div class="panel">Paid orders<strong class="number" id="paid">—</strong><small>Recorded in the VPS</small></div><div class="panel">Paid revenue<strong class="number" id="revenue">—</strong><small>USD gross · before fees or refunds</small></div></div>
+<section class="panel"><h2>Prescott cleaning requests</h2><p id="serviceProviders" class="muted"></p><div id="serviceCases"></div><p><a href="https://bmcservicenetwork.com/commercial-cleaning/#request">Open the customer request form</a></p></section>
 <div class="grid"><section class="panel"><h2>Replies needing attention</h2><p class="muted">Read the customer's message, then choose a response. Email contents are customer-provided information.</p><div id="replies" class="scroll"></div></section>
-<section class="panel"><h2>Write a reply or deliver research</h2><label for="recipient">Contacted business</label><select id="recipient"></select><div class="actions" style="margin-top:12px"><button id="scope" class="secondary">Ask for jobs and towns</button></div><label for="subject">Subject</label><input id="subject" maxlength="200"><label for="body">Message</label><textarea id="body"></textarea><label for="files">Research files · up to 3, total 5 MB</label><input id="files" type="file" multiple><label for="order">Record delivery against a paid order</label><select id="order"><option value="">Reply only / free sample</option></select><p><button id="review">Review email</button></p><small>Your BMC signature and opt-out line are added when sent. Selecting an order records fulfillment after mail-server acceptance.</small></section></div>
+<section class="panel"><h2>Send a quote request, reply or research</h2><label for="recipient">Recipient</label><select id="recipient"></select><div class="actions" style="margin-top:12px"><button id="scope" class="secondary">Ask for jobs and towns</button></div><label for="subject">Subject</label><input id="subject" maxlength="200"><label for="body">Message</label><textarea id="body"></textarea><label for="files">Research files · up to 3, total 5 MB</label><input id="files" type="file" multiple><label for="order">Record delivery against a paid order</label><select id="order"><option value="">Reply only / free sample</option></select><p><button id="review">Review email</button></p><small>Your BMC signature and opt-out line are added when sent. Selecting an order records fulfillment after mail-server acceptance.</small></section></div>
 <section class="panel"><div class="toolbar"><h2>The campaign</h2><button id="download" class="secondary">Download contact list</button></div><div class="scroll"><table><thead><tr><th>Business</th><th>Contact</th><th>Market</th><th>Status</th></tr></thead><tbody id="contacts"></tbody></table></div></section>
 <div class="grid"><section class="panel"><h2>Payments and delivery</h2><div id="orders" class="scroll"></div></section><section class="panel"><h2>Work to finish</h2><div id="tasks" class="scroll"></div></section></div>
 <section class="panel"><h2>Dashboard send history</h2><div id="history" class="scroll"></div></section><footer id="terms"></footer></div>
@@ -19,9 +20,72 @@ async function api(path,body){const opts={credentials:'same-origin',headers:{}};
 function item(tag,text){const n=document.createElement(tag);n.textContent=text;return n;}
 function empty(node,text){node.replaceChildren(item('p',text));node.firstChild.className='empty';}
 function parsed(p){if(typeof p==='string'){try{return JSON.parse(p)}catch{return {}}}return p||{};}
+function serviceTargets(){
+  return (state.service_leads||[]).flatMap(lead=>{
+    const prefix='[BMC case '+lead.lead_id+'] ';
+    const buyer=lead.email?[{target_id:'service-buyer:'+lead.lead_id,business_name:lead.business_name||lead.customer_name||'Customer',public_email:lead.email,prefix}]:[];
+    return buyer.concat((state.service_providers||[]).map(provider=>({
+      target_id:'service-provider:'+lead.lead_id+':'+provider.vendor_id,
+      business_name:provider.business_name,public_email:provider.public_email,prefix
+    })));
+  });
+}
+function prepareServiceMessage(target,subject,body){
+  el('recipient').value=target;
+  el('subject').value=subject;
+  el('body').value=body;
+  el('files').value='';
+  el('order').value='';
+  el('body').focus();
+}
+function renderServiceCases(){
+  const providers=state.service_providers||[];
+  const leads=state.service_leads||[];
+  const list=el('serviceCases');
+  list.replaceChildren();
+  el('serviceProviders').textContent=providers.length
+    ?providers.length+' participating providers with a business email.'
+    :'No participating Prescott cleaning provider is eligible for email quotes yet.';
+  for(const lead of leads){
+    const card=item('article','');card.className='message';
+    card.append(item('h3',lead.business_name||lead.customer_name||'Cleaning request'),
+      item('p',new Date(lead.submitted_at).toLocaleDateString()+' · '+(lead.urgency||'Timing to confirm')),
+      item('pre',lead.scope||'Confirm the cleaning scope with the customer.'));
+    if(lead.email){
+      const buyer=item('button','Reply to buyer');buyer.type='button';buyer.className='secondary';
+      buyer.onclick=()=>prepareServiceMessage('service-buyer:'+lead.lead_id,'Your Prescott cleaning request',
+        'Thanks for your request. Could you confirm the service frequency, approximate floor area and when you need cleaning to start?');
+      card.append(buyer);
+    }
+    for(const provider of providers){
+      const quote=item('button','Request quote from '+provider.business_name);quote.type='button';quote.className='secondary';
+      quote.onclick=()=>prepareServiceMessage('service-provider:'+lead.lead_id+':'+provider.vendor_id,
+        'Prescott commercial cleaning quote request','Can you quote a commercial cleaning job in Prescott? Please reply with availability, price and any exclusions.\n\nScope: [add the job details needed for a quote]');
+      card.append(quote);
+    }
+    const replies=(state.service_replies||[]).filter(reply=>reply.entity_id===lead.lead_id);
+    for(const reply of replies){
+      const data=parsed(reply.payload);
+      card.append(item('strong',data.sender||'Reply'),item('pre',data.body||''));
+      const answer=item('button','Reply');answer.type='button';answer.className='secondary';
+      answer.onclick=()=>prepareServiceMessage(data.target_id,'Re: '+(data.subject||'Cleaning request'),'');
+      card.append(answer);
+    }
+    const sent=(state.messages||[]).filter(m=>m.target_id==='service-buyer:'+lead.lead_id||m.target_id.startsWith('service-provider:'+lead.lead_id+':'));
+    for(const m of sent)card.append(item('p',m.status+' · '+m.subject));
+    list.append(card);
+  }
+  if(!leads.length)empty(list,'No open Prescott cleaning requests.');
+}
 function render(){el('terms').textContent=state.offer_terms;el('login').classList.add('hidden');el('app').classList.remove('hidden');el('logout').classList.remove('hidden');el('updated').textContent='Live VPS records · '+new Date(state.observed_at).toLocaleString();el('senderState').textContent=state.sender_ready?'Sender verified.':'Sender needs attention.';el('review').disabled=!state.sender_ready;el('sent').textContent=state.campaign.sent+' / 100';el('progress').value=state.campaign.sent;el('replied').textContent=state.campaign.replied;
 el('paid').textContent=state.totals.paid_orders;el('revenue').textContent=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(state.totals.usd_cents/100);
-const selected=el('recipient').value;el('recipient').replaceChildren(item('option','Choose a business'));el('recipient').firstChild.value='';el('contacts').replaceChildren();for(const c of state.contacts){const row=document.createElement('tr');for(const text of [c.business_name,c.public_email,c.market,c.suppressed?'Opted out':c.reply_type||c.status])row.append(item('td',text||''));el('contacts').append(row);if(!c.suppressed){const opt=item('option',c.business_name+' · '+c.public_email);opt.value=c.target_id;el('recipient').append(opt);}}el('recipient').value=selected;
+const selected=el('recipient').value;el('recipient').replaceChildren(item('option','Choose a business'));el('recipient').firstChild.value='';el('contacts').replaceChildren();for(const c of state.contacts){const row=document.createElement('tr');for(const text of [c.business_name,c.public_email,c.market,c.suppressed?'Opted out':c.reply_type||c.status])row.append(item('td',text||''));el('contacts').append(row);if(!c.suppressed){const opt=item('option',c.business_name+' · '+c.public_email);opt.value=c.target_id;el('recipient').append(opt);}}for(const c of serviceTargets()){
+  const option=item('option',c.business_name+' · '+c.public_email);
+  option.value=c.target_id;
+  el('recipient').append(option);
+}
+el('recipient').value=selected;
+renderServiceCases();
 el('replies').replaceChildren();for(const r of state.replies){const p=parsed(r.payload),box=document.createElement('article');box.className='message';box.append(item('strong',p.sender||'Customer reply'),item('small',p.subject||''),item('pre',p.body||''));const b=item('button','Reply');b.className='secondary';b.onclick=()=>{const c=state.contacts.find(c=>c.public_email.toLowerCase()===(p.sender||'').toLowerCase()&&!c.suppressed);if(!c){message('This sender is unavailable or opted out.',true);return;}el('recipient').value=c.target_id;el('subject').value='Re: '+(p.subject||'BMC research');el('body').focus();};box.append(b);el('replies').append(box);}if(!state.replies.length)empty(el('replies'),'No customer replies are recorded yet.');
 el('order').replaceChildren(item('option','Reply only / free sample'));el('order').firstChild.value='';el('orders').replaceChildren();for(const o of state.orders){const p=item('p',o.customer_email+' · '+(o.amount_cents/100).toFixed(2)+' '+o.currency.toUpperCase()+' · '+o.payment_status+' · '+o.status);el('orders').append(p);if(['paid','complete'].includes(o.payment_status)&&!['fulfilled','owner_delivery_pending'].includes(o.status)){const option=item('option',o.customer_email+' · '+o.product_key);option.value=o.order_id;el('order').append(option);}}if(!state.orders.length)empty(el('orders'),'No orders are recorded yet.');
 el('tasks').replaceChildren();for(const t of state.tasks)el('tasks').append(item('p',(t.summary||t.task_type)+' · '+t.status));if(!state.tasks.length)empty(el('tasks'),'No open tasks are recorded.');el('history').replaceChildren();for(const m of state.messages){const b=document.createElement('article');b.className='message';b.append(item('strong',m.subject),item('small',new Date(m.created_at).toLocaleString()+' · '+m.status),item('pre',m.body));el('history').append(b);}if(!state.messages.length)empty(el('history'),'Replies and deliveries sent from this dashboard will appear here.');}
@@ -29,7 +93,7 @@ async function refresh(){state=await api('state');render();}
 el('loginForm').onsubmit=async e=>{e.preventDefault();try{await api('login',{code:el('code').value});el('code').value='';await refresh();message('Connected to your BMC VPS.');}catch(e){message(e.message,true);}};
 el('logout').onclick=async()=>{await api('logout',{});location.reload();};el('refresh').onclick=()=>refresh().catch(e=>message(e.message,true));el('check').onclick=async()=>{el('check').disabled=true;try{const r=await api('check-replies',{});await refresh();message(r.enabled===false?'Mailbox polling is disabled.':'Mailbox checked. Review any new messages above.');}catch(e){message(e.message,true);}finally{el('check').disabled=false;}};
 el('scope').onclick=()=>{el('subject').value='Your five free BMC prospects';el('body').value='Thanks for your interest. Which types of jobs would you like more of, and which towns do you serve? Please also mention any types of customers or jobs you want excluded.\n\nI’ll use that scope to research your five free prospects and confirm when they will be ready.';};
-el('review').onclick=async()=>{try{const c=state.contacts.find(c=>c.target_id===el('recipient').value&&!c.suppressed);if(!c)throw new Error('Choose a contacted business.');if(!el('subject').value.trim()||!el('body').value.trim())throw new Error('Add a subject and message.');const files=[...el('files').files];if(files.length>3||files.reduce((a,f)=>a+f.size,0)>5000000)throw new Error('Attach up to three files totaling 5 MB.');const attachments=[];for(const f of files){const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=reject;reader.readAsDataURL(f);});attachments.push({name:f.name,data});}pending={request_id:crypto.randomUUID(),target_id:c.target_id,subject:el('subject').value.trim(),body:el('body').value.trim(),attachments,order_id:el('order').value};el('previewTo').textContent=c.business_name+' <'+c.public_email+'>';el('previewSubject').textContent=pending.subject;el('previewBody').textContent=pending.body+'\n\nBrett\nBMC Service Network / BMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\nReply NO to stop marketing emails.';el('previewFiles').textContent=files.length?'Attachments: '+files.map(f=>f.name).join(', '):'No attachments';el('confirm').disabled=false;el('preview').showModal();}catch(e){message(e.message,true);}};
+el('review').onclick=async()=>{try{const c=state.contacts.concat(serviceTargets()).find(c=>c.target_id===el('recipient').value&&!c.suppressed);if(!c)throw new Error('Choose an eligible recipient.');if(el('body').value.includes('[add the job details'))throw new Error('Add the scope needed for a quote.');if(!el('subject').value.trim()||!el('body').value.trim())throw new Error('Add a subject and message.');const files=[...el('files').files];if(files.length>3||files.reduce((a,f)=>a+f.size,0)>5000000)throw new Error('Attach up to three files totaling 5 MB.');const attachments=[];for(const f of files){const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=reject;reader.readAsDataURL(f);});attachments.push({name:f.name,data});}pending={request_id:crypto.randomUUID(),target_id:c.target_id,subject:el('subject').value.trim(),body:el('body').value.trim(),attachments,order_id:el('order').value};el('previewTo').textContent=c.business_name+' <'+c.public_email+'>';el('previewSubject').textContent=c.prefix&&!pending.subject.includes(c.prefix.trim())?c.prefix+pending.subject.slice(0,150):pending.subject;el('previewBody').textContent=pending.body+'\n\nBrett\nBMC Service Network / BMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\nReply NO to stop marketing emails.';el('previewFiles').textContent=files.length?'Attachments: '+files.map(f=>f.name).join(', '):'No attachments';el('confirm').disabled=false;el('preview').showModal();}catch(e){message(e.message,true);}};
 el('cancel').onclick=()=>el('preview').close();el('confirm').onclick=async()=>{el('confirm').disabled=true;try{const r=await api('send',pending);if(!r.smtp_accepted){message('Submission needs review. Do not resend until the original attempt is checked.',true);return;}el('preview').close();message('Accepted by the BMC mail server for '+(r.recipient||'this recipient')+'.');el('body').value='';el('files').value='';pending=null;await refresh();}catch(e){message(e.message+' Keep this review open to preserve the send reference.',true);el('confirm').disabled=false;}};
 el('download').onclick=()=>{const rows=[['Business','Email','Market','Status'],...state.contacts.map(c=>[c.business_name,c.public_email,c.market,c.suppressed?'opted_out':c.status])];const csv=rows.map(r=>r.map(v=>'"'+String(v||'').replaceAll('"','""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='BMC-campaign-contacts.csv';a.click();URL.revokeObjectURL(a.href);};
 refresh().catch(e=>{if(!e.message.includes('Sign in'))message(e.message,true);});
