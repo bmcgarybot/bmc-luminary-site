@@ -49,7 +49,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview", "interest_first_readiness", "interest_contact_research_status"}
+READ_ONLY_ACTIONS = {"mail_incident_audit","proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review", "interest_first_preview", "interest_first_readiness", "interest_contact_research_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "owner_dashboard_access",
     "deploy_update",
@@ -1311,6 +1311,11 @@ def execute(req: dict) -> dict:
         metadata["ci_proof"] = proof
         cp = run(["bash", "./deploy-update.sh", ENV_FILE], timeout=1200)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "mail_incident_audit":
+        if args:raise RelayError("Mail incident audit accepts no arguments")
+        stdout = json.dumps(admin_post("/api/admin/mail-incident-audit?request_id=" + req["request_id"], timeout=300))
+        exit_code = 0
 
     elif action == "owner_dashboard_access":
         if args:
