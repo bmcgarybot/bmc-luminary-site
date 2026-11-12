@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261112T144347Z-reply_review_export",
+  "action": "reply_review_export",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-12T14:43:47.866993+00:00",
+  "expires_at": "2026-11-12T16:43:47.866993+00:00"
+}
