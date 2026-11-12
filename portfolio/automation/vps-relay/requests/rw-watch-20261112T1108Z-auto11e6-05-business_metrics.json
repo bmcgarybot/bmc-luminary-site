@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261112T1108Z-auto11e6-05-business_metrics",
+  "created_at": "2026-11-12T11:08:45.000Z",
+  "expires_at": "2026-11-12T13:08:45.000Z",
+  "action": "business_metrics",
+  "args": {},
+  "allow_external_actions": false
+}
