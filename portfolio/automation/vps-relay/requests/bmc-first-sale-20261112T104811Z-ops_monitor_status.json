@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-first-sale-20261112T104811Z-ops_monitor_status",
+  "action": "ops_monitor_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-11-12T10:48:11.651105+00:00",
+  "expires_at": "2026-11-12T12:48:11.651105+00:00"
+}
