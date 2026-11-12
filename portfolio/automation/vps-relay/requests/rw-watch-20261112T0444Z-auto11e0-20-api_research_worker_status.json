@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw-watch-20261112T0444Z-auto11e0-20-api_research_worker_status",
+  "created_at": "2026-11-12T04:45:09.532Z",
+  "expires_at": "2026-11-12T06:45:09.532Z",
+  "action": "api_research_worker_status",
+  "args": {},
+  "allow_external_actions": false
+}
