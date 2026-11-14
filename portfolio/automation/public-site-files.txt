@@ -112,3 +112,4 @@ windshield-auto-glass/index.html
 data/service-images.json
 assets/images/fleet-washing-illustration-v1.webp
 assets/images/ice-machine-service-illustration-v1.webp
+_worker.js
